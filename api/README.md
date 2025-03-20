@@ -19,3 +19,10 @@ $ dotnet ef database update
 ```
 
 You can check that this has worked by right clicking on 'Databases' in pgAdmin and then clicking 'refresh'.
+
+# Running the code
+You can run the code using `dotnet run`.
+
+You can run the linter using `dotnet format`.
+
+You can ensure it makes no changes using `dotnet format --verify-no-changes`.
