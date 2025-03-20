@@ -1,10 +1,17 @@
 
 using Microsoft.EntityFrameworkCore;
+using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
 
 class WhaleSpottingDbContext : DbContext {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=whale_spotting;User Id=whale_spotting;Password=whale_spotting;");
+    public DbSet<ExampleModel> ExampleModel { get; set; }
+    private IConfiguration _configuration;
+    public WhaleSpottingDbContext(IConfiguration configuration) {
+        _configuration = configuration;
+    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:WhaleSpottingDb"]);
     }
 }
