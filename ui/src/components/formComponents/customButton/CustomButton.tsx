@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import './Button.scss';
+import './CustomButton.scss';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
