@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+
 using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
@@ -7,7 +8,7 @@ namespace WhaleSpottingBackend.Database;
 class WhaleSpottingDbContext : DbContext
 {
     public DbSet<ExampleModel> ExampleModel { get; set; }
-    private IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
     public WhaleSpottingDbContext(IConfiguration configuration)
     {
         _configuration = configuration;
