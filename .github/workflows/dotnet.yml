@@ -18,10 +18,10 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./api/WhaleSpottingBackend.sln
     - name: Format
-      run: dotnet format --verify-no-changes --verbosity diagnostic
+      run: dotnet format ./api/WhaleSpottingBackend.sln --verify-no-changes --verbosity diagnostic
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./api/WhaleSpottingBackend.sln --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./api/WhaleSpottingBackend.sln --no-build --verbosity normal
