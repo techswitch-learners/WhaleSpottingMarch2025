@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-
 namespace WhaleSpottingBackend.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class WeatherForecastController:ControllerBase
 {
-    private readonly ILogger<WeatherForecastController> _logger;
+private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
-    }
-}
+public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    {_logger = logger;}}

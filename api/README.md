@@ -26,3 +26,6 @@ You can run the code using `dotnet run`.
 You can run the linter using `dotnet format`.
 
 You can ensure it makes no changes using `dotnet format --verify-no-changes`.
+
+# CI Pipeline
+CI pipeline will be automatically triggered on push and pull request. Please check the CI Pipeline actions in github to see if you branch passed.
