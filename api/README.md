@@ -29,3 +29,14 @@ You can ensure it makes no changes using `dotnet format --verify-no-changes`.
 
 # CI Pipeline
 CI pipeline will be automatically triggered on push and pull request. Please check the CI Pipeline actions in github to see if you branch passed.
+
+## Linting/format rules
+This pipeline will fail if you don't follow the style rules:
+- # Indentation and spacing
+- tab width should be equal to 4 spaces
+- all curly brackets (braces) should start and end on a new line
+- delete any unnecessary trailing white spaces or empty lines at the end of your file
+- mark your field declarations correctly, for instance `readonly` for readonly properties
+- list your system directive imports first. For instance list `using System.IO` before `using Microsoft.AspNetCore.Mvc`
+
+
