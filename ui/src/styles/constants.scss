@@ -1,0 +1,36 @@
+$background-navigation: #01579B;
+$text-primary-navigation: white;
+$text-secondary-navigation: #e5eef5;
+
+$background-main: white;
+$text-primary-main: black;
+$text-secondary-main: #01579B;
+
+$text-success: green;
+$text-error: red;
+
+$border-radius:16px;
+$padding-default:16px;
+$padding-small:8px;
+$padding-large:24px;
+$desktop-min-width: 1024px;
+
+$font-size-normal: 1rem;
+$font-size-heading: 2.5rem;
+$font-family-normal: "Futura","Arial",sans-serif;
+$font-family-heading: "Selima","Georgia","Times New Roman","Times",serif;
+
+$background-color-approve: #13aa52;
+$background-color-deny: #e62143;
+
+@mixin button($color) {
+    background-color: $color;
+}
+
+@mixin button-approve {
+    @include button($background-color-approve);
+}
+
+@mixin button-deny {
+    @include button($background-color-deny);
+}
