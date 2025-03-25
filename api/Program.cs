@@ -3,6 +3,7 @@ using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Repositories;
 using WhaleSpottingBackend.Models.DatabaseModels;
 
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<WhaleSpottingDbContext>();
@@ -30,6 +31,13 @@ var app = builder.Build();
         await InitialDBDataSetup.CreateDefaultAdminUser(userManager);
     }
 
+// Add roles on startup
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await RoleHelper.EnsureRolesCreated(roleManager);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -39,7 +47,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
+app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
 
 app.Run();
