@@ -17,3 +17,20 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build --if-present
+        run: echo "🎉 This job's status is ${{ job.status }}."
+
+  dotnet-format-and-build: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./api/WhaleSpottingBackend.sln
+    - name: Format
+      run: dotnet format ./api/WhaleSpottingBackend.sln --verify-no-changes
+    - name: Build
+      run: dotnet build ./api/WhaleSpottingBackend.sln --no-restore 
+      run: echo "🎉 This job's status is ${{ job.status }}."
