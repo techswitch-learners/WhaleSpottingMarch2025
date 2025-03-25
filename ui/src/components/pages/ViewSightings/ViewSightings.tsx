@@ -1,3 +1,3 @@
 export const ViewSightings = () => {
-    return (<div>View Sightings page</div>)
-}
+  return <div>View Sightings page</div>;
+};

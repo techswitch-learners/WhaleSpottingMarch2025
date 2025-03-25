@@ -1,3 +1,3 @@
 export const ReportSighting = () => {
-    return (<div>Report sighting page</div>)
-}
+  return <div>Report sighting page</div>;
+};
