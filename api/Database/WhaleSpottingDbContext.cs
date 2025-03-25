@@ -1,11 +1,12 @@
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
 
-public class WhaleSpottingDbContext : DbContext
+class WhaleSpottingDbContext : IdentityDbContext
 {
     private readonly IConfiguration _configuration;
     public WhaleSpottingDbContext(IConfiguration configuration)
