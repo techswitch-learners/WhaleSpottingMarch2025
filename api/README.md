@@ -28,7 +28,7 @@ You can run the linter using `dotnet format`.
 You can ensure it makes no changes using `dotnet format --verify-no-changes`.
 
 # CI Pipeline
-CI pipeline will be automatically triggered on push and pull request. Please check the CI Pipeline actions in github to see if you branch passed.
+CI pipeline will be automatically triggered on push and pull request. Please check the CI Pipeline [Actions](https://github.com/techswitch-learners/WhaleSpottingMarch2025/actions) in GitHub to see if you branch passed.
 
 ## Linting/format rules
 This pipeline will fail if you don't follow the style rules:
