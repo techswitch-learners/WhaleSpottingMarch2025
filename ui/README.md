@@ -52,3 +52,13 @@ export default tseslint.config({
   },
 })
 ```
+## Importing style constants
+You can import styles using @use rule and access variables by writing <namespace>.<variable>:
+```
+@use '@/styles/constants';
+
+.custom-button {
+    @include constants.button-approve;
+    border-radius: calc(constants.$border-radius / 2);
+}
+```
