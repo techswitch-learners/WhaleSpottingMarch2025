@@ -1,45 +1,54 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-
-using System;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using WhaleSpottingBackend.Models.RequestModels;
+using WhaleSpottingBackend.Models.DatabaseModels;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
 {   
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly IConfiguration _configuration;
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
     public AccountController(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
-        IConfiguration configuration)
+        UserManager<User> userManager,
+        SignInManager<User> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _configuration = configuration;
     }
+
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegistrationModel model)
     {
-        var user = new IdentityUser
+        var user = new User
         {
-            UserName = model.Name,
+            Name = model.Name,
+            UserName = model.UserName,
             Email = model.Email,
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
-        {           
-            return Ok(new { message = "Registration successful" });
+        {         
+            await _userManager.AddToRoleAsync(user,"User");  
+            return Ok(new { message = "Registration successful." });
         }
         return BadRequest(result.Errors);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginModel model)
+    {
+        var user = await _userManager.FindByNameAsync(model.UserName);
+        if(user == null) {
+            return BadRequest("The username does not exist in our system.");
+        }
+        var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
+        if (result.Succeeded)
+        {           
+            return Ok(new { message = "Login successful." });
+        }
+        return BadRequest("Incorrect username and password.");
     }
  
     [HttpGet("Public")]
