@@ -29,6 +29,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+
 var app = builder.Build();
 // Create default roles and admin user if not created
  using (var scope = app.Services.CreateScope())
