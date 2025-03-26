@@ -30,7 +30,8 @@ public class AccountController : ControllerBase
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {         
-            await _userManager.AddToRoleAsync(user,"User");  
+            var createdUser = await _userManager.FindByNameAsync(user.UserName);  
+            await _userManager.AddToRoleAsync(createdUser,"User");  
             return Ok(new { message = "Registration successful." });
         }
         return BadRequest(result.Errors);
