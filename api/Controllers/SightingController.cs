@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using WhaleSpottingBackend.Database;
 namespace WhaleSpottingBackend.Controllers;
@@ -14,21 +15,20 @@ public class SightingController : ControllerBase
         
     // POST: api/createSighting
     [HttpPost("createSighting")]
-    public void CreateSighting([FromBody]CreateSightingRequest newSighting) {
+    public IActionResult CreateSighting([FromBody]CreateSightingRequest newSighting) {
         Console.WriteLine("Processing POST request from frontend");
-         Ok(newSighting);
+         return Ok("In Create sighting endpoint.");
     }
 }
-
-
 
 public class CreateSightingRequest{
     public string Species { get; set; }
     public string Description { get; set; }
     // public DateTime SightingDate { get; set; }
     // public DateTime ReportDate;
-    public int Quantity { get; set; } 
-    public double Latitude{get;set;}
-    public double Longitude{get;set;}
-    public string ImgSrc { get; set; }   
+    public string Quantity { get; set; } 
+    public string Latitude{get;set;}
+    public string Longitude{get;set;}
+    [JsonPropertyName("imgSrc")]
+    public string ImageSource { get; set; }   
 }
