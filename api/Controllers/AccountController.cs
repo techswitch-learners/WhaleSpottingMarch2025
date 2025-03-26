@@ -3,16 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using WhaleSpottingBackend.Models.RequestModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-
-using System;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using WhaleSpottingBackend.Models.RequestModels;
 
 [ApiController]
 [Route("api/[controller]")]
