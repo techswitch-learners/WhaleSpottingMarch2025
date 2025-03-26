@@ -18,7 +18,16 @@ builder.Services.AddTransient<ISightingRepository, SightingRepository>();
 builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.DocInclusionPredicate((docName, apiDesc) =>
+    {
+        var routeTemplate = apiDesc.RelativePath;
+        if (routeTemplate.Contains("api/"))
+            return true;
+        return false;
+    });
+});
 
 var app = builder.Build();
 // Create default roles and admin user if not created
@@ -31,13 +40,6 @@ var app = builder.Build();
         await InitialDBDataSetup.CreateDefaultAdminUser(userManager);
     }
 
-// Add roles on startup
-using (var scope = app.Services.CreateScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    await RoleHelper.EnsureRolesCreated(roleManager);
-}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -47,7 +49,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<User>();
 app.MapControllers();
 
 app.Run();
