@@ -4,12 +4,12 @@ public static class InitialDBDataSetup
 {
     public static async Task EnsureRolesCreated(RoleManager<IdentityRole> roleManager)
     {
-        string[] roles = { "Admin", "User"};
+        string[] roles = { "Admin", "User" };
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                await roleManager.CreateAsync(new IdentityRole(role));                
+                await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
     }
@@ -22,13 +22,14 @@ public static class InitialDBDataSetup
             UserName = "whale_spotting",
             Email = "whale_spotting@gmail.com"
         };
-        
+
         //var adminUser = await userManager.FindByNameAsync(user.UserName);
         var AdminUsers = await userManager.GetUsersInRoleAsync("Admin");
-        if(!AdminUsers.Any()) {
-            var result =  await userManager.CreateAsync(user, "Whale_spotting1");   
-            var adminUser = await userManager.FindByNameAsync(user.UserName);        
-            result = await userManager.AddToRoleAsync(adminUser,"Admin");        
-        }                 
+        if (!AdminUsers.Any())
+        {
+            var result = await userManager.CreateAsync(user, "Whale_spotting1");
+            var adminUser = await userManager.FindByNameAsync(user.UserName);
+            result = await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
     }
 }

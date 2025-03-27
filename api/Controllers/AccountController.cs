@@ -1,13 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using WhaleSpottingBackend.Models.RequestModels;
+using Microsoft.AspNetCore.Mvc;
 using WhaleSpottingBackend.Models.DatabaseModels;
+using WhaleSpottingBackend.Models.RequestModels;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
-{   
+{
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     public AccountController(
@@ -29,9 +29,9 @@ public class AccountController : ControllerBase
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
-        {         
-            var createdUser = await _userManager.FindByNameAsync(user.UserName);  
-            await _userManager.AddToRoleAsync(createdUser,"User");  
+        {
+            var createdUser = await _userManager.FindByNameAsync(user.UserName);
+            await _userManager.AddToRoleAsync(createdUser, "User");
             return Ok(new { message = "Registration successful." });
         }
         return BadRequest(result.Errors);
@@ -41,17 +41,18 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Login(LoginModel model)
     {
         var user = await _userManager.FindByNameAsync(model.UserName);
-        if(user == null) {
+        if (user == null)
+        {
             return BadRequest("The username does not exist in our system.");
         }
         var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
         if (result.Succeeded)
-        {           
+        {
             return Ok(new { message = "Login successful." });
         }
         return BadRequest("Incorrect username and password.");
     }
- 
+
     [HttpGet("Public")]
     public IActionResult All()
     {
@@ -66,7 +67,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet("Admin")]
-    [Authorize(Roles = "Admin")] 
+    [Authorize(Roles = "Admin")]
     public IActionResult AdminEndpoint()
     {
         return Ok("Accessible to admin only.");
