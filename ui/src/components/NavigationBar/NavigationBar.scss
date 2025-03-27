@@ -19,7 +19,6 @@
         transition: background-color 0.3s ease;
 
         &:hover {
-            // background: linear-gradient(to right, darken(constants.$background-navigation, 5%), darken(constants.$background-navigation, 10%));
             background: linear-gradient(to right, color.adjust(constants.$background-navigation, $lightness: -5%), color.adjust(constants.$background-navigation, $lightness: -10%));
             color: constants.$text-primary-navigation;
         }
@@ -32,4 +31,15 @@
             }
         }
     }
+
+    &__mobile-menu {
+        display: flex;
+        flex-direction: column;
+        background-color: color.adjust(constants.$background-navigation, $lightness: 50%)
+    
+    }
+}
+
+@media (max-width: 760px){
+    
 }
