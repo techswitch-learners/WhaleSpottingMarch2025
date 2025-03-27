@@ -18,18 +18,7 @@ builder.Services.AddTransient<ISightingRepository, SightingRepository>();
 builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.DocInclusionPredicate((docName, apiDesc) =>
-    {
-        var routeTemplate = apiDesc.RelativePath;
-        if (routeTemplate.Contains("api/"))
-            return true;
-        return false;
-    });
-});
-
-
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 // Create default roles and admin user if not created
@@ -51,7 +40,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.MapIdentityApi<User>();
+
 app.MapControllers();
 
 app.Run();
