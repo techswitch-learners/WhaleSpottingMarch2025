@@ -1,6 +1,23 @@
 using WhaleSpottingBackend.Database;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    //  options.AddDefaultPolicy(
+    //     policy =>
+    //     {
+    //         policy.WithOrigins("http://localhost:5173");
+    //     });
+    options.AddPolicy(MyAllowSpecificOrigins,
+                          policy =>
+                          {
+                              policy.WithOrigins("http://localhost:5173")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                          });
+});
 
 // Add services to the container.
 builder.Services.AddDbContext<WhaleSpottingDbContext>();
@@ -19,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

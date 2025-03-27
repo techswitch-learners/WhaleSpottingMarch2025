@@ -25,14 +25,21 @@ export const WhaleSightingForm = () => {
         event.preventDefault();
         console.log(formData);
         console.log(JSON.stringify(formData));
+        const headers = {'Content-Type':'application/json',
+            'Access-Control-Allow-Origin':'*',
+            'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'}
+            
         fetch("http://localhost:5067" + "/Sighting/createSighting", { //set up .env variable
             method: "POST",
-            mode: 'no-cors',
+            // mode: 'no-cors',
             body: JSON.stringify(formData),
-            headers: {
-                "Content-Type": "application/json",
-                Accept: 'application/json'
-            },
+            // headers: {
+            //     "Content-Type": "application/json",
+            //     'Access-Control-Allow-Origin':'*',
+            //     'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS',
+            //     Accept: 'application/json'
+            // },
+            headers:headers
 
         }).then((response) => {
             console.log("In 'then' block");
