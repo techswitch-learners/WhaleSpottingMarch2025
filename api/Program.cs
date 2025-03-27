@@ -22,14 +22,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 // Create default roles and admin user if not created
- using (var scope = app.Services.CreateScope())
-    {
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        await InitialDBDataSetup.EnsureRolesCreated(roleManager);
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await InitialDBDataSetup.EnsureRolesCreated(roleManager);
 
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        await InitialDBDataSetup.CreateDefaultAdminUser(userManager);
-    }
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    await InitialDBDataSetup.CreateDefaultAdminUser(userManager);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
