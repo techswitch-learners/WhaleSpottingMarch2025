@@ -23,12 +23,12 @@ You can check that this has worked by right clicking on 'Databases' in pgAdmin a
 # Running the code
 You can run the code using `dotnet run`.
 
-You can run the linter using `dotnet format`.
+You can run the linter using `dotnet format WhaleSpottingBackend.sln --verbosity diagnostic`.
 
-You can ensure it makes no changes using `dotnet format --verify-no-changes`.
+You can ensure it makes no changes using `dotnet format WhaleSpottingBackend.sln --verify-no-changes --verbosity diagnostic`.
 
 # CI Pipeline
-CI pipeline will be automatically triggered on push and pull request. Please check the CI Pipeline [Actions](https://github.com/techswitch-learners/WhaleSpottingMarch2025/actions) in GitHub to see if your commit passed.
+CI pipeline will be automatically triggered on push and pull request. Please check the CI Pipeline [Actions](https://github.com/techswitch-learners/WhaleSpottingMarch2025/actions) in GitHub to see if your commit passed. Diagnostic informaton will have more details on the where it failed.
 
 ## Linting/format rules
 This pipeline will fail if you don't follow the code style rules:
