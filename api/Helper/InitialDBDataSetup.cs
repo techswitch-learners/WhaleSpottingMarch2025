@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using WhaleSpottingBackend.Models.DatabaseModels;
-public static class RoleHelper
+public static class InitialDBDataSetup
 {
     public static async Task EnsureRolesCreated(RoleManager<IdentityRole> roleManager)
     {
@@ -9,7 +9,7 @@ public static class RoleHelper
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                await roleManager.CreateAsync(new IdentityRole(role));                
             }
         }
     }
@@ -22,11 +22,12 @@ public static class RoleHelper
             UserName = "whale_spotting",
             Email = "whale_spotting@gmail.com"
         };
-
-        var adminUser = await userManager.FindByNameAsync(user.UserName);
-        if(adminUser == null) {
+        
+        //var adminUser = await userManager.FindByNameAsync(user.UserName);
+        var AdminUsers = await userManager.GetUsersInRoleAsync("Admin");
+        if(!AdminUsers.Any()) {
             var result =  await userManager.CreateAsync(user, "Whale_spotting1");   
-            adminUser = await userManager.FindByNameAsync(user.UserName);        
+            var adminUser = await userManager.FindByNameAsync(user.UserName);        
             result = await userManager.AddToRoleAsync(adminUser,"Admin");        
         }                 
     }
