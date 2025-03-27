@@ -26,13 +26,23 @@ export const NavigationBar = () => {
     { name: "Log In", link: "/LogIn" },
   ];
 
-  const mainMenuLinks = isMobile ? [links[2], links[5]] : links;
-  const mobileMenuLinks = links.filter((_, index) => ![2, 5].includes(index));
+  const getMainMenuLinks = () => {
+    if (isMobile) {
+      if (isMenuOpen) {
+        return [];
+      } 
+
+      return [links[2], links[5]];
+    } 
+
+    return links;
+  }
 
   const renderMobileMenu = () => (
     <div className="navigation-bar__mobile-menu">
-      {mobileMenuLinks.map(link => (
-        <NavLink key={link.name} to={link.link}>
+      <button type="button" className="navigation-bar__close-btn" onClick={mobileMenuDisplay}>[X]</button>
+      {links.map(link => (
+        <NavLink key={link.name} to={link.link} onClick={mobileMenuDisplay} className="navigation-bar__mobile-menu-item">
           {link.name}
         </NavLink>
       ))}
@@ -41,18 +51,16 @@ export const NavigationBar = () => {
 
   const renderBurger = () => (
     <div className="navigation-bar__menu-button">
-      <button onClick={mobileMenuDisplay}>
-        ☰
-      </button>
+      <button type="button" onClick={mobileMenuDisplay}>☰</button>
     </div>
   );
 
   return (
     <div className="navigation-bar">
-      {isMenuOpen && renderMobileMenu()}
+      {isMobile && isMenuOpen && renderMobileMenu()}
       <div className="navigation-bar__content">
-        {isMobile && renderBurger()}
-        {mainMenuLinks.map((link) => (
+        {isMobile && !isMenuOpen && renderBurger()}
+        {getMainMenuLinks().map((link) => (
           <NavLink
             key={link.name}
             to={link.link}
