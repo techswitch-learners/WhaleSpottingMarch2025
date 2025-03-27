@@ -1,3 +1,4 @@
+@use "sass:color";
 @use '@/styles/constants';
 
 .navigation-bar {
@@ -18,15 +19,16 @@
         transition: background-color 0.3s ease;
 
         &:hover {
-            background: linear-gradient(to right, darken(constants.$background-navigation, 5%), darken(constants.$background-navigation, 10%));
+            // background: linear-gradient(to right, darken(constants.$background-navigation, 5%), darken(constants.$background-navigation, 10%));
+            background: linear-gradient(to right, color.adjust(constants.$background-navigation, $lightness: -5%), color.adjust(constants.$background-navigation, $lightness: -10%));
             color: constants.$text-primary-navigation;
         }
 
         &--active {
-            background: linear-gradient(to right, lighten(constants.$background-navigation, 20%), lighten(constants.$background-navigation, 15%));
+            background: linear-gradient(to right, color.adjust(constants.$background-navigation, $lightness: 20%), color.adjust(constants.$background-navigation, $lightness: 15%));
 
             &:hover {
-                background: linear-gradient(to right, lighten(constants.$background-navigation, 20%), lighten(constants.$background-navigation, 15%));
+                background: linear-gradient(to right, color.adjust(constants.$background-navigation, $lightness: 20%), color.adjust(constants.$background-navigation, $lightness: 15%));
             }
         }
     }
