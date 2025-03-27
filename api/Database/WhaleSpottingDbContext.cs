@@ -21,3 +21,4 @@ class WhaleSpottingDbContext : IdentityDbContext<User>
     public DbSet<Location> Location { get; set; }
     public DbSet<Species> Species { get; set; }
 }
+
