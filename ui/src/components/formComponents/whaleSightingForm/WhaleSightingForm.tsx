@@ -25,9 +25,13 @@ export const WhaleSightingForm = () => {
         event.preventDefault();
         console.log(formData);
         console.log(JSON.stringify(formData));
-        const headers = {'Content-Type':'application/json',
-            'Access-Control-Allow-Origin':'*',
-            'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'}
+        const headers =
+        {
+            "Content-Type":"application/json",
+            "Access-Control-Allow-Origin":"*"
+            // ,
+            // "Access-Control-Allow-Methods":"POST, PATCH, OPTIONS"
+        }
             
         fetch("http://localhost:5067" + "/Sighting/createSighting", { //set up .env variable
             method: "POST",
@@ -39,7 +43,7 @@ export const WhaleSightingForm = () => {
             //     'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS',
             //     Accept: 'application/json'
             // },
-            headers:headers
+            headers: headers
 
         }).then((response) => {
             console.log("In 'then' block");

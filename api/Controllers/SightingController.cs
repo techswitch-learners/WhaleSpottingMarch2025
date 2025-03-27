@@ -17,7 +17,7 @@ public class SightingController : ControllerBase
     // POST: api/createSighting
     [HttpPost("createSighting")]
     // [EnableCors("MyAllowSpecificOrigins")]
-    public IActionResult CreateSighting([FromBody]CreateSightingRequest newSighting) {
+    public IActionResult CreateSighting() {
         Console.WriteLine("Processing POST request from frontend");
          return Ok("In Create sighting endpoint.");
     }
