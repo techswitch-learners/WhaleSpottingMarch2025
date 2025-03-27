@@ -1,25 +1,39 @@
 import React, { useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { formatDate } from "react-calendar/dist/esm/shared/dateFormatter.js";
+
+
+
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 interface WhaleSighting {
     // Date:Calendar,
-    species: string; //must be passed as a number
+    species: number; //must be passed as a number
     description: string;
-    sightingDate: string; //date
-    quantity: string; // number
-    latitude: string; // number
-    longitude: string; //number
-    imgSrc: string; 
+    sightingDate: Value; //date
+    quantity: number; // number
+    latitude: number;
+    longitude: number; //number
+    imgSrc: string;
 }
 
 export const WhaleSightingForm = () => {
     const [formData, setFormData] = useState<WhaleSighting>({
-        species: "",
+        species: 0,
         description: "",
-        sightingDate: "",
-        quantity: "",
-        latitude: "",
-        longitude: "",
+        sightingDate: new Date(),
+        quantity: 0,
+        latitude: 0,
+        longitude: 0,
         imgSrc: "",
     });
+
+
+
+    const [dateValue, setDate] = useState<Value>(new Date());
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
@@ -27,33 +41,25 @@ export const WhaleSightingForm = () => {
         console.log(JSON.stringify(formData));
         const headers =
         {
-            "Content-Type":"application/json",
-            "Access-Control-Allow-Origin":"*"
-            // ,
-            // "Access-Control-Allow-Methods":"POST, PATCH, OPTIONS"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, PATCH, OPTIONS"
         }
-            
-        fetch("http://localhost:5067" + "/Sighting/createSighting", { //set up .env variable
-            method: "POST",
-            // mode: 'no-cors',
-            body: JSON.stringify(formData),
-            // headers: {
-            //     "Content-Type": "application/json",
-            //     'Access-Control-Allow-Origin':'*',
-            //     'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS',
-            //     Accept: 'application/json'
-            // },
-            headers: headers
 
-        }).then((response) => {
-            console.log("In 'then' block");
-            if (response.status == 200) {
-                console.log("POST REQUEST SUCCESS.");
-            }
-            else {
-                console.log("Response status: " + response.status);
-            }
-        });
+        fetch(import.meta.env.VITE_APP_API_HOST + "/Sighting/createSighting",
+            {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: headers
+
+            }).then((response) => {
+                if (response.status == 200) {
+                    console.log("POST REQUEST SUCCESS.");
+                }
+                else {
+                    console.log("Response status: " + response.status);
+                }
+            });
     };
 
     const handleChange = (
@@ -63,25 +69,40 @@ export const WhaleSightingForm = () => {
     ) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
-        console.log(
-            `${formData.species}, hello ${formData.description} ${formData.quantity} ${formData.latitude} ${formData.longitude} ${formData.imgSrc}`
-        );
     };
 
-    
+    // const renderCalendar = () => (
+    //     <div>
+    //       <Calendar
+    //         onChange={handleChangeCalendar}
+    //         value={selectedEarthDate}
+    //         minDate={getMinDate(manifestData?.photo_manifest?.landing_date)}
+    //         maxDate={getYesterday()}
+    //       />
+    //     </div>
+    //   );
+
+    const onCalendarChange = (dateValue: Value) => {
+        setDate(dateValue);
+        formData.sightingDate = dateValue
+    };
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <div>
+                    <label>Date: </label>
+                    <Calendar onChange={onCalendarChange} value={dateValue} maxDate={new Date()}></Calendar>
+                    <p> Selected Date: {formData.sightingDate?.toString()}</p>
                     <label htmlFor="description">Description:</label>
                     <input
                         id="description"
                         name="description"
-                        placeholder="Description"
+                        placeholder="Describe what you saw!"
                         type="text"
                         value={formData.description}
                         onChange={handleChange}
-                    ></input>
+                        required
+                    ></input> 
                 </div>
                 <label htmlFor="species">
                     Species:
@@ -91,8 +112,16 @@ export const WhaleSightingForm = () => {
                         onChange={handleChange}
                     >
                         <option value="Hello">Please select a species</option>
-                        <option value="Beluga Whale">Beluga Whale</option>
-                        <option value="Humpback Whale">Humpback Whale</option>
+                        <option value="1">Blue Whale</option>
+                        <option value="2">Humpback Whale</option>
+                        <option value="3">Sperm Whale</option>
+                        <option value="4">Orca</option>
+                        <option value="5">Fin Whale</option>
+                        <option value="6">Minke Whale</option>
+                        <option value="7">Beluga Whale</option>
+                        <option value="8">Gray Whale</option>
+                        <option value="9">Right Whale</option>
+                        <option value="10">Bowhead Whale</option>
                     </select>
                     <p>Selected option: {formData.species}</p>
                 </label>
@@ -105,6 +134,7 @@ export const WhaleSightingForm = () => {
                         min={1}
                         value={formData.quantity}
                         onChange={handleChange}
+                        required
                     ></input>
                 </div>
                 <div>
@@ -112,11 +142,12 @@ export const WhaleSightingForm = () => {
                     <input
                         id="latitude"
                         name="latitude"
-                        type="text"
+                        type="number"
                         value={formData.latitude}
                         minLength={10}
                         maxLength={10}
                         onChange={handleChange}
+                        required
                     ></input>
                 </div>
                 <div>
@@ -124,11 +155,12 @@ export const WhaleSightingForm = () => {
                     <input
                         id="longitude"
                         name="longitude"
-                        type="text"
+                        type="number"
                         value={formData.longitude}
                         minLength={10}
                         maxLength={10}
                         onChange={handleChange}
+                        required
                     ></input>
                 </div>
                 <div>
@@ -139,6 +171,7 @@ export const WhaleSightingForm = () => {
                         type="url"
                         value={formData.imgSrc}
                         onChange={handleChange}
+                        required
                     ></input>
                 </div>
                 <button type="submit">Submit</button>
@@ -146,5 +179,3 @@ export const WhaleSightingForm = () => {
         </div>
     );
 };
-
-
