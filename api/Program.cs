@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Net.Http.Headers;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.DatabaseModels;
 using WhaleSpottingBackend.Repositories;
@@ -8,18 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    //  options.AddDefaultPolicy(
-    //     policy =>
-    //     {
-    //         policy.WithOrigins("http://localhost:5173");
-    //     });
-    options.AddPolicy(MyAllowSpecificOrigins,
-                          policy =>
-                          {
-                              policy.WithOrigins("http://localhost:5173")
-                                                  .AllowAnyHeader()
-                                                  .AllowAnyMethod();
-                          });
+     options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5174")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+        });
+    // options.AddPolicy(MyAllowSpecificOrigins,
+    //                       policy =>
+    //                       {
+    //                           policy.WithOrigins("http://localhost:5174")
+    //                                             //   .AllowAnyHeader()
+    //                                             .AllowAnyMethod()
+    //                                             .WithHeaders(HeaderNames.ContentType, "application/json");
+    //                       });
 });
 
 // Add services to the container.
