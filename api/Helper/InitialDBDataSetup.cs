@@ -23,7 +23,6 @@ public static class InitialDBDataSetup
             Email = "whale_spotting@gmail.com"
         };
 
-        //var adminUser = await userManager.FindByNameAsync(user.UserName);
         var AdminUsers = await userManager.GetUsersInRoleAsync("Admin");
         if (!AdminUsers.Any())
         {
