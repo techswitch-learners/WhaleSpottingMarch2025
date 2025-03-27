@@ -4,26 +4,21 @@ using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.DatabaseModels;
 using WhaleSpottingBackend.Repositories;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-     options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5174")
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-        });
-    // options.AddPolicy(MyAllowSpecificOrigins,
-    //                       policy =>
-    //                       {
-    //                           policy.WithOrigins("http://localhost:5174")
-    //                                             //   .AllowAnyHeader()
-    //                                             .AllowAnyMethod()
-    //                                             .WithHeaders(HeaderNames.ContentType, "application/json");
-    //                       });
+    if (builder.Environment.IsDevelopment())
+    {
+        options.AddDefaultPolicy(
+           policy =>
+           {
+               //    policy.WithOrigins("http://localhost:5174")
+                policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+           });
+    }
 });
 
 // Add services to the container.
