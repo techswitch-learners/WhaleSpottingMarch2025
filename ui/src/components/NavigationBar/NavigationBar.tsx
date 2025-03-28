@@ -1,13 +1,16 @@
 import { NavLink } from "react-router";
 import "./NavigationBar.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MEDIUM_DEVICE_SIZE = 760;
 
 export const NavigationBar = () => {
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
   const [isMobile, setIsMobile] = useState(
     window.innerWidth <= MEDIUM_DEVICE_SIZE,
   );
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -18,6 +21,23 @@ export const NavigationBar = () => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
 
   const handleMobileMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -46,7 +66,7 @@ export const NavigationBar = () => {
   );
 
   const renderMobileMenu = () => (
-    <div className="navigation-bar__mobile-menu">
+    <div className="navigation-bar__mobile-menu" ref={mobileMenuRef}>
       {renderCloseButton()}
       {links.map((link) => (
         <NavLink
