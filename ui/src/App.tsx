@@ -1,6 +1,5 @@
 import { Routes } from 'react-router'
 import './App.scss'
-import CustomButton from './components/formComponents/customButton/CustomButton'
 import { WhaleSightingForm } from './components/formComponents/whaleSightingForm/WhaleSightingForm'
 import { Route } from 'react-router'
 import { NavigationBar } from './components/NavigationBar/NavigationBar'
