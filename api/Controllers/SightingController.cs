@@ -30,6 +30,18 @@ public class SightingController : ControllerBase
         return new SightingResponseModel(sighting);
     }
 
+    // GET: api/Sightings
+    [HttpGet("")]
+    public ActionResult<IEnumerable<Sighting>> GetAllSightings()
+    {
+        var sightings = _sightingRepository.GetAllSightings();
+        if (sightings == null)
+        {
+            return NotFound();
+        }
+        return sightings.ToList();
+    }
+
     // POST: api/createSighting
     [HttpPost("createSighting")]
     public IActionResult CreateSighting([FromBody] CreateSightingRequest sightingRequest)
