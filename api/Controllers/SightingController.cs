@@ -29,13 +29,13 @@ public class SightingController : ControllerBase
         return new SightingResponseModel(sighting);
     }
 
-    // POST: api/Sighting
-  /*  [HttpPost("postsighting")]
-    public IActionResult PostSighting(SightingRequestModel newSighting){
-        var sighting = _sightingRepository.CreateSighting(newSighting);
-        var responseViewModel = new UserResponse(user);
-        return Created()
-    }*/
+    // POST: api/createSighting
+    [HttpPost("createsighting")]
+    public void CreateSighting(CreateSightingRequest newSighting){
+         _sightingRepository.PostSighting(newSighting);
+        //var responseViewModel = new UserResponse(user);
+        //return Created()
+    }
 
 
      
