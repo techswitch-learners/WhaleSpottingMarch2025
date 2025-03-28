@@ -50,7 +50,7 @@ public class SightingController : ControllerBase
             Location = newLocation,
             ImageSource = sightingRequest.ImageSource
         };
-        var sighting = _sightingRepository.PostSighting(newSighting);
+        var sighting = _sightingRepository.CreateSighting(newSighting);
         var url = Url.Action("GetSightingByID", new { id = sighting.Id });
         var sightingResponse = new SightingResponseModel(sighting);
         return Created(url, sightingResponse);

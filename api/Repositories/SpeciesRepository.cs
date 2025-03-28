@@ -1,6 +1,13 @@
+using System.Collections.Generic;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.DatabaseModels;
 namespace WhaleSpottingBackend.Repositories;
+
+public interface ISpeciesRepository
+{
+    Species GetSpeciesByID(int speciesId);
+    IEnumerable<Species> GetAllSpecies();
+}
 
 public class SpeciesRepository : ISpeciesRepository
 {
@@ -14,4 +21,9 @@ public class SpeciesRepository : ISpeciesRepository
     {
         return _context.Species.Where(species => species.Id == id).FirstOrDefault();
     }
+    public IEnumerable<Species> GetAllSpecies()
+    {
+        return _context.Species;
+    }
 }
+

@@ -3,6 +3,12 @@ using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.DatabaseModels;
 namespace WhaleSpottingBackend.Repositories;
 
+public interface ISightingRepository
+{
+    Sighting GetSightingByID(int sightingId);
+    Sighting CreateSighting(Sighting sighting);
+}
+
 public class SightingRepository : ISightingRepository
 {
     private readonly WhaleSpottingDbContext _context;
@@ -19,7 +25,7 @@ public class SightingRepository : ISightingRepository
             .FirstOrDefault();
     }
 
-    public Sighting PostSighting(Sighting sighting)
+    public Sighting CreateSighting(Sighting sighting)
     {
         var insertResult = _context.Sighting.Add(sighting);
         _context.SaveChanges();
