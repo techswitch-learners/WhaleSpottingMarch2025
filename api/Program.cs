@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using WhaleSpottingBackend.Database;
-using WhaleSpottingBackend.Repositories;
 using WhaleSpottingBackend.Models.DatabaseModels;
-
+using WhaleSpottingBackend.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
