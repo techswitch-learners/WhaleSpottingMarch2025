@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { formatDate } from "react-calendar/dist/esm/shared/dateFormatter.js";
-
-
+import "./WhaleSightingForm.scss";
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 interface WhaleSighting {
-    // Date:Calendar,
-    species: number; //must be passed as a number
+    species: number; 
     description: string;
-    sightingDate: Value; //date
-    quantity: number; // number
+    sightingDate: Value; 
+    quantity: number; 
     latitude: number;
-    longitude: number; //number
+    longitude: number; 
     imgSrc: string;
 }
 
@@ -72,46 +69,46 @@ export const WhaleSightingForm = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    // const renderCalendar = () => (
-    //     <div>
-    //       <Calendar
-    //         onChange={handleChangeCalendar}
-    //         value={selectedEarthDate}
-    //         minDate={getMinDate(manifestData?.photo_manifest?.landing_date)}
-    //         maxDate={getYesterday()}
-    //       />
-    //     </div>
-    //   );
-
     const onCalendarChange = (dateValue: Value) => {
         setDate(dateValue);
         formData.sightingDate = dateValue
     };
     return (
-        <div>
+        <div className="createSightingForm">
             <h2>Whale Sighting Form</h2>
-            <p>Tell us about the whale that you saw. </p>
+            <p>Tell us about the whale that you saw.</p>
+            <p>* (asterisk) denotes a required field.</p>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Date: </label>
-                    <Calendar onChange={onCalendarChange} value={dateValue} maxDate={new Date()}></Calendar>
-                    <p> Selected Date: {formData.sightingDate?.toString()}</p>
-                    <label htmlFor="description">Description:</label>
+                <div className="field">
+                    <div className="calendar">
+                        <label>Date: 
+                            <span className="requiredField">*</span>
+                        </label>
+                        <Calendar onChange={onCalendarChange} value={dateValue} maxDate={new Date()}></Calendar>
+                    </div>
+                </div>
+                <div className="field">
+                    <label htmlFor="description">Description:
+                        <span className="requiredField">*</span>
+                    </label>
                     <textarea
                         id="description"
                         name="description"
                         placeholder="Describe what you saw!"
                         rows={5}
-                        cols={30}
-                        value={formData.description}                       
+                        value={formData.description}
                         onChange={handleChange}
                         maxLength={255}
                         required
-                    ></textarea> 
+                    ></textarea>
                 </div>
-                <label htmlFor="species">
-                    Species:
+                <div className="field">
+                    <label htmlFor="species">
+                        Species:
+                        <span className="requiredField">*</span>
+                    </label>
                     <select
+                        className="inputStyle"
                         name="species"
                         value={formData.species}
                         onChange={handleChange}
@@ -130,26 +127,33 @@ export const WhaleSightingForm = () => {
                         <option value="10">Bowhead Whale</option>
                         <option value="11">Unknown</option>
                     </select>
-                    <p>Selected option: {formData.species}</p>
-                </label>
-                <div>
-                    <label htmlFor="quantity">Quantity:</label>
+                </div>
+                <div className="field">
+                    <label htmlFor="quantity">Quantity:
+                        <span className="requiredField">*</span>
+                    </label>
                     <input
                         id="quantity"
                         name="quantity"
                         type="number"
+                        className="inputStyle"
                         min={1}
+                        placeholder="Number of whales sighted"
                         value={formData.quantity}
                         onChange={handleChange}
                         required
                     ></input>
                 </div>
-                <div>
-                    <label htmlFor="latitude">Latitude: </label>
+                <div className="field">
+                    <label htmlFor="latitude">Latitude: 
+                        <span className="requiredField">*</span>
+                    </label>
                     <input
                         id="latitude"
                         name="latitude"
                         type="number"
+                        className="inputStyle"
+                        placeholder="e.g. 40.741895"
                         value={formData.latitude}
                         minLength={10}
                         maxLength={10}
@@ -157,12 +161,17 @@ export const WhaleSightingForm = () => {
                         required
                     ></input>
                 </div>
-                <div>
-                    <label htmlFor="longitude">Longitude:</label>
+                <div className="field">
+                    <label htmlFor="longitude">Longitude:
+                        <span className="requiredField">*</span>
+                    </label>
+                    
                     <input
                         id="longitude"
                         name="longitude"
                         type="number"
+                        className="inputStyle"
+                        placeholder="e.g. -73.989308"
                         value={formData.longitude}
                         minLength={10}
                         maxLength={10}
@@ -170,15 +179,16 @@ export const WhaleSightingForm = () => {
                         required
                     ></input>
                 </div>
-                <div>
+                <div className="field">
                     <label htmlFor="image">Image:</label>
                     <input
+                        className="inputStyle"
                         id="image"
                         name="imgSrc"
                         type="url"
+                        placeholder="Url to your image"
                         value={formData.imgSrc}
                         onChange={handleChange}
-                        required
                     ></input>
                 </div>
                 <button type="submit">Submit</button>

@@ -1,0 +1,100 @@
+@import "../../../styles/constants.scss";
+
+/* Mobile */
+@media only screen and (min-width: 320px) {
+    .createSightingForm {
+        max-width: 100%;
+    }
+    
+}
+/*tablet*/
+@media only screen and (min-width: 768px) {
+    .createSightingForm {
+        min-width: 600px;
+        max-width: 100%;
+    }    
+}
+
+/* Desktops */
+@media only screen and (min-width: 1024px) {
+    .createSightingForm {
+        min-width: 700px;
+        max-width: 90%;
+    }
+    // form {
+    //     width: 100%
+    // }
+}
+
+.createSightingForm {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: $text-secondary-main;
+}
+
+form {
+    width: 100%;
+}
+
+.calendar {
+    display: block;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 300px;
+}
+.react-calendar, .react-calendar__navigation, 
+.react-calendar__navigation__arrow, .react-calendar__navigation__next-button, 
+.react-calendar__tile, .react-calendar__month-view__days__day, .react-calendar__viewContainer, .react-calendar__navigation__label
+{    background-color: #f0f0f0;
+    color: black; 
+}
+
+textarea {
+    width: 90%;
+    padding: $padding-small;
+    border: 1px grey solid;
+    border-radius: 8px;
+}
+
+.requiredField{
+    color: $background-color-deny;
+}
+
+button
+{    
+    @include button($text-secondary-main);
+    color: white;
+    border-radius: 4px;
+
+}
+
+
+label {
+    flex-shrink: 0;
+    display: inline-block;
+    margin: 10px;
+    width: 90px;
+}
+
+.field {
+    margin: 0.5em;
+    padding: 0.5em; 
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    justify-content: center;
+}
+
+.inputStyle {
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    width: 100%;
+    border: 1px grey solid;
+    border-radius: 8px;
+    justify-content: left;
+}
