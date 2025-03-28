@@ -2,17 +2,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WhaleSpottingBackend.Models.DatabaseModels;
 
-public class LocationModel
+public class Location
 {
     public int Id { get; set; }
     [Column("Latitude")]
-
     public double Latitude { get; set; }
     [Column("Longitude")]
     public double Longitude { get; set; }
-
-    public LocationModel(){}
-    public LocationModel(int id, double latitude, double longitude)
+    public Location(){}
+    public Location(int id, double latitude, double longitude)
     {
         Id = id;
         Latitude = latitude;

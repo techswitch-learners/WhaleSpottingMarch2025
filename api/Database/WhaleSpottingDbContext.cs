@@ -5,9 +5,8 @@ using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
 
-class WhaleSpottingDbContext : DbContext
+public class WhaleSpottingDbContext : DbContext
 {
-    public DbSet<ExampleModel> ExampleModel { get; set; }
     private readonly IConfiguration _configuration;
     public WhaleSpottingDbContext(IConfiguration configuration)
     {
@@ -17,4 +16,6 @@ class WhaleSpottingDbContext : DbContext
     {
         optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:WhaleSpottingDb"]);
     }
+    public DbSet<Sighting> Sighting { get; set; }
+    public DbSet<Location> Location { get; set; }
 }
