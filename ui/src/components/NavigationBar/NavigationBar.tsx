@@ -1,20 +1,116 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
+import "./NavigationBar.scss";
+import { useEffect, useRef, useState } from "react";
+
+const MEDIUM_DEVICE_SIZE = 760;
 
 export const NavigationBar = () => {
-  const Links = [
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth <= MEDIUM_DEVICE_SIZE,
+  );
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= MEDIUM_DEVICE_SIZE);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
+
+  const handleMobileMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const links = [
     { name: "Home", link: "/" },
-    { name: "Report Sighting", link: "/ReportSighting" },
     { name: "View Sightings", link: "/ViewSightings" },
+    { name: "Report Sighting", link: "/ReportSighting" },
+    { name: "View Locations", link: "/ViewLocations" },
     { name: "Admin", link: "/Admin" },
+    { name: "Log In", link: "/LogIn" },
   ];
 
-  return (
-    <div>
-      {Links.map((link) => (
-        <Link key={link.name} to={link.link}>
+  const getMainMenuLinks = () =>
+    isMobile ? (isMenuOpen ? [] : [links[2], links[5]]) : links;
+
+  const renderCloseButton = () => (
+    <button
+      type="button"
+      className="navigation-bar__close-btn"
+      onClick={handleMobileMenu}
+    >
+      &#x2715;
+    </button>
+  );
+
+  const renderMobileMenu = () => (
+    <div className="navigation-bar__mobile-menu" ref={mobileMenuRef}>
+      {renderCloseButton()}
+      {links.map((link) => (
+        <NavLink
+          key={link.name}
+          to={link.link}
+          onClick={handleMobileMenu}
+          className="navigation-bar__mobile-menu-item"
+        >
           {link.name}
-        </Link>
+        </NavLink>
       ))}
+    </div>
+  );
+
+  const renderBurger = () => (
+    <div className="navigation-bar__menu-button">
+      <button type="button" onClick={handleMobileMenu}>
+        ☰
+      </button>
+    </div>
+  );
+
+  const renderMainMenu = () =>
+    getMainMenuLinks().map((link) => (
+      <NavLink
+        key={link.name}
+        to={link.link}
+        className={({ isActive }) =>
+          `navigation-bar__item ${
+            isActive ? "navigation-bar__item--active" : ""
+          }`
+        }
+      >
+        {link.name}
+      </NavLink>
+    ));
+
+  return (
+    <div className="navigation-bar">
+      {isMobile && isMenuOpen && renderMobileMenu()}
+      <div className="navigation-bar__content">
+        {isMobile && !isMenuOpen && renderBurger()}
+        {renderMainMenu()}
+      </div>
     </div>
   );
 };
