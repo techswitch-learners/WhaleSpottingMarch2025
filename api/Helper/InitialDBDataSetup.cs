@@ -28,7 +28,9 @@ public static class InitialDBDataSetup
         {
             var result = await userManager.CreateAsync(user, "Whale_spotting1");
             var adminUser = await userManager.FindByNameAsync(user.UserName);
-            result = await userManager.AddToRoleAsync(adminUser, "Admin");
+            if(adminUser != null) {
+                result = await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
         }
     }
 }
