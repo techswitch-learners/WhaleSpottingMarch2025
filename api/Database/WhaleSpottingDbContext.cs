@@ -18,4 +18,5 @@ public class WhaleSpottingDbContext : DbContext
     }
     public DbSet<Sighting> Sighting { get; set; }
     public DbSet<Location> Location { get; set; }
+    public DbSet<Species> Species { get; set; }
 }

@@ -13,6 +13,7 @@ public class SightingResponseModel{
     public string ImageSource { get;set; }
     public SightingResponseModel(Sighting sighting) {
        Id = sighting.Id;
+       Species = sighting.Species.Id;
        Description = sighting.Description;
        SightingDate = sighting.SightingDate;
        ReportDate = sighting.ReportDate;

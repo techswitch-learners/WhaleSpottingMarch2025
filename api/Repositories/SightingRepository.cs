@@ -13,14 +13,17 @@ public class SightingRepository : ISightingRepository
      
         public Sighting GetSightingByID(int id)
         {
-           return _context.Sighting.Where(sighting => sighting.Id == id).Include(sighting =>sighting.Location).FirstOrDefault();
+           return _context.Sighting.Where(sighting => sighting.Id == id).Include(sighting =>sighting.Location).Include(sighting =>sighting.Species).FirstOrDefault();
         }
 
         public void PostSighting(Sighting sighting)
         {
-
             //var insertLocation = _context.Location.Add(location);
             var insertSighting = _context.Sighting.Add(sighting);
             _context.SaveChanges();
         }
+         public Species GetSpeciesByID(int id)
+         {
+            return _context.Species.Where(species => species.Id == id).FirstOrDefault();
+         }
 }
