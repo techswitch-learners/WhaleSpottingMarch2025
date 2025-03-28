@@ -28,8 +28,6 @@ export const WhaleSightingForm = () => {
         imgSrc: "",
     });
 
-
-
     const [dateValue, setDate] = useState<Value>(new Date());
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {

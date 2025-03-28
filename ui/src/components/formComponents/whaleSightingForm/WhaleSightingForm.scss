@@ -21,9 +21,6 @@
         min-width: 700px;
         max-width: 90%;
     }
-    // form {
-    //     width: 100%
-    // }
 }
 
 .createSightingForm {
@@ -46,11 +43,25 @@ form {
     width: 100%;
     max-width: 300px;
 }
-.react-calendar, .react-calendar__navigation, 
-.react-calendar__navigation__arrow, .react-calendar__navigation__next-button, 
-.react-calendar__tile, .react-calendar__month-view__days__day, .react-calendar__viewContainer, .react-calendar__navigation__label
-{    background-color: #f0f0f0;
+.react-calendar,
+.react-calendar__navigation, 
+.react-calendar__navigation__arrow,
+.react-calendar__navigation__next-button, 
+.react-calendar__viewContainer,
+.react-calendar__navigation__label {    
+    background-color: #f0f0f0;
     color: black; 
+}
+
+.react-calendar__tile, 
+.react-calendar__month-view__days__day
+ {
+    color: black;
+ }
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+   background: #1087ff;
 }
 
 textarea {
@@ -60,18 +71,16 @@ textarea {
     border-radius: 8px;
 }
 
-.requiredField{
+.requiredField {
     color: $background-color-deny;
 }
 
-button
-{    
+button {    
     @include button($text-secondary-main);
     color: white;
     border-radius: 4px;
 
 }
-
 
 label {
     flex-shrink: 0;
