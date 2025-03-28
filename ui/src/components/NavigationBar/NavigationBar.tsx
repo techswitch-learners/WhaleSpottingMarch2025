@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 const MEDIUM_DEVICE_SIZE = 760;
 
 export const NavigationBar = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= MEDIUM_DEVICE_SIZE);
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth <= MEDIUM_DEVICE_SIZE,
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export const NavigationBar = () => {
     </div>
   );
 
-  const renderMainMenu = () => (
+  const renderMainMenu = () =>
     getMainMenuLinks().map((link) => (
       <NavLink
         key={link.name}
@@ -80,8 +82,7 @@ export const NavigationBar = () => {
       >
         {link.name}
       </NavLink>
-    ))
-  );
+    ));
 
   return (
     <div className="navigation-bar">
