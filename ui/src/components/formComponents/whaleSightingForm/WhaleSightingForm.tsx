@@ -66,6 +66,7 @@ export const WhaleSightingForm = () => {
         event:
             | React.ChangeEvent<HTMLInputElement>
             | React.ChangeEvent<HTMLSelectElement>
+            | React.ChangeEvent<HTMLTextAreaElement>
     ) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
@@ -88,21 +89,25 @@ export const WhaleSightingForm = () => {
     };
     return (
         <div>
+            <h2>Whale Sighting Form</h2>
+            <p>Tell us about the whale that you saw. </p>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Date: </label>
                     <Calendar onChange={onCalendarChange} value={dateValue} maxDate={new Date()}></Calendar>
                     <p> Selected Date: {formData.sightingDate?.toString()}</p>
                     <label htmlFor="description">Description:</label>
-                    <input
+                    <textarea
                         id="description"
                         name="description"
                         placeholder="Describe what you saw!"
-                        type="text"
-                        value={formData.description}
+                        rows={5}
+                        cols={30}
+                        value={formData.description}                       
                         onChange={handleChange}
+                        maxLength={255}
                         required
-                    ></input> 
+                    ></textarea> 
                 </div>
                 <label htmlFor="species">
                     Species:
@@ -110,8 +115,9 @@ export const WhaleSightingForm = () => {
                         name="species"
                         value={formData.species}
                         onChange={handleChange}
+                        required
                     >
-                        <option value="Hello">Please select a species</option>
+                        <option value="">Please select a species</option>
                         <option value="1">Blue Whale</option>
                         <option value="2">Humpback Whale</option>
                         <option value="3">Sperm Whale</option>
@@ -122,6 +128,7 @@ export const WhaleSightingForm = () => {
                         <option value="8">Gray Whale</option>
                         <option value="9">Right Whale</option>
                         <option value="10">Bowhead Whale</option>
+                        <option value="11">Unknown</option>
                     </select>
                     <p>Selected option: {formData.species}</p>
                 </label>

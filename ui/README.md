@@ -1,5 +1,14 @@
-# React + TypeScript + Vite
+# Whalespotting Frontend README
+## Set up .env
+Create a `.env` file at the root of the UI directory. Do not commit this.
 
+Add the following line to the file:
+```
+VITE_APP_API_HOST=http://localhost:YOUR_BACKEND_PORT_NUMBER
+```
+The front end should now be able to make requests to your backend port number.
+
+# React + TypeScript + Vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
