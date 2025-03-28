@@ -31,11 +31,13 @@ public class AccountController : ControllerBase
         if (result.Succeeded)
         {
             var createdUser = await _userManager.FindByNameAsync(user.UserName);
-            if(createdUser!=null)
-            { 
+            if (createdUser != null)
+            {
                 await _userManager.AddToRoleAsync(createdUser, "User");
                 return Ok(new { message = "Registration successful." });
-            } else {
+            }
+            else
+            {
                 return Ok(new { message = "Registration successful. User not assigned a role." });
             }
         }
@@ -49,13 +51,13 @@ public class AccountController : ControllerBase
         if (user == null)
         {
             return Unauthorized("The username does not exist in our system.");
-        } 
+        }
         var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
         if (result.Succeeded)
         {
             return Ok(new { message = "Login successful." });
         }
-        return Unauthorized("Incorrect username and password.");        
+        return Unauthorized("Incorrect username and password.");
     }
 
     [HttpGet("Public")]
