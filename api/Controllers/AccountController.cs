@@ -29,13 +29,14 @@ public class AccountController : ControllerBase
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
-        {            
+        {
             var createdUser = await _userManager.FindByNameAsync(user.UserName);
-            if(createdUser == null) {               
+            if (createdUser == null)
+            {
                 return BadRequest("Some error occurred while creating user. Created user not found.");
             }
             await _userManager.AddToRoleAsync(createdUser, "User");
-            return Ok(new { message = "Registration successful." });         
+            return Ok(new { message = "Registration successful." });
         }
         return BadRequest(result.Errors);
     }
