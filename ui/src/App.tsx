@@ -12,9 +12,6 @@ import { LogIn } from "./components/pages/LogIn/LogIn";
 function App() {
   return (
     <>
-      <div>
-        <WhaleSightingForm></WhaleSightingForm>
-      </div>
       <NavigationBar />
       <div className="content">
         <Routes>
