@@ -5,5 +5,5 @@ namespace WhaleSpottingBackend.Repositories;
 public interface ISightingRepository 
 {
     Sighting GetSightingByID(int sightingId);
-    void PostSighting(CreateSightingRequest sighting);
+    void PostSighting(Sighting sighting);//changes in postsighting
 }
