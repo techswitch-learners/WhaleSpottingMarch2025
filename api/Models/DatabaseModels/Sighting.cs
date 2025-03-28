@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace WhaleSpottingBackend.Models.DatabaseModels;
 
-public class Sighting {
-    public int Id{get;set;}    
+public class Sighting
+{
+    public int Id { get; set; }
     [Column("Species")]
-    public Species Species{get;set;}
+    public Species Species { get; set; }
     [Column("Description")]
     public string Description { get; set; }
     [Column("SightingDate")]
@@ -12,12 +13,12 @@ public class Sighting {
     [Column("ReportDate")]
     public DateTime ReportDate { get; set; }
     [Column("Quantity")]
-    public int Quantity { get; set; } 
+    public int Quantity { get; set; }
     [Column("LocationId")]
     public Location Location { get; set; }
     [Column("ImageSource")]
     public string ImageSource { get; set; }
-    public Sighting(){}
+    public Sighting() { }
     public Sighting(int id, Species species, string description, DateTime sightingDate, DateTime reportDate, int quantity, Location location, string imageSource)
     {
         Id = id;

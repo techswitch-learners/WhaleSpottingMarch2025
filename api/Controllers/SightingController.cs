@@ -10,17 +10,21 @@ public class SightingController : ControllerBase
 {
     private readonly ILogger<SightingController> _logger;
     private readonly ISightingRepository _sightingRepository;
-    public SightingController(ISightingRepository sightingRepository,ILogger<SightingController> logger)
+    private readonly ISpeciesRepository _speciesRepository;
+    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILogger<SightingController> logger)
     {
         _sightingRepository = sightingRepository;
+        _speciesRepository = speciesRepository;
         _logger = logger;
     }
-    
+
     // GET: api/Sighting/1
     [HttpGet("{id}")]
-    public ActionResult<SightingResponseModel> GetSighting(int id){
+    public ActionResult<SightingResponseModel> GetSightingByID([FromRoute] int id)
+    {
         var sighting = _sightingRepository.GetSightingByID(id);
-        if (sighting == null){
+        if (sighting == null)
+        {
             return NotFound();
         }
         return new SightingResponseModel(sighting);
@@ -28,30 +32,27 @@ public class SightingController : ControllerBase
 
     // POST: api/createSighting
     [HttpPost("createSighting")]
-    public void CreateSighting(CreateSightingRequest newSighting){
-            Location insertLocation = new Location() {Latitude = newSighting.Latitude, Longitude = newSighting.Longitude};
-            Species species = _sightingRepository.GetSpeciesByID(newSighting.Species);
-           
-            Sighting insertsighting = new Sighting
-            {
-                Species = species,
-                Description = newSighting.Description, 
-                SightingDate = newSighting.SightingDate,
-                ReportDate = newSighting.ReportDate,
-                Quantity = newSighting.Quantity,
-                Location = insertLocation,
-                ImageSource = newSighting.ImageSource
-            };
-
-         _sightingRepository.PostSighting(insertsighting); //chnges in postsighting
-    }
-
-
-    /*public Location createNewLocation(CreateSightingRequest newSighting){
-        return new Location {
-                Latitude =newSighting.Latitude, 
-                Longitude =newSighting.Longitude
+    public IActionResult CreateSighting([FromBody] CreateSightingRequest sightingRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        Location newLocation = new Location() { Latitude = sightingRequest.Latitude, Longitude = sightingRequest.Longitude };
+        Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
+        Sighting newSighting = new Sighting
+        {
+            Species = species,
+            Description = sightingRequest.Description,
+            SightingDate = sightingRequest.SightingDate,
+            ReportDate = sightingRequest.ReportDate,
+            Quantity = sightingRequest.Quantity,
+            Location = newLocation,
+            ImageSource = sightingRequest.ImageSource
         };
-
-    }*/
+        var sighting = _sightingRepository.PostSighting(newSighting);
+        var url = Url.Action("GetSightingByID", new { id = sighting.Id });
+        var sightingResponse = new SightingResponseModel(sighting);
+        return Created(url, sightingResponse);
+    }
 }

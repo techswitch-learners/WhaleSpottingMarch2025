@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<WhaleSpottingDbContext>();
 builder.Services.AddControllers();
 builder.Services.AddTransient<ISightingRepository, SightingRepository>();
+builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
