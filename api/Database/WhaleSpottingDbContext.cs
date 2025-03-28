@@ -6,7 +6,7 @@ using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
 
-class WhaleSpottingDbContext : IdentityDbContext<User>
+public class WhaleSpottingDbContext : IdentityDbContext<User>
 {
     private readonly IConfiguration _configuration;
     public WhaleSpottingDbContext(IConfiguration configuration)
