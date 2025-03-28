@@ -20,6 +20,9 @@ $ dotnet ef database update
 
 You can check that this has worked by right clicking on 'Databases' in pgAdmin and then clicking 'refresh'.
 
+## Default Admin User
+Currently, one default admin user is set up with username = whale_spotting and password  “Whale_spotting1”. 
+
 # Running the code
 You can run the code using `dotnet run`.
 

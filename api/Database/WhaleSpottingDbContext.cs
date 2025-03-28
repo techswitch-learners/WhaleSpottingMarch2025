@@ -1,11 +1,12 @@
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
 
-public class WhaleSpottingDbContext : DbContext
+public class WhaleSpottingDbContext : IdentityDbContext<User>
 {
     private readonly IConfiguration _configuration;
     public WhaleSpottingDbContext(IConfiguration configuration)
@@ -20,3 +21,4 @@ public class WhaleSpottingDbContext : DbContext
     public DbSet<Location> Location { get; set; }
     public DbSet<Species> Species { get; set; }
 }
+

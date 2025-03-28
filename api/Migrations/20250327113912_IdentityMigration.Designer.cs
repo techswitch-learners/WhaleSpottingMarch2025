@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WhaleSpottingBackend.Database;
@@ -11,9 +12,11 @@ using WhaleSpottingBackend.Database;
 namespace WhaleSpottingBackend.Migrations
 {
     [DbContext(typeof(WhaleSpottingDbContext))]
-    partial class WhaleSpottingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327113912_IdentityMigration")]
+    partial class IdentityMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +157,7 @@ namespace WhaleSpottingBackend.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.Location", b =>
+            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.ExampleModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,80 +165,13 @@ namespace WhaleSpottingBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Latitude")
-                        .HasColumnType("double precision")
-                        .HasColumnName("Latitude");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("double precision")
-                        .HasColumnName("Longitude");
+                    b.Property<string>("ExampleField")
+                        .HasColumnType("text")
+                        .HasColumnName("ExampleColumn");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location");
-                });
-
-            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.Sighting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Description");
-
-                    b.Property<string>("ImageSource")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("ImageSource");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer")
-                        .HasColumnName("Quantity");
-
-                    b.Property<DateTime>("ReportDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("ReportDate");
-
-                    b.Property<DateTime>("SightingDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("SightingDate");
-
-                    b.Property<int>("SpeciesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("SpeciesId");
-
-                    b.ToTable("Sighting");
-                });
-
-            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.Species", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("SpeciesName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("SpeciesName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Species");
+                    b.ToTable("ExampleModel");
                 });
 
             modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.User", b =>
@@ -264,6 +200,7 @@ namespace WhaleSpottingBackend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
@@ -354,25 +291,6 @@ namespace WhaleSpottingBackend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.Sighting", b =>
-                {
-                    b.HasOne("WhaleSpottingBackend.Models.DatabaseModels.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WhaleSpottingBackend.Models.DatabaseModels.Species", "Species")
-                        .WithMany()
-                        .HasForeignKey("SpeciesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Species");
                 });
 #pragma warning restore 612, 618
         }
