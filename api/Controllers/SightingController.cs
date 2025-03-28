@@ -29,16 +29,12 @@ public class SightingController : ControllerBase
     // POST: api/createSighting
     [HttpPost("createSighting")]
     public void CreateSighting(CreateSightingRequest newSighting){
-         
-                /*var locationId =insertLocation.Entity.Id;
-                Console.WriteLine("locationId"+locationId);*/
-            Location insertLocation = new Location {
-                Latitude = newSighting.Latitude, 
-                Longitude = newSighting.Longitude
-        };
+            Location insertLocation = new Location() {Latitude = newSighting.Latitude, Longitude = newSighting.Longitude};
+            Species species = _sightingRepository.GetSpeciesByID(newSighting.Species);
+           
             Sighting insertsighting = new Sighting
             {
-                Species = newSighting.Species,
+                Species = species,
                 Description = newSighting.Description, 
                 SightingDate = newSighting.SightingDate,
                 ReportDate = newSighting.ReportDate,
@@ -49,6 +45,7 @@ public class SightingController : ControllerBase
 
          _sightingRepository.PostSighting(insertsighting); //chnges in postsighting
     }
+
 
     /*public Location createNewLocation(CreateSightingRequest newSighting){
         return new Location {

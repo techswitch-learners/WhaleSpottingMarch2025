@@ -18,7 +18,7 @@ public class Sighting {
     [Column("ImageSource")]
     public string ImageSource { get; set; }
     public Sighting(){}
-    public Sighting(int id,Species species, string description, DateTime sightingDate, DateTime reportDate, int quantity, Location location, string imageSource)
+    public Sighting(int id, Species species, string description, DateTime sightingDate, DateTime reportDate, int quantity, Location location, string imageSource)
     {
         Id = id;
         Species = species;
