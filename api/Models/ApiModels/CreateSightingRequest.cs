@@ -1,14 +1,11 @@
-using WhaleSpottingBackend.Models.DatabaseModels;
-
 namespace WhaleSpottingBackend.Models.ApiModels;
-
 public class CreateSightingRequest{
-    public string Species { get; set; }
-    public string Description { get; set; }
-    public DateTime SightingDate { get; set; }
-    public DateTime ReportDate;
-    public int Quantity { get; set; } 
-    public double Latitude{get;set;}
-    public double Longitude{get;set;}
-    public string ImageSource { get; set; }   
+    public required int Species { get; set; } // there as string
+    public required string Description { get; set; }
+    public required DateTime SightingDate { get; set; }
+    public required DateTime ReportDate{ get; set; }
+    public required int Quantity { get; set; } 
+    public required double Latitude{get;set;}
+    public required double Longitude{get;set;}
+    public required string ImageSource { get; set; }   
 }
