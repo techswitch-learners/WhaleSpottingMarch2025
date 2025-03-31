@@ -53,7 +53,7 @@ public class SightingController : ControllerBase
             return BadRequest(ModelState);
         }
         Location newLocation = new Location() { Latitude = sightingRequest.Latitude, Longitude = sightingRequest.Longitude };
-        Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);        
+        Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
         Sighting newSighting = new Sighting
         {
             Species = species,
