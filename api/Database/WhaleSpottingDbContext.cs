@@ -21,7 +21,8 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
     public DbSet<Location> Location { get; set; }
     public DbSet<Species> Species { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
         base.OnModelCreating(modelBuilder);
 
         Species blueWhale = new Species(1, "Blue Whale");
