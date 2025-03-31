@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
+import { fetchPOSTRequest } from "../../../utils/apiClient";
+import { useNavigate } from "react-router-dom";
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-interface WhaleSighting {
+export interface WhaleSighting {
   species: number;
   description: string;
   sightingDate: Value;
@@ -29,28 +31,30 @@ export const WhaleSightingForm = () => {
   });
 
   const [dateValue, setDate] = useState<Value>(new Date());
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     event.preventDefault();
-    console.log(formData);
-    console.log(JSON.stringify(formData));
-    const headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, PATCH, OPTIONS",
-    };
 
-    fetch(import.meta.env.VITE_APP_API_HOST + "/Sighting/createSighting", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: headers,
-    }).then((response) => {
-      if (response.status == 200) {
-        console.log("POST REQUEST SUCCESS.");
+    try {
+      const response = await fetchPOSTRequest(
+        formData,
+        "/Sighting/createSighting",
+      );
+      console.log("In try block");
+      if (response >= 300) {
+        setErrorMessage("An error has occurred.");
       } else {
-        console.log("Response status: " + response.status);
+        navigate("/ViewSightings");
       }
-    });
+    } catch {
+      console.log("An error has ocuured");
+      setErrorMessage("An error has occurred.");
+    }
   };
 
   const handleChange = (
@@ -67,11 +71,15 @@ export const WhaleSightingForm = () => {
     setDate(dateValue);
     formData.sightingDate = dateValue;
   };
+
   return (
     <div className="createSightingForm">
       <h2>Whale Sighting Form</h2>
       <p>Tell us about the whale that you saw.</p>
       <p>* (asterisk) denotes a required field.</p>
+      {errorMessage.length > 0 && (
+        <p className="errorMessage">{errorMessage}</p>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="field">
           <div className="calendar">
