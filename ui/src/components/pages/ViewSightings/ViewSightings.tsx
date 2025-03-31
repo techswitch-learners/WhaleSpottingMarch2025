@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import "./ViewSightings.scss";
+
+const MEDIUM_DEVICE_SIZE = 480;
 
 type SightingsResponse = {
   id: number;
@@ -53,6 +54,19 @@ const fetchSightings = async () => {
 export const ViewSightings = () => {
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
 
+  const [isMobile, setIsMobile] = useState(
+    window.innerWidth <= MEDIUM_DEVICE_SIZE,
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= MEDIUM_DEVICE_SIZE);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     const getSightings = async () => {
       const data = await fetchSightings();
@@ -62,50 +76,64 @@ export const ViewSightings = () => {
     getSightings();
   }, []);
 
+  const renderMobileView = () => {
+    return (
+      <ul id="Sightings" className="ul-container">
+        {sightingsData?.map((sighting) => (
+          <li className="li-item">
+            <img src={sighting.imageSource} />
+            <p id="species-name">Species: {sighting.species.speciesName}</p>
+            <p id="date-reported">
+              Date Reported: {sighting.reportDate.slice(0, 10)}
+            </p>
+            <p id="description">Description: {sighting.description}</p>
+            <p className="coordinates">
+              Lat: {sighting.location.latitude}
+              ;Long: {sighting.location.longitude}
+            </p>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+  const renderDesktopView = () => {
+    return (
+      <table id="SightingsTable" className="table-container">
+        <thead className="table-header">
+          <th className="table-cell">Id</th>
+          <th className="table-cell">Species</th>
+          <th className="table-cell">Date</th>
+          <th className="table-cell">Description</th>
+          <th className="table-cell">Location</th>
+          <th className="table-cell">Image</th>
+        </thead>
+
+        <tbody>
+          {sightingsData?.map((sighting) => (
+            <tr className="table-row">
+              <td className="table-cell hide-on-mobile">{sighting.id}</td>
+              <td className="table-cell">{sighting.species.speciesName}</td>
+              <td className="table-cell">{sighting.reportDate.slice(0, 10)}</td>
+              <td className="table-cell">{sighting.description}</td>
+              <td className="table-cell hide-on-mobile">
+                Lat: {sighting.location.latitude}
+                Long: {sighting.location.longitude}
+              </td>
+              <td className="table-cell">
+                <img src={sighting.imageSource} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
   return (
     <div id="SightingsListContainer">
       <h1> Sightings </h1>
-      <div id="SightingsTable">
-        <div id="FilterContainer">
-          <label htmlFor="Start Date"> Start Date </label>
-          <Calendar maxDate={new Date()}></Calendar>
-          <label htmlFor="End Date"> End Date </label>
-          <Calendar maxDate={new Date()}></Calendar>
-          <label htmlFor="Coordinates"> Coordinates </label>
-          <input id="coordinates" />
-          <label htmlFor="Radius"> Radius </label>
-          <input id="radius" />
-          <label htmlFor="HasImage"> Has Image </label>
-          <input id="hasImage" type="checkbox" />
-          <button id="btnFilterSubmit" type="submit">
-            Filter
-          </button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Species</th>
-              <th>Date</th>
-              <th>Username</th>
-              <th>Image</th>
-              <th>View</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sightingsData?.map((sighting) => (
-              <tr>
-                <td>{sighting.species.speciesName}</td>
-                <td>{sighting.reportDate}</td>
-                <td>{sighting.description}</td>
-                <td>{sighting.imageSource}</td>
-                <td>
-                  <button>View</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {isMobile && renderMobileView()}
+      {!isMobile && renderDesktopView()}
     </div>
   );
 };
