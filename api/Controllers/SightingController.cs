@@ -32,9 +32,9 @@ public class SightingController : ControllerBase
 
     // GET: api/Sightings
     [HttpGet("")]
-    public ActionResult<IEnumerable<Sighting>> GetAllSightings()
+    public ActionResult<IEnumerable<Sighting>> GetAllSightings([FromQuery] SightingsQueryParameters parameters)
     {
-        var sightings = _sightingRepository.GetAllSightings();
+        var sightings = _sightingRepository.GetAllSightings(parameters);
         if (sightings == null)
         {
             return NotFound();

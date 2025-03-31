@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WhaleSpottingBackend.Database;
+using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
 namespace WhaleSpottingBackend.Repositories;
 
@@ -7,7 +8,7 @@ public interface ISightingRepository
 {
     Sighting GetSightingByID(int sightingId);
     Sighting CreateSighting(Sighting sighting);
-    IEnumerable<Sighting> GetAllSightings();
+    IEnumerable<Sighting> GetAllSightings(SightingsQueryParameters parameters);
 
 }
 
@@ -27,9 +28,13 @@ public class SightingRepository : ISightingRepository
             .FirstOrDefault();
     }
 
-    public IEnumerable<Sighting> GetAllSightings()
+    public IEnumerable<Sighting> GetAllSightings(SightingsQueryParameters parameters)
     {
-        return _context.Sighting.Include(sighting => sighting.Location).Include(sighting => sighting.Species);
+        return _context.Sighting
+            .Include(sighting => sighting.Location)
+            .Include(sighting => sighting.Species)
+            .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+            .Take(parameters.PageSize);
     }
 
     public Sighting CreateSighting(Sighting sighting)
