@@ -1,29 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using NetTopologySuite.Geometries;
+using WhaleSpottingBackend.Repositories;
+using WhaleSpottingBackend.Models.ApiModels;
+using WhaleSpottingBackend.Helper;
+
 namespace WhaleSpottingBackend.Controllers;
 
-using Microsoft.AspNetCore.Authorization;
-using WhaleSpottingBackend.Repositories;
-
+namespace WhaleSpottingBackend.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class LocationController :ControllerBase
+public class LocationController : ControllerBase
 {
-    private readonly ILogger<SightingController> _logger;
-    private readonly ISightingRepository _sightingRepository;
-    private readonly ISpeciesRepository _speciesRepository;
+  private readonly ILogger<SightingController> _logger;
+  private readonly ISightingRepository _sightingRepository;
 
-      public LocationController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILogger<SightingController> logger)
+
+  public LocationController(ISightingRepository sightingRepository, ILogger<SightingController> logger)
+  {
+    _sightingRepository = sightingRepository;
+    _logger = logger;
+  }
+
+  //GET: api/location?latitude=34.2&longitude=45.6
+  [HttpGet("{latitude}/{longitude}")]
+  public ActionResult<LocationSearchResponseModel> GetTopSpeciesAndRecentSightingsByLocation(double latitude, double longitude, int radius = 10)
+  {
+    var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(latitude, longitude);
+    var result = _sightingRepository.GetTopSpeciesAndRecentSightingsByLocation(userSearchLocation, radius);
+    return Ok(new
     {
-        _sightingRepository = sightingRepository;
-        _speciesRepository = speciesRepository;
-        _logger = logger;
-    }
-//Latitude= x = 10.5
-//Longitude y = 230.78
-//Radius = 10 
-//x+10 x-10 y+10 y-10
-//
-//225.4
-    
-
+      result.TopSpecies,
+      result.RecentSightings
+    });
+  }
 }
