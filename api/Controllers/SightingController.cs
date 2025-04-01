@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Cors;
+using System.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
@@ -29,19 +31,34 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        return new SightingResponseModel(sighting);
+        string status = !sighting.Reviews?.Any() == true
+                ? "Pending"
+                : sighting.Reviews?.OrderByDescending(review => review.StatusDate).First().Approved == true ? "Approved" : "Rejected";
+
+        var response = new SightingResponseModel(sighting, status);
+        return response;
     }
 
     // GET: api/Sightings
     [HttpGet("")]
-    public ActionResult<IEnumerable<Sighting>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
+    public ActionResult<IEnumerable<SightingResponseModel>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
     {
         var sightings = _sightingRepository.GetSightingsBySearchQuery(parameters);
         if (sightings == null)
         {
             return NotFound();
         }
-        return sightings.ToList();
+        List<SightingResponseModel> sightingsList = [];
+        foreach (var sighting in sightings)
+        {
+            string status = !sighting.Reviews?.Any() == true
+                ? "Pending"
+                : sighting.Reviews?.OrderByDescending(review => review.StatusDate).First().Approved == true ? "Approved" : "Rejected";
+
+            var sightingResponse = new SightingResponseModel(sighting, status);
+            sightingsList.Add(sightingResponse);
+        }
+        return sightingsList.ToList();
     }
 
     // POST: api/createSighting
@@ -62,11 +79,26 @@ public class SightingController : ControllerBase
             ReportDate = DateTime.UtcNow,
             Quantity = sightingRequest.Quantity,
             Location = newLocation,
-            ImageSource = sightingRequest.ImageSource
+            ImageSource = sightingRequest.ImageSource,
+
         };
         var sighting = _sightingRepository.CreateSighting(newSighting);
         var url = Url.Action("GetSightingByID", new { id = sighting.Id });
         var sightingResponse = new SightingResponseModel(sighting);
         return Created(url, sightingResponse);
+    }
+
+
+    //sighting/pending-approval
+    [HttpGet("pending-approval")]
+    [Authorize(Roles = "Admin")]
+    public ActionResult<IEnumerable<Sighting>> GetAllPendingApproval()
+    {
+        var sightings = _sightingRepository.GetAllPendingApproval();
+        if (sightings == null)
+        {
+            return NotFound();
+        }
+        return sightings.ToList();
     }
 }
