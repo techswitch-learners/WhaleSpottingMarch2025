@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./ViewSightings.scss";
 
-const MEDIUM_DEVICE_SIZE = 480;
+const MEDIUM_DEVICE_SIZE = 760;
 
-type SightingsResponse = {
+interface SightingsResponse {
   id: number;
   species: Species;
   description: string;
@@ -12,19 +12,18 @@ type SightingsResponse = {
   quantity: number;
   location: Location;
   imageSource: string;
-  //username: string;
-};
+}
 
-type Species = {
+interface Species {
   id: number;
   speciesName: string;
-};
+}
 
-type Location = {
+interface Location {
   id: number;
   latitude: number;
   longitude: number;
-};
+}
 
 const fetchSightings = async () => {
   const headers = {
@@ -41,9 +40,6 @@ const fetchSightings = async () => {
         headers: headers,
       },
     );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
     const data = await response.json();
     return data;
   } catch (error) {
@@ -53,7 +49,6 @@ const fetchSightings = async () => {
 
 export const ViewSightings = () => {
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
-
   const [isMobile, setIsMobile] = useState(
     window.innerWidth <= MEDIUM_DEVICE_SIZE,
   );
@@ -63,7 +58,6 @@ export const ViewSightings = () => {
       setIsMobile(window.innerWidth <= MEDIUM_DEVICE_SIZE);
     };
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -72,7 +66,6 @@ export const ViewSightings = () => {
       const data = await fetchSightings();
       setSightingsData(data);
     };
-
     getSightings();
   }, []);
 
@@ -82,15 +75,16 @@ export const ViewSightings = () => {
         {sightingsData?.map((sighting) => (
           <li className="li-item">
             <img src={sighting.imageSource} />
-            <p id="species-name">Species: {sighting.species.speciesName}</p>
-            <p id="date-reported">
-              Date Reported: {sighting.reportDate.slice(0, 10)}
-            </p>
-            <p id="description">Description: {sighting.description}</p>
-            <p className="coordinates">
-              Lat: {sighting.location.latitude}
-              ;Long: {sighting.location.longitude}
-            </p>
+            <div id="sightings-info">
+              <strong> Species: </strong> {sighting.species.speciesName} <br />
+              <strong> Date Reported:</strong>{" "}
+              {sighting.reportDate.slice(0, 10)} <br />
+              <strong>Description:</strong> {sighting.description} <br />
+              <strong>Lat: </strong>
+              {sighting.location.latitude} <br />
+              <strong>Long: </strong>
+              {sighting.location.longitude}
+            </div>
           </li>
         ))}
       </ul>
@@ -116,7 +110,7 @@ export const ViewSightings = () => {
               <td className="table-cell">{sighting.reportDate.slice(0, 10)}</td>
               <td className="table-cell">{sighting.description}</td>
               <td className="table-cell hide-on-mobile">
-                Lat: {sighting.location.latitude}
+                Lat: {sighting.location.latitude} <br />
                 Long: {sighting.location.longitude}
               </td>
               <td className="table-cell">
