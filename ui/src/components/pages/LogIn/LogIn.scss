@@ -1,0 +1,21 @@
+@use '@/styles/constants';
+
+.login {
+  padding: constants.$padding-default;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  .title {
+    font-size: constants.$font-size-heading;
+    text-align: left;
+  }
+  
+  .login-form {
+    margin: constants.$margin-default 0;
+  }
+  
+  .submit-button {
+    background-color: constants.$color;
+  }
+}
