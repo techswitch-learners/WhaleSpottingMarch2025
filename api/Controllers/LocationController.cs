@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-namespace WhaleSpottingBackend.Controllers;
-
 using Microsoft.AspNetCore.Authorization;
+using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Repositories;
 
+namespace WhaleSpottingBackend.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class LocationController :ControllerBase
@@ -18,12 +18,42 @@ public class LocationController :ControllerBase
         _speciesRepository = speciesRepository;
         _logger = logger;
     }
-//Latitude= x = 10.5
-//Longitude y = 230.78
-//Radius = 10 
-//x+10 x-10 y+10 y-10
-//
-//225.4
-    
+
+   // GET: api/location?latitude=34.2&longitude=45.6
+    [HttpGet("{latitude}/{longitude}")]
+    public ActionResult IEnumerable<LocationSearchResponseModel> GetSightingsByLocation([FromQuery] double latitude, double longitude,int radius=10)
+    {
+
+      var GeoCoordinate = new Point(latitude, longitude) { SRID = 4326 };
+      Console.WriteLine("radius"+radius);  
+      var sighting = _sightingRepository.GetSightingsByLocation(GeoCoordinate,radius);
+      if (sighting == null)
+      {
+        return NotFound();
+      }
+      return IEnumerable<LocationSearchResponseModel>(sighting);
+    }
+
+    // GET: api/location?
+    [HttpGet("")]
+    public bool GetLocation()
+    {
+
+      var loc = new Point(51.5539, 0.1447) { SRID = 4326 };
+      Console.WriteLine(loc);
+      var distance = loc.IsWithinDistance(new Point(56.4907,4.2026), 1);
+      Console.WriteLine(distance);
+     // loc.IsWithinDistance
+      
+      /*  int radius = 10;
+        var sighting = _sightingRepository.GetSightingsByLocation(latitude,longitude);
+        if (sighting == null)
+        {
+            return NotFound();
+        }*/
+        return distance;
+    }
+
+
 
 }

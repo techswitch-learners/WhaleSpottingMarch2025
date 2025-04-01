@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WhaleSpottingBackend.Database;
 
@@ -17,9 +18,10 @@ namespace WhaleSpottingBackend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -169,6 +171,10 @@ namespace WhaleSpottingBackend.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("double precision")
                         .HasColumnName("Longitude");
+
+                    b.Property<Point>("SpatialCoordinates")
+                        .IsRequired()
+                        .HasColumnType("geometry");
 
                     b.HasKey("Id");
 

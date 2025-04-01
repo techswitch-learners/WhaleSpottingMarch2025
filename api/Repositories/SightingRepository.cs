@@ -1,6 +1,8 @@
+
 using Microsoft.EntityFrameworkCore;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.ApiModels;
+using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Models.DatabaseModels;
 namespace WhaleSpottingBackend.Repositories;
 
@@ -41,6 +43,27 @@ public class SightingRepository : ISightingRepository
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize);
     }
+
+    public IEnumerable<Sighting> GetSightingsByLocation(Point geoCoordinate , int radius )
+    {
+        return _context.Sighting.Include(Models.DatabaseModels.Location.Where(location => location.SpatialCoordinates.IsWithinDistance(geoCoordinate,radius))).ToList();
+                               
+
+                               //  var distance = GeoCoordinate.IsWithinDistance(new Point(latitude,longitude), radius);
+     // Console.WriteLine(distance);   
+        //and sighting.Location.Latitude in (longitude1 and longitude2))
+         //   .Include(sighting => sighting.Location)
+            //.Include(sighting => sighting.Species)
+    }
+
+   /*     public IEnumerable<Location> GetLocation(double latitude1,double latitude2, double longitude1,double longitude2 )
+    {
+        return _context.Location.Where (location => (location.Latitude > latitude1 and latitude2) )
+                                .ToList();
+        //and sighting.Location.Latitude in (longitude1 and longitude2))
+         //   .Include(sighting => sighting.Location)
+            //.Include(sighting => sighting.Species)
+    }*/
 
     public Sighting CreateSighting(Sighting sighting)
     {
