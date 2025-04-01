@@ -1,17 +1,20 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace WhaleSpottingBackend.Models.DatabaseModels;
 
 public class SightingReview
 {
-    public int Id { get; set; } 
+    public int Id { get; set; }
 
-    [Column("ReportID")]
-    public int ReportID { get; set; }
-    [ForeignKey("ReportID")] 
+    [Column("SightingID")]
+    public int SightingID { get; set; }
+    [ForeignKey("SightingID")]
     public Sighting Sighting { get; set; }
-    
+
     [Column("AdminID")]
-    public int AdminID { get; set; }
+    public string AdminID { get; set; }
+    [ForeignKey("AdminID")]
+    public User User { get; set; }
 
     [Column("Approved")]
     public bool Approved { get; set; }
@@ -20,16 +23,16 @@ public class SightingReview
     public DateTime StatusDate { get; set; }
     [Column("Comments")]
     public string? Comments { get; set; }
-    
+
 
     public SightingReview() { }
-    public SightingReview(int id, int reportID, int adminID, bool approved, DateTime statusDate,string comments)
+    public SightingReview(int id, int sightingID, string adminID, bool approved, DateTime statusDate, string comments)
     {
         Id = id;
-        ReportID = reportID;
+        SightingID = sightingID;
         AdminID = adminID;
         Approved = approved;
-        StatusDate=statusDate;
+        StatusDate = statusDate;
         Comments = comments;
     }
 }

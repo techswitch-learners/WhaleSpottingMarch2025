@@ -20,6 +20,7 @@ public class Sighting
     public int LocationId { get; set; }
     [Column("ImageSource")]
     public string? ImageSource { get; set; }
+    public IEnumerable<SightingReview>? Reviews { get; set; }
     public Sighting() { }
     public Sighting(int id, int speciesId, string description, DateTime sightingDate, DateTime reportDate, int quantity, int locationId, string imageSource)
     {

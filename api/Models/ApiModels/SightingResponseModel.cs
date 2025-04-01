@@ -1,3 +1,4 @@
+using WhaleSpottingBackend.Controllers;
 using WhaleSpottingBackend.Models.DatabaseModels;
 namespace WhaleSpottingBackend.Models.ApiModels;
 
@@ -12,7 +13,8 @@ public class SightingResponseModel
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public string ImageSource { get; set; }
-    public SightingResponseModel(Sighting sighting)
+    public string Status { get; set; }
+    public SightingResponseModel(Sighting sighting, string status = "Pending")
     {
         Id = sighting.Id;
         Species = sighting.Species.Id;
@@ -23,6 +25,8 @@ public class SightingResponseModel
         Latitude = sighting.Location.Latitude;
         Longitude = sighting.Location.Longitude;
         ImageSource = sighting.ImageSource;
+        Status = status;
     }
+
     public SightingResponseModel() { }
 }
