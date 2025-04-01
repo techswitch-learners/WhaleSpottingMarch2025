@@ -5,9 +5,7 @@ namespace WhaleSpottingBackend.Repositories;
 
 public interface IReviewRepository
 {
-
     SightingReview AddSightingReview(SightingReview review);
-
 }
 
 public class ReviewRepository : IReviewRepository
@@ -17,7 +15,6 @@ public class ReviewRepository : IReviewRepository
     {
         _context = context;
     }
-
 
     public SightingReview AddSightingReview(SightingReview review)
     {
