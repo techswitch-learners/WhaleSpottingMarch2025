@@ -45,14 +45,12 @@ export const WhaleSightingForm = () => {
         formData,
         "/Sighting/createSighting",
       );
-      console.log("In try block");
       if (response >= 300) {
         setErrorMessage("An error has occurred.");
       } else {
         navigate("/ViewSightings");
       }
     } catch {
-      console.log("An error has ocuured");
       setErrorMessage("An error has occurred.");
     }
   };
@@ -74,7 +72,7 @@ export const WhaleSightingForm = () => {
 
   return (
     <div className="createSightingForm">
-      <h2>Whale Sighting Form</h2>
+      <h3>Whale Sighting Form</h3>
       <p>Tell us about the whale that you saw.</p>
       <p>* (asterisk) denotes a required field.</p>
       {errorMessage.length > 0 && (
@@ -84,7 +82,7 @@ export const WhaleSightingForm = () => {
         <div className="field">
           <div className="calendar">
             <label>
-              Date:
+              Sighting date:
               <span className="requiredField">*</span>
             </label>
             <Calendar
