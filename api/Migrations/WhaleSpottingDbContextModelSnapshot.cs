@@ -503,6 +503,41 @@ namespace WhaleSpottingBackend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.SightingReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdminID")
+                        .HasColumnType("integer")
+                        .HasColumnName("AdminID");
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("boolean")
+                        .HasColumnName("Approved");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("text")
+                        .HasColumnName("Comments");
+
+                    b.Property<int>("ReportID")
+                        .HasColumnType("integer")
+                        .HasColumnName("ReportID");
+
+                    b.Property<DateTime>("StatusDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("StatusDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportID");
+
+                    b.ToTable("SightingReview");
+                });
+
             modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.Species", b =>
                 {
                     b.Property<int>("Id")
@@ -713,6 +748,17 @@ namespace WhaleSpottingBackend.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Species");
+                });
+
+            modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.SightingReview", b =>
+                {
+                    b.HasOne("WhaleSpottingBackend.Models.DatabaseModels.Sighting", "Sighting")
+                        .WithMany()
+                        .HasForeignKey("ReportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sighting");
                 });
 #pragma warning restore 612, 618
         }
