@@ -1,47 +1,13 @@
 import { useEffect, useState } from "react";
 import "./ViewSightings.scss";
+import { SightingsResponse } from "../../../models/apiModels.ts";
+import { getSightings } from "../../../utils/apiClient.tsx";
 
 const MEDIUM_DEVICE_SIZE = 760;
 
-interface SightingsResponse {
-  id: number;
-  species: Species;
-  description: string;
-  sightingDate: string;
-  reportDate: string;
-  quantity: number;
-  location: Location;
-  imageSource: string;
-}
-
-interface Species {
-  id: number;
-  speciesName: string;
-}
-
-interface Location {
-  id: number;
-  latitude: number;
-  longitude: number;
-}
-
 const fetchSightings = async () => {
-  const headers = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
-  };
-
   try {
-    const response = await fetch(
-      import.meta.env.VITE_APP_API_HOST + "/Sighting",
-      {
-        method: "GET",
-        headers: headers,
-      },
-    );
-    const data = await response.json();
-    return data;
+    return getSightings();
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }
@@ -76,14 +42,24 @@ export const ViewSightings = () => {
           <li className="li-item">
             <img src={sighting.imageSource} />
             <div id="sightings-info">
-              <strong> Species: </strong> {sighting.species.speciesName} <br />
-              <strong> Date Reported:</strong>{" "}
-              {sighting.reportDate.slice(0, 10)} <br />
-              <strong>Description:</strong> {sighting.description} <br />
-              <strong>Lat: </strong>
-              {sighting.location.latitude} <br />
-              <strong>Long: </strong>
-              {sighting.location.longitude}
+              <div>
+                <strong> Species: </strong> {sighting.species.speciesName}
+              </div>
+              <div>
+                <strong> Date Reported: </strong>
+                {sighting.reportDate.slice(0, 10)}
+              </div>
+              <div>
+                <strong>Description: </strong> {sighting.description}
+              </div>
+              <div>
+                <strong>Latitude: </strong>
+                {sighting.location.latitude}
+              </div>
+              <div>
+                <strong>Longitude: </strong>
+                {sighting.location.longitude}
+              </div>
             </div>
           </li>
         ))}
@@ -110,8 +86,8 @@ export const ViewSightings = () => {
               <td className="table-cell">{sighting.reportDate.slice(0, 10)}</td>
               <td className="table-cell">{sighting.description}</td>
               <td className="table-cell">
-                Lat: {sighting.location.latitude} <br />
-                Long: {sighting.location.longitude}
+                Latitude: {sighting.location.latitude} <br />
+                Longitude: {sighting.location.longitude}
               </td>
               <td className="table-cell">
                 <img src={sighting.imageSource} />
