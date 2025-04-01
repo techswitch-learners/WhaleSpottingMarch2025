@@ -105,11 +105,11 @@ export const ViewSightings = () => {
         <tbody>
           {sightingsData?.map((sighting) => (
             <tr className="table-row">
-              <td className="table-cell hide-on-mobile">{sighting.id}</td>
+              <td className="table-cell">{sighting.id}</td>
               <td className="table-cell">{sighting.species.speciesName}</td>
               <td className="table-cell">{sighting.reportDate.slice(0, 10)}</td>
               <td className="table-cell">{sighting.description}</td>
-              <td className="table-cell hide-on-mobile">
+              <td className="table-cell">
                 Lat: {sighting.location.latitude} <br />
                 Long: {sighting.location.longitude}
               </td>
