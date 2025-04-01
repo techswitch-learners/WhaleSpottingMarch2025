@@ -12,7 +12,7 @@ using WhaleSpottingBackend.Database;
 namespace WhaleSpottingBackend.Migrations
 {
     [DbContext(typeof(WhaleSpottingDbContext))]
-    [Migration("20250331142642_SeedDataMigration")]
+    [Migration("20250401111544_SeedDataMigration")]
     partial class SeedDataMigration
     {
         /// <inheritdoc />
@@ -187,8 +187,56 @@ namespace WhaleSpottingBackend.Migrations
                         new
                         {
                             Id = 2,
+                            Latitude = 57.808242999999997,
+                            Longitude = -146.41273899999999
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Latitude = 34.468535000000003,
+                            Longitude = -130.06391400000001
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Latitude = 73.149203999999997,
+                            Longitude = -148.47557699999999
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Latitude = 36.547851999999999,
+                            Longitude = -72.010734999999997
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Latitude = 52.122216999999999,
+                            Longitude = -50.741202999999999
+                        },
+                        new
+                        {
+                            Id = 7,
                             Latitude = 69.169370999999998,
                             Longitude = -174.81342699999999
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Latitude = 55.443528000000001,
+                            Longitude = -138.98339300000001
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Latitude = 44.420667999999999,
+                            Longitude = -56.366202999999999
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Latitude = 83.249778000000006,
+                            Longitude = -106.815422
                         });
                 });
 
@@ -242,220 +290,220 @@ namespace WhaleSpottingBackend.Migrations
                             Id = 1,
                             Description = "Details of Sighting 1",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 1,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 2, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 1, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 1
                         },
                         new
                         {
                             Id = 2,
                             Description = "Details of Sighting 2",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 2,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 3, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 2, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 2
                         },
                         new
                         {
                             Id = 3,
                             Description = "Details of Sighting 3",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 3,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 4, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 3, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 3
                         },
                         new
                         {
                             Id = 4,
                             Description = "Details of Sighting 4",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 4,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 5, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 4, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 4
                         },
                         new
                         {
                             Id = 5,
                             Description = "Details of Sighting 5",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 5,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 6, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 5, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 5
                         },
                         new
                         {
                             Id = 6,
                             Description = "Details of Sighting 6",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 6,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 7, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 6, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 6
                         },
                         new
                         {
                             Id = 7,
                             Description = "Details of Sighting 7",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 7,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 8, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 7, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 7
                         },
                         new
                         {
                             Id = 8,
                             Description = "Details of Sighting 8",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 8,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 9, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 8, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 8
                         },
                         new
                         {
                             Id = 9,
                             Description = "Details of Sighting 9",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 9,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 10, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 9, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 9
                         },
                         new
                         {
                             Id = 10,
                             Description = "Details of Sighting 10",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 10,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 11, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 10, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 10
                         },
                         new
                         {
                             Id = 11,
                             Description = "Details of Sighting 11",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 1,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 12, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 11, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 1
                         },
                         new
                         {
                             Id = 12,
                             Description = "Details of Sighting 12",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 2,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 13, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 12, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 2
                         },
                         new
                         {
                             Id = 13,
                             Description = "Details of Sighting 13",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 3,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 14, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 13, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 3
                         },
                         new
                         {
                             Id = 14,
                             Description = "Details of Sighting 14",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 4,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 15, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 14, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 4
                         },
                         new
                         {
                             Id = 15,
                             Description = "Details of Sighting 15",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 5,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 16, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 15, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 5
                         },
                         new
                         {
                             Id = 16,
                             Description = "Details of Sighting 16",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 6,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 17, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 16, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 6
                         },
                         new
                         {
                             Id = 17,
                             Description = "Details of Sighting 17",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 7,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 18, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 17, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 7
                         },
                         new
                         {
                             Id = 18,
                             Description = "Details of Sighting 18",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 8,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 19, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 18, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 8
                         },
                         new
                         {
                             Id = 19,
                             Description = "Details of Sighting 19",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 2,
+                            LocationId = 9,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 20, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 19, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 2
+                            SpeciesId = 9
                         },
                         new
                         {
                             Id = 20,
                             Description = "Details of Sighting 20",
                             ImageSource = "https://images.google.com/",
-                            LocationId = 1,
+                            LocationId = 10,
                             Quantity = 1,
                             ReportDate = new DateTime(2024, 3, 21, 13, 21, 33, 0, DateTimeKind.Utc),
                             SightingDate = new DateTime(2024, 3, 20, 13, 21, 33, 0, DateTimeKind.Utc),
-                            SpeciesId = 1
+                            SpeciesId = 10
                         });
                 });
 
@@ -485,7 +533,52 @@ namespace WhaleSpottingBackend.Migrations
                         new
                         {
                             Id = 2,
+                            SpeciesName = "Humpback Whale"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            SpeciesName = "Orca"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            SpeciesName = "Sperm Whale"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            SpeciesName = "Fin Whale"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            SpeciesName = "Minke Whale"
+                        },
+                        new
+                        {
+                            Id = 7,
                             SpeciesName = "Beluga Whale"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            SpeciesName = "Gray Whale"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            SpeciesName = "Right Whale"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            SpeciesName = "Bowhead Whale"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            SpeciesName = "Unknown"
                         });
                 });
 
