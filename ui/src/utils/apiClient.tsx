@@ -14,3 +14,11 @@ export const fetchPOSTRequest = async (
   );
   return fetchResponse.status;
 };
+
+export const getSightings = async () => {
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + "/Sighting",
+  );
+  const data = await fetchResponse.json();
+  return data;
+};
