@@ -72,8 +72,8 @@ export const WhaleSightingForm = () => {
 
   return (
     <div className="createSightingForm">
-      <h3>Whale Sighting Form</h3>
-      <p>Tell us about the whale that you saw.</p>
+      <h2>Report your whale sighting</h2>
+      <p>Tell us about the whale that you saw using the form below.</p>
       <p>* (asterisk) denotes a required field.</p>
       {errorMessage.length > 0 && (
         <p className="errorMessage">{errorMessage}</p>
