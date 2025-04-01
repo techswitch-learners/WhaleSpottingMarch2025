@@ -20,6 +20,7 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
     public DbSet<Sighting> Sighting { get; set; }
     public DbSet<Location> Location { get; set; }
     public DbSet<Species> Species { get; set; }
+    public DbSet<SightingReview> SightingReview { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
