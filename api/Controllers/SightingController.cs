@@ -3,8 +3,11 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using NetTopologySuite.Geometries;
+using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
+using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 using WhaleSpottingBackend.Repositories;
 namespace WhaleSpottingBackend.Controllers;
 
@@ -20,6 +23,7 @@ public class SightingController : ControllerBase
     {
         _sightingRepository = sightingRepository;
         _speciesRepository = speciesRepository;
+        _locationRepository = locationRepository;
         _logger = logger;
         _webHostEnvironment = webHostEnvironment;
     }
