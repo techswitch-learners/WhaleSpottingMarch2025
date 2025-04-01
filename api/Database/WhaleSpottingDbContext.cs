@@ -78,16 +78,16 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
         List<Sighting> sightings = [];
         for (int i = 0; i < 20; i++)
         {
-            sightings.Add(new Sighting(
-                i + 1,
-                (i % 10) + 1,
-                $"Details of Sighting {i + 1}",
-                new DateTime(2024, 3, i + 1, 13, 21, 33, DateTimeKind.Utc),
-                new DateTime(2024, 3, i + 2, 13, 21, 33, DateTimeKind.Utc),
-                1,
-                (i % 10) + 1,
-                "https://images.google.com/"
-            ));
+            sightings.Add(new Sighting(){
+                Id = i + 1,
+                SpeciesId = (i % 10) + 1,
+                Description = $"Details of Sighting {i + 1}",
+                SightingDate = new DateTime(2024, 3, i + 1, 13, 21, 33, DateTimeKind.Utc),
+                ReportDate = new DateTime(2024, 3, i + 2, 13, 21, 33, DateTimeKind.Utc),
+                Quantity = 1,
+                LocationId = (i % 10) + 1,
+                ImageSource = "https://images.google.com/"
+            });
         }
 
         modelBuilder.Entity<Sighting>().HasData(
