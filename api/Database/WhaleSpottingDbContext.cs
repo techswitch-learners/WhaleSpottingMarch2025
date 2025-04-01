@@ -78,7 +78,8 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
         List<Sighting> sightings = [];
         for (int i = 0; i < 20; i++)
         {
-            sightings.Add(new Sighting(){
+            sightings.Add(new Sighting()
+            {
                 Id = i + 1,
                 SpeciesId = (i % 10) + 1,
                 Description = $"Details of Sighting {i + 1}",
