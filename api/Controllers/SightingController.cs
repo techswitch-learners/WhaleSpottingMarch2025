@@ -46,7 +46,7 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        return sightings.ToList();
+        return sightings.Select(sighting => new SightingResponseModel(sighting)).ToList();
     }
 
     // POST: api/createSighting
