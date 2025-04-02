@@ -8,7 +8,7 @@ public interface ISightingRepository
 {
     Sighting GetSightingByID(int sightingId);
     Sighting CreateSighting(Sighting sighting);
-    IEnumerable<Sighting> GetAllSightings(SightingsQueryParameters parameters);
+    IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters);
 
 }
 
@@ -28,7 +28,7 @@ public class SightingRepository : ISightingRepository
             .FirstOrDefault();
     }
 
-    public IEnumerable<Sighting> GetAllSightings(SightingsQueryParameters parameters)
+    public IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters)
     {
         return _context.Sighting
             .Include(sighting => sighting.Location)
