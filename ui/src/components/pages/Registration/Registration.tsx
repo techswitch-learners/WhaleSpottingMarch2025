@@ -15,17 +15,46 @@ export const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  const validatePassword = (password: string) => {
+    let errMessage = "";
+    if (password.length < 6) {
+      errMessage = "Password must be 6 characters long.";
+    }
+
+    if (!password.match(/[a-z]/)) {
+      errMessage += "Password must contain atleast 1 lowercase letter.";
+    }
+
+    if (!password.match(/[A-Z]/)) {
+      errMessage += "Password must contain atleast 1 uppercase letter.";
+    }
+
+    if (!password.match(/[0-9]/)) {
+      errMessage += "Password must have 1 number.";
+    }
+
+    if (!password.match(/[\W_]/)) {
+      errMessage += "Password must have 1 non alphanumeric character.";
+    }
+    if (errMessage != "") {
+      setErrorMessage(errMessage);
+      return false;
+    }
+    return true;
+  };
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault();
 
     try {
-      const response = await register(formData);
-      if (response.status >= 300) {
-        setErrorMessage(response.statusText);
-      } else {
-        navigate("/ViewSightings");
+      if (validatePassword(formData.password)) {
+        const response = await register(formData);
+        if (response.status >= 300) {
+          setErrorMessage("");
+        } else {
+          navigate("/LogIn");
+        }
       }
     } catch {
       setErrorMessage("An error has occurred.");
@@ -61,7 +90,7 @@ export const Register = () => {
 
         <div className="email">
           <label htmlFor="email"> Email: </label>
-          <input name="email" onChange={handleChange} required />
+          <input name="email" type="email" onChange={handleChange} required />
         </div>
 
         <div className="password">

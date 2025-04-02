@@ -28,12 +28,12 @@ export const LogIn = () => {
         setErrorMessage("Incorrect username and password.");
       }
       if (response.status == 200) {
+        loginContext.logIn();
         navigate("/");
       }
     } catch (error) {
       setErrorMessage("An error occurred during login." + error);
     }
-    loginContext.logIn();
   };
   return (
     <div className="login-container">
@@ -47,13 +47,23 @@ export const LogIn = () => {
         <div className="username">
           <label htmlFor="username">
             Username
-            <input type={"text"} name="username" onChange={handleChange} required />
+            <input
+              type={"text"}
+              name="username"
+              onChange={handleChange}
+              required
+            />
           </label>
         </div>
         <div className="password">
           <label htmlFor="password">
             Password
-            <input type={"password"} name="password" onChange={handleChange} required />
+            <input
+              type={"password"}
+              name="password"
+              onChange={handleChange}
+              required
+            />
           </label>
         </div>
         <button className="submit-button" type="submit">

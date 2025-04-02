@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
 import { fetchPOSTRequest } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../LoginManager/LoginManager";
 
 type ValuePiece = Date | null;
 
@@ -20,6 +21,7 @@ export interface WhaleSighting {
 }
 
 export const WhaleSightingForm = () => {
+  const loginContext = useContext(LoginContext);
   const [formData, setFormData] = useState<WhaleSighting>({
     species: 0,
     description: "",
@@ -34,6 +36,16 @@ export const WhaleSightingForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+  if (!loginContext.isLoggedIn) {
+    return (
+      <div>
+        <h1> Please log in to view this page </h1>
+        <h3>
+          <a href="/LogIn"> Login </a>
+        </h3>
+      </div>
+    );
+  }
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
