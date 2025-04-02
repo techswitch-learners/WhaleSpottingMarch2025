@@ -13,11 +13,13 @@ public class SightingController : ControllerBase
     private readonly ILogger<SightingController> _logger;
     private readonly ISightingRepository _sightingRepository;
     private readonly ISpeciesRepository _speciesRepository;
-    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILogger<SightingController> logger)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILogger<SightingController> logger, IWebHostEnvironment webHostEnvironment)
     {
         _sightingRepository = sightingRepository;
         _speciesRepository = speciesRepository;
         _logger = logger;
+        _webHostEnvironment= webHostEnvironment;
     }
 
     // GET: api/Sighting/1
@@ -46,12 +48,28 @@ public class SightingController : ControllerBase
 
     // POST: api/createSighting
     [HttpPost("createSighting")]
-    public IActionResult CreateSighting([FromBody] CreateSightingRequest sightingRequest)
+    public async Task<IActionResult> CreateSighting([FromForm] CreateSightingRequest sightingRequest, IFormFile image)
     {
+
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+
+        string? imagePath = null;
+        if (image != null)
+        {
+            var fileName = $"{Guid.NewGuid()}-{Path.GetFileName(image.FileName)}";
+            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            imagePath = Path.Combine("images", fileName);
+        }
+
         Location newLocation = new Location() { Latitude = sightingRequest.Latitude, Longitude = sightingRequest.Longitude };
         Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
         Sighting newSighting = new Sighting
@@ -62,7 +80,7 @@ public class SightingController : ControllerBase
             ReportDate = DateTime.UtcNow,
             Quantity = sightingRequest.Quantity,
             Location = newLocation,
-            ImageSource = sightingRequest.ImageSource
+            ImageSource = imagePath
         };
         var sighting = _sightingRepository.CreateSighting(newSighting);
         var url = Url.Action("GetSightingByID", new { id = sighting.Id });
