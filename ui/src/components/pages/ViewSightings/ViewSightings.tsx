@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import "./ViewSightings.scss";
 import { SightingsResponse } from "../../../models/apiModels.ts";
 import { getSightings } from "../../../utils/apiClient.tsx";
-
-const MEDIUM_DEVICE_SIZE = 760;
+import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
 
 const fetchSightings = async () => {
   try {
@@ -16,12 +15,12 @@ const fetchSightings = async () => {
 export const ViewSightings = () => {
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
   const [isMobile, setIsMobile] = useState(
-    window.innerWidth <= MEDIUM_DEVICE_SIZE,
+    window.innerWidth <= TABLET_MIN_WIDTH,
   );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= MEDIUM_DEVICE_SIZE);
+      setIsMobile(window.innerWidth <= TABLET_MIN_WIDTH);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
