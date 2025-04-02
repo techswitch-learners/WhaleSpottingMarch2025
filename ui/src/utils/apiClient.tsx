@@ -36,8 +36,12 @@ export const login = async (login: Login) => {
     import.meta.env.VITE_APP_API_HOST + "/Account/login",
     {
       method: "POST",
+      credentials: "include",
       body: JSON.stringify(login),
-      headers: new Headers({ "Content-Type": "application/json" }),
+      headers: new Headers({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+      }),
     },
   );
   return fetchResponse;
