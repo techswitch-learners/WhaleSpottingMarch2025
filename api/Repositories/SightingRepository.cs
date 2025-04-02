@@ -12,7 +12,7 @@ public interface ISightingRepository
     Sighting GetSightingByID(int sightingId);
     Sighting CreateSighting(Sighting sighting);
     IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters);
-    IEnumerable<Sighting> GetSightingsByLocation(Point geoCoordinate , int radius );
+    IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius);
 
 }
 
@@ -48,9 +48,11 @@ public class SightingRepository : ISightingRepository
 
     public IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius)
     {
-       return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius));
+       return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius))
+                               .Include(sighting => sighting.Species)
+                               .Include(sighting => sighting.Location);
     }
-    public LocationSearchResponseModel GetTopSpeciesAndRecentSightingsByLocation(Point userSearchLocation, int radius)
+   /* public LocationSearchResponseModel GetTopSpeciesAndRecentSightingsByLocation(Point userSearchLocation, int radius)
     {
         var sightings = GetSightingsByLocation(userSearchLocation, radius);
         var recentSightings = sightings.AsQueryable().Select(sighting => new SightingResponseModel
@@ -84,7 +86,7 @@ public class SightingRepository : ISightingRepository
             TopSpecies = topSpecies,
             RecentSightings = recentSightings
         };
-    }
+    }*/
     public Sighting CreateSighting(Sighting sighting)
     {
         var insertResult = _context.Sighting.Add(sighting);

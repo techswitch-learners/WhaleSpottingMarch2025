@@ -27,7 +27,28 @@ public class LocationController : ControllerBase
   public ActionResult<LocationSearchResponseModel> GetTopSpeciesAndRecentSightingsByLocation(double latitude, double longitude, int radius = 10)
   {
     var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(latitude, longitude);
-    var result = _sightingRepository.GetTopSpeciesAndRecentSightingsByLocation(userSearchLocation, radius);
+    var sightings =_sightingRepository.GetSightingsByLocation(userSearchLocation, radius);
+    var recentSightings = sightings.Select(sighting => new SightingResponseModel(sighting))
+                                                 .ToList()
+                                                 .OrderByDescending(sighting => sighting.SightingDate);
+
+    var topSpecies = sightings.GroupBy(s => s.Species.SpeciesName)
+                              .Select(group => new TopSpeciesResponseModel
+                                                   {
+                                                      Species = group.Key,
+                                                      NumSightings = group.Count(),
+                                                      LastSeen = group.Max(sighting => sighting.SightingDate)
+                                                  })
+                               .OrderByDescending(s => s.NumSightings)
+                               .ThenByDescending(s => s.LastSeen)
+                               .ToList();             
+
+    var result = new LocationSearchResponseModel
+    {
+      TopSpecies = topSpecies,
+      RecentSightings = recentSightings
+    }; 
+    
     return Ok(new
     {
       result.TopSpecies,

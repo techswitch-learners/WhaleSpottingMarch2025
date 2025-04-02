@@ -3,7 +3,7 @@ namespace WhaleSpottingBackend.Models.ApiModels;
 
 public class LocationSearchResponseModel
 {
-    //weather forecast
+    //weather forecast  
     public IEnumerable<TopSpeciesResponseModel> TopSpecies {get;set;}
     public IEnumerable<SightingResponseModel> RecentSightings {get;set;}  
 }
