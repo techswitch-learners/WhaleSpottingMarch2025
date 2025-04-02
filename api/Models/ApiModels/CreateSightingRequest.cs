@@ -7,5 +7,5 @@ public class CreateSightingRequest
     public required int Quantity { get; set; }
     public required double Latitude { get; set; }
     public required double Longitude { get; set; }
-    public required string ImageSource { get; set; }
+    public string? ImageSource { get; set; }
 }

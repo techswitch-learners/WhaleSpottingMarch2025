@@ -34,8 +34,8 @@ public class SightingRepository : ISightingRepository
             .Include(sighting => sighting.Location)
             .Include(sighting => sighting.Species)
             .Where(sighting => parameters.SpeciesId == null || sighting.SpeciesId == parameters.SpeciesId)
-            // .Where(sighting => parameters.HasImage == null || 
-            //     ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
+            .Where(sighting => parameters.HasImage == null ||
+                ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
             .Where(sighting => parameters.SightingStartDate == null ||
                 sighting.SightingDate >= parameters.SightingStartDate && sighting.SightingDate <= parameters.SightingEndDate)
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
