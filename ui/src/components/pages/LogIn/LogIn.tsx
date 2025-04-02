@@ -13,26 +13,26 @@ export const LogIn = () => {
     <div className="login-container">
       <h1 className="title">Log In</h1>
       <form className="login-form" onSubmit={tryLogin}>
-        <label className="form-label">
-          {" "}
-          Username
-          <input
-            className="form-input"
-            type={"text"}
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        <label className="form-label">
-          {" "}
-          Password
-          <input
-            className="form-input"
-            type={"password"}
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
+        <div className="username">
+          <label htmlFor="username">
+            Username
+            <input
+              type={"text"}
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </label>
+        </div>
+        <div className="password">
+          <label htmlFor="password">
+            Password
+            <input
+              type={"password"}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </label>
+        </div>
         <button className="submit-button" type="submit">
           Log In
         </button>

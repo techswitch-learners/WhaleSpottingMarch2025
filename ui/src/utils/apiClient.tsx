@@ -22,3 +22,15 @@ export const getSightings = async () => {
   const data = await fetchResponse.json();
   return data;
 };
+
+export const login = async (username: string, password: string) => {
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + "/login",
+    {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: new Headers({ "Content-Type": "application/json" }),
+    },
+  );
+  return fetchResponse.status;
+};
