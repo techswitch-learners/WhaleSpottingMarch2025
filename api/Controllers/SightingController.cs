@@ -7,7 +7,6 @@ using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
-using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 using WhaleSpottingBackend.Repositories;
 namespace WhaleSpottingBackend.Controllers;
 
@@ -28,7 +27,7 @@ public class SightingController : ControllerBase
         _webHostEnvironment = webHostEnvironment;
     }
 
-    // GET: api/Sighting/1
+    // GET: /Sighting/1
     [HttpGet("{id}")]
     public ActionResult<SightingResponseModel> GetSightingByID([FromRoute] int id)
     {
@@ -41,8 +40,8 @@ public class SightingController : ControllerBase
         return response;
     }
 
-    // GET: api/Sightings
-    [HttpGet("")]
+    // GET: /Sighting
+    [HttpGet("")] 
     public ActionResult<IEnumerable<SightingResponseModel>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
     {
         var sightings = _sightingRepository.GetSightingsBySearchQuery(parameters);
@@ -56,7 +55,7 @@ public class SightingController : ControllerBase
     }
 
 
-    // POST: api/createSighting
+    // POST: /createSighting
     [HttpPost("createSighting")]
     public async Task<IActionResult> CreateSighting([FromForm] CreateSightingRequest sightingRequest, IFormFile? image)
     {
