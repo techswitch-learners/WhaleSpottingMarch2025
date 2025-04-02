@@ -57,7 +57,7 @@ table {
 }
 
 // Mobile styling
-@media (max-width: constants.$mobile-max-width) {
+@media (max-width: constants.$tablet-min-width) {
     .ul-container {
         display: flex;
         flex-direction: column;
