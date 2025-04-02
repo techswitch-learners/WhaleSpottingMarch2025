@@ -47,13 +47,13 @@ export const LogIn = () => {
         <div className="username">
           <label htmlFor="username">
             Username
-            <input type={"text"} name="username" onChange={handleChange} />
+            <input type={"text"} name="username" onChange={handleChange} required />
           </label>
         </div>
         <div className="password">
           <label htmlFor="password">
             Password
-            <input type={"password"} name="password" onChange={handleChange} />
+            <input type={"password"} name="password" onChange={handleChange} required />
           </label>
         </div>
         <button className="submit-button" type="submit">
