@@ -50,6 +50,7 @@ export const NavigationBar = () => {
     { name: "View Locations", link: "/ViewLocations" },
     { name: "Admin", link: "/Admin" },
     { name: "Log In", link: "/LogIn" },
+    { name: "Register", link: "/Register" },
   ];
 
   const getMainMenuLinks = () =>
