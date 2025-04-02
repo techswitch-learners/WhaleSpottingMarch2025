@@ -26,4 +26,3 @@ public class SpeciesRepository : ISpeciesRepository
         return _context.Species;
     }
 }
-

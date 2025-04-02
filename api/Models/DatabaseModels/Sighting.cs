@@ -16,7 +16,7 @@ public class Sighting
     [Column("Quantity")]
     public required int Quantity { get; set; }
     [Column("LocationId")]
-    public Location? Location { get; set; }
+    public LocationModel? Location { get; set; }
     public int LocationId { get; set; }
     [Column("ImageSource")]
     public string? ImageSource { get; set; }
