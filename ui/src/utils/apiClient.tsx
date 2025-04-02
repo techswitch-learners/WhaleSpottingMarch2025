@@ -1,3 +1,6 @@
+import { WhaleSighting } from "../components/formComponents/whaleSightingForm/WhaleSightingForm";
+import { Login } from "../models/apiModels";
+
 export const fetchPOSTRequest = async (
   formData: FormData,
   controllerEndpoint: string,
@@ -28,14 +31,14 @@ export const getAllSpecies = async () => {
   return data;
 };
 
-export const login = async (username: string, password: string) => {
+export const login = async (login: Login) => {
   const fetchResponse = await fetch(
-    import.meta.env.VITE_APP_API_HOST + "/login",
+    import.meta.env.VITE_APP_API_HOST + "/Account/login",
     {
       method: "POST",
-      body: JSON.stringify(formData),
+      body: JSON.stringify(login),
       headers: new Headers({ "Content-Type": "application/json" }),
     },
   );
-  return fetchResponse.status;
+  return fetchResponse;
 };
