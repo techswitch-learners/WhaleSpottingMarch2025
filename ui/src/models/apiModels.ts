@@ -19,3 +19,8 @@ export interface Location {
   latitude: number;
   longitude: number;
 }
+
+export interface Login {
+  username: string;
+  password: string;
+}
