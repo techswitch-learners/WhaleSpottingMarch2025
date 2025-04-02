@@ -9,7 +9,7 @@ public class SightingsQueryParameters
         get
         { return _pageSize; }
         set
-        { _pageSize = value < 50 ? _pageSize = value : _pageSize = _maxPageSize; }
+        { _pageSize = value < _maxPageSize ? _pageSize = value : _pageSize = _maxPageSize; }
     }
     private readonly int _maxPageSize = 50;
     public int? SpeciesId { get; set; }
