@@ -19,7 +19,7 @@ public class SightingController : ControllerBase
         _sightingRepository = sightingRepository;
         _speciesRepository = speciesRepository;
         _logger = logger;
-        _webHostEnvironment= webHostEnvironment;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     // GET: api/Sighting/1
@@ -50,7 +50,6 @@ public class SightingController : ControllerBase
     [HttpPost("createSighting")]
     public async Task<IActionResult> CreateSighting([FromForm] CreateSightingRequest sightingRequest, IFormFile? image)
     {
-
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
