@@ -18,7 +18,7 @@ export interface WhaleSighting {
   description: string;
   sightingDate: Value;
   quantity: number;
-  latitude: number;
+  latitude: number | undefined;
   longitude: number;
   imageSource: string;
 }
@@ -36,7 +36,9 @@ export const WhaleSightingForm = () => {
 
   const [dateValue, setDate] = useState<Value>(new Date());
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [location, setLocation] = useState<GeoLocation>();
+  //const [latitude, setLatitude] = useState<number | undefined> ();
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (
@@ -73,6 +75,12 @@ export const WhaleSightingForm = () => {
     setDate(dateValue);
     formData.sightingDate = dateValue;
   };
+
+  //  const [location, setLocation] = useState<GeoLocation>();
+  // const onLatitudeChange = () => {
+  //   setLatitude(location?.latitude);
+  //   formData.latitude = location?.latitude;
+  // };
 
   return (
     <div className="createSightingForm">
@@ -155,6 +163,9 @@ export const WhaleSightingForm = () => {
             required
           ></input>
         </div>
+        <div>
+          Select Sighting Location: <LocationPicker onLocationSelection={setLocation} />
+        </div>
         <div className="field">
           <label htmlFor="latitude">
             Latitude:
@@ -165,8 +176,8 @@ export const WhaleSightingForm = () => {
             name="latitude"
             type="number"
             className="inputStyle"
-            placeholder="e.g. 40.741895"
-            value={formData.latitude}
+            placeholder="click on map to select latitude"
+            value={location?.latitude}
             minLength={10}
             maxLength={10}
             onChange={handleChange}
@@ -184,8 +195,8 @@ export const WhaleSightingForm = () => {
             name="longitude"
             type="number"
             className="inputStyle"
-            placeholder="e.g. -73.989308"
-            value={formData.longitude}
+            placeholder="click on map to select longitude"
+            value={location?.longitude}
             minLength={10}
             maxLength={10}
             onChange={handleChange}
