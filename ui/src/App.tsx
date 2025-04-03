@@ -10,6 +10,7 @@ import { ViewLocations } from "./components/pages/ViewLocations/ViewLocations";
 import { LogIn } from "./components/pages/LogIn/LogIn";
 import { Register } from "./components/pages/Registration/Registration";
 import { LoginManager } from "./components/LoginManager/LoginManager";
+import { LogOut } from "./components/pages/LogOut/LogOut";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/ViewLocations" element={<ViewLocations />} />
             <Route path="/LogIn" element={<LogIn />} />
             <Route path="/Register" element={<Register />} />
+            <Route path="/Logout" element={<LogOut />} />
           </Routes>
         </div>
       </LoginManager>

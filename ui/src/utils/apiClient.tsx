@@ -47,6 +47,20 @@ export const login = async (login: Login) => {
   return fetchResponse;
 };
 
+export const logout = async () => {
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + "/Account/logout",
+    {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+      }),
+    },
+  );
+  return fetchResponse;
+};
+
 export const register = async (formData: Registration) => {
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + "/Account/register",

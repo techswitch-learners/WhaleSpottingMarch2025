@@ -1,0 +1,23 @@
+@use '@/styles/constants';
+@use "sass:color";
+
+.logout-container {
+    float: right;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    color: black;
+}
+
+button {
+    background-color: constants.$background-navigation;
+    &:hover {
+         background-color: color.adjust(constants.$background-navigation, $lightness: 50%);
+    } 
+}
+//Mobile styling
+@media (max-width: constants.$tablet-min-width) {
+    .logout-container {
+        color: black;
+    }
+}
