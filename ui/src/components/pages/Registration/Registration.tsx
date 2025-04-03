@@ -72,13 +72,13 @@ export const Register = () => {
       {errorMessage.length > 0 && (
         <p className="errorMessage">{errorMessage}</p>
       )}
-      <form onSubmit={handleSubmit}>
-        <div className="name">
+      <form onSubmit={handleSubmit} className="form">
+        <div className="form-field">
           <label htmlFor="name"> Name: </label>
           <input name="name" onChange={handleChange} maxLength={50} required />
         </div>
 
-        <div className="username">
+        <div className="form-field">
           <label htmlFor="username"> Username: </label>
           <input
             name="username"
@@ -88,16 +88,18 @@ export const Register = () => {
           />
         </div>
 
-        <div className="email">
+        <div className="form-field">
           <label htmlFor="email"> Email: </label>
           <input name="email" type="email" onChange={handleChange} required />
         </div>
 
-        <div className="password">
+        <div className="form-field">
           <label htmlFor="password"> Password: </label>
           <input name="password" onChange={handleChange} required />
         </div>
-        <button type="submit">Submit</button>
+        <div className="form-field">
+          <button type="submit">Submit</button>
+        </div>
       </form>
     </div>
   );

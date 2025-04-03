@@ -1,0 +1,28 @@
+@use '@/styles/constants';
+
+// Desktop styling
+.registrationForm {
+    margin: constants.$margin-default 0;
+    font-size: constants.$font-size-normal;
+    font-family: constants.$font-family-normal;
+    padding: constants.$padding-small constants.$padding-default;    
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}
+
+button {
+    color: constants.$text-primary-navigation;
+    border-radius: constants.$border-radius;
+}
+
+//Mobile styling
+@media (max-width: constants.$tablet-min-width) {
+    .registrationForm { 
+        max-width: 100%;
+    }
+}

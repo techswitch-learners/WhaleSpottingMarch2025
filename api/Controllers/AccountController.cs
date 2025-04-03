@@ -58,12 +58,20 @@ public class AccountController : ControllerBase
             HttpContext.Response.Cookies.Append("UserRole", role[0] , new CookieOptions
             {
                 Expires = DateTimeOffset.UtcNow.AddMinutes(60),
-                HttpOnly = true, 
+                HttpOnly = false, 
                 IsEssential = true 
             });
             return Ok(new { message = "Login successful." });
         }
         return Unauthorized("Incorrect username and password.");
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        HttpContext.Response.Cookies.Delete("UserRole"); 
+        return Ok(new { message = "Logged out successfully." });
     }
 
     [HttpGet("Public")]

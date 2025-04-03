@@ -39,7 +39,7 @@ export const WhaleSightingForm = () => {
   if (!loginContext.isLoggedIn) {
     return (
       <div>
-        <h1> Please log in to view this page </h1>
+        <h3> Please log in to view this page </h3>
         <h3>
           <a href="/LogIn"> Login </a>
         </h3>
@@ -84,9 +84,11 @@ export const WhaleSightingForm = () => {
 
   return (
     <div className="createSightingForm">
-      <h2>Report your whale sighting</h2>
-      <p>Tell us about the whale that you saw using the form below.</p>
-      <p>* (asterisk) denotes a required field.</p>
+      <div>
+        <h2>Report your whale sighting</h2>
+        <p>Tell us about the whale that you saw using the form below.</p>
+        <p>* (asterisk) denotes a required field.</p>
+      </div>
       {errorMessage.length > 0 && (
         <p className="errorMessage">{errorMessage}</p>
       )}

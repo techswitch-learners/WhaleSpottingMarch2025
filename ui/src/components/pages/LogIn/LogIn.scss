@@ -1,17 +1,26 @@
 @use '@/styles/constants';
 
-.login {
-  padding: constants.$padding-default;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  
   .title {
     font-size: constants.$font-size-heading;
-    text-align: left;
+    text-align: center;
   }
   
   .login-form {
     margin: constants.$margin-default 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: constants.$padding-small constants.$padding-default;  
+    gap: 16px;
   }
+  
+  button {
+    color: constants.$text-primary-navigation;
+    border-radius: constants.$border-radius;
+  }
+
+  @media (max-width: constants.$tablet-min-width) {
+    .login-container { 
+        max-width: 100%;
+    }
 }
