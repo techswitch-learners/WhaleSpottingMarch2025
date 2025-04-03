@@ -1,4 +1,6 @@
+
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
@@ -9,7 +11,7 @@ public interface ISightingRepository
     Sighting GetSightingByID(int sightingId);
     Sighting CreateSighting(Sighting sighting);
     IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters);
-
+    IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius);
 }
 
 public class SightingRepository : ISightingRepository
@@ -23,9 +25,9 @@ public class SightingRepository : ISightingRepository
     public Sighting GetSightingByID(int id)
     {
         return _context.Sighting.Where(sighting => sighting.Id == id)
-            .Include(sighting => sighting.Location)
-            .Include(sighting => sighting.Species)
-            .FirstOrDefault();
+                                .Include(sighting => sighting.Location)
+                                .Include(sighting => sighting.Species)
+                                .FirstOrDefault();
     }
 
     public IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters)
@@ -42,6 +44,12 @@ public class SightingRepository : ISightingRepository
             .Take(parameters.PageSize);
     }
 
+    public IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius)
+    {
+        return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius))
+                                .Include(sighting => sighting.Species)
+                                .Include(sighting => sighting.Location);
+    }
     public Sighting CreateSighting(Sighting sighting)
     {
         var insertResult = _context.Sighting.Add(sighting);
