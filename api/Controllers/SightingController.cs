@@ -48,7 +48,7 @@ public class SightingController : ControllerBase
 
     // POST: api/createSighting
     [HttpPost("createSighting")]
-    public async Task<IActionResult> CreateSighting([FromForm] CreateSightingRequest sightingRequest, IFormFile image)
+    public async Task<IActionResult> CreateSighting([FromForm] CreateSightingRequest sightingRequest, IFormFile? image)
     {
 
         if (!ModelState.IsValid)
