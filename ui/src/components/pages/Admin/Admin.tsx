@@ -6,7 +6,7 @@ export const Admin = () => {
   if (!loginContext.isLoggedIn && !loginContext.isAdmin) {
     return (
       <div>
-        <h1> Only admin can view this page. Please log in as admin </h1>
+        <h3> Only admin can view this page. Please log in as admin </h3>
         <h3>
           <a href="/LogIn"> Login </a>
         </h3>

@@ -19,6 +19,7 @@ export function LoginManager(props: LoginManagerProps): JSX.Element {
     setLoggedIn(true);
     const role = getCookie("UserRole");
     if (role == "Admin") {
+      console.log(role);
       setAdmin(true);
     }
     console.log(role);

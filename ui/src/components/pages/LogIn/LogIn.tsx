@@ -37,38 +37,36 @@ export const LogIn = () => {
   };
   return (
     <div className="login-container">
-      <h1 className="title">Log In</h1>
+      <h2 className="title">Log In</h2>
 
       {errorMessage.length > 0 && (
         <p className="errorMessage">{errorMessage}</p>
       )}
 
       <form className="login-form" onSubmit={tryLogin}>
-        <div className="username">
-          <label htmlFor="username">
-            Username
-            <input
-              type={"text"}
-              name="username"
-              onChange={handleChange}
-              required
-            />
-          </label>
+        <div className="form-field">
+          <label htmlFor="username"> Username </label>
+          <input
+            type={"text"}
+            name="username"
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className="password">
-          <label htmlFor="password">
-            Password
-            <input
-              type={"password"}
-              name="password"
-              onChange={handleChange}
-              required
-            />
-          </label>
+        <div className="form-field">
+          <label htmlFor="password"> Password </label>
+          <input
+            type={"password"}
+            name="password"
+            onChange={handleChange}
+            required
+          />
         </div>
-        <button className="submit-button" type="submit">
-          Log In
-        </button>
+        <div className="form-field">
+          <button className="submit-button" type="submit">
+            Log In
+          </button>
+        </div>
       </form>
     </div>
   );
