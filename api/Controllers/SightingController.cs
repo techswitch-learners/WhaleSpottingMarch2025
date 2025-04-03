@@ -1,8 +1,11 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using NetTopologySuite.Geometries;
+using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
+using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 using WhaleSpottingBackend.Repositories;
 namespace WhaleSpottingBackend.Controllers;
 
@@ -13,10 +16,12 @@ public class SightingController : ControllerBase
     private readonly ILogger<SightingController> _logger;
     private readonly ISightingRepository _sightingRepository;
     private readonly ISpeciesRepository _speciesRepository;
-    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILogger<SightingController> logger)
+    private readonly ILocationRepository _locationRepository;
+    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository,ILocationRepository locationRepository, ILogger<SightingController> logger)
     {
         _sightingRepository = sightingRepository;
         _speciesRepository = speciesRepository;
+        _locationRepository = locationRepository;
         _logger = logger;
     }
 
@@ -52,7 +57,13 @@ public class SightingController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        Location newLocation = new Location(sightingRequest.Latitude, sightingRequest.Longitude);
+        
+        Point userLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(sightingRequest.Latitude, sightingRequest.Longitude);
+        LocationModel Location = _locationRepository.GetLocationByGeoCoordinates(userLocation);
+        if (Location == null)
+        {
+         Location = new LocationModel(userLocation);
+        }
         Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
         Sighting newSighting = new Sighting
         {
@@ -61,7 +72,7 @@ public class SightingController : ControllerBase
             SightingDate = sightingRequest.SightingDate,
             ReportDate = DateTime.UtcNow,
             Quantity = sightingRequest.Quantity,
-            Location = newLocation,
+            Location = Location,
             ImageSource = sightingRequest.ImageSource
         };
         var sighting = _sightingRepository.CreateSighting(newSighting);
