@@ -16,15 +16,15 @@ export function LoginManager(props: LoginManagerProps): JSX.Element {
 
   function logIn() {
     setLoggedIn(true);
-    getCookieValue("UserRole");
+    //getCookieValue("UserRole");
   }
 
-  function getCookieValue(name: string) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    // if (parts.length === 2) return parts.pop().split(";").shift();
-    // return null;
-  }
+  // function getCookieValue(name: string) {
+  //   const value = `; ${document.cookie}`;
+  //   const parts = value.split(`; ${name}=`);
+  //   if (parts.length === 2) return "";
+  //   return null;
+  // }
 
   function logOut() {
     setLoggedIn(false);
