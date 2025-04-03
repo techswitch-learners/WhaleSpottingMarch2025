@@ -4,6 +4,10 @@ import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
 import { fetchPOSTRequest } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import LocationPicker, {
+  GeoLocation,
+} from "../../LocationPicker/LocationPicker";
+import "../../LocationPicker/LocationPicker.scss";
 
 type ValuePiece = Date | null;
 
