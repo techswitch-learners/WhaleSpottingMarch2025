@@ -152,8 +152,8 @@ export const WhaleSightingForm = () => {
             <option value="">Please select a species</option>
             <option value="1">Blue Whale</option>
             <option value="2">Humpback Whale</option>
-            <option value="3">Sperm Whale</option>
-            <option value="4">Orca</option>
+            <option value="3">Orca</option>
+            <option value="4">Sperm Whale</option>
             <option value="5">Fin Whale</option>
             <option value="6">Minke Whale</option>
             <option value="7">Beluga Whale</option>
