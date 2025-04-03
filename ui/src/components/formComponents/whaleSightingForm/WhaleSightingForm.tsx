@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
@@ -16,7 +16,7 @@ export interface WhaleSighting {
   quantity: number;
   latitude: number;
   longitude: number;
-  imageSource: string;
+  // imageSource: string;
 }
 
 export const WhaleSightingForm = () => {
@@ -27,11 +27,13 @@ export const WhaleSightingForm = () => {
     quantity: 0,
     latitude: 0,
     longitude: 0,
-    imageSource: "",
+    // imageSource: "",
   });
 
   const [dateValue, setDate] = useState<Value>(new Date());
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -40,9 +42,19 @@ export const WhaleSightingForm = () => {
   ): Promise<void> => {
     event.preventDefault();
 
+    const newFormDataWithImage = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      newFormDataWithImage.append(key, value);
+    });
+    // newFormDataWithImage.append("description", "Details of Sighting");
+    if (selectedFile) {
+      newFormDataWithImage.append("image", selectedFile);
+      newFormDataWithImage.append("ImageSource", selectedFile.name);
+    }
+
     try {
       const response = await fetchPOSTRequest(
-        formData,
+        newFormDataWithImage,
         "/Sighting/createSighting",
       );
       if (response >= 300) {
@@ -67,7 +79,28 @@ export const WhaleSightingForm = () => {
 
   const onCalendarChange = (dateValue: Value) => {
     setDate(dateValue);
+
     formData.sightingDate = dateValue;
+  };
+
+  // create a preview as aV side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);
+    }
   };
 
   return (
@@ -193,12 +226,13 @@ export const WhaleSightingForm = () => {
           <input
             className="inputStyle"
             id="image"
-            name="imageSource"
-            type="url"
+            name="selectedFile"
+            type="file"
             placeholder="Url to your image"
-            value={formData.imageSource}
-            onChange={handleChange}
+            // value={formData.name}
+            onChange={handleFileChange}
           ></input>
+          {selectedFile && preview && <img src={preview} />}
         </div>
         <button type="submit">Submit</button>
       </form>

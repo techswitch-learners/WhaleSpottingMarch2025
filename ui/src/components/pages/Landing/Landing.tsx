@@ -33,8 +33,8 @@ export const Landing = () => {
 
     const formData = new FormData();
     if (selectedFile) {
-      console.log('selectedFile', selectedFile);
-      
+      console.log("selectedFile", selectedFile);
+
       formData.append("Description", "Details of Sighting");
       formData.append("image", selectedFile);
       formData.append("ImageSource", selectedFile.name);
