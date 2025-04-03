@@ -16,7 +16,6 @@ export interface WhaleSighting {
   quantity: number;
   latitude: number;
   longitude: number;
-  // imageSource: string;
 }
 
 export const WhaleSightingForm = () => {
@@ -27,7 +26,6 @@ export const WhaleSightingForm = () => {
     quantity: 0,
     latitude: 0,
     longitude: 0,
-    // imageSource: "",
   });
 
   const [dateValue, setDate] = useState<Value>(new Date());
@@ -44,13 +42,10 @@ export const WhaleSightingForm = () => {
 
     const newFormDataWithImage = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
-      if (key === "sightingDate") {
-        newFormDataWithImage.append(key, value.toISOString());
-      } else {
-        newFormDataWithImage.append(key, value);
-      }
+      value = key === "sightingDate" ? value.toISOString() : value;
+      newFormDataWithImage.append(key, value);
     });
-    // newFormDataWithImage.append("description", "Details of Sighting");
+
     if (selectedFile) {
       newFormDataWithImage.append("image", selectedFile);
       newFormDataWithImage.append("ImageSource", selectedFile.name);
@@ -83,11 +78,9 @@ export const WhaleSightingForm = () => {
 
   const onCalendarChange = (dateValue: Value) => {
     setDate(dateValue);
-
     formData.sightingDate = dateValue;
   };
 
-  // create a preview as aV side effect, whenever selected file is changed
   useEffect(() => {
     if (!selectedFile) {
       setPreview(null);
@@ -97,7 +90,6 @@ export const WhaleSightingForm = () => {
     const objectUrl = URL.createObjectURL(selectedFile);
     setPreview(objectUrl);
 
-    // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
@@ -233,11 +225,15 @@ export const WhaleSightingForm = () => {
             name="selectedFile"
             type="file"
             placeholder="Url to your image"
-            // value={formData.name}
             onChange={handleFileChange}
           ></input>
-          {selectedFile && preview && <img src={preview} />}
         </div>
+        {selectedFile && preview && (
+          <div>
+            <p>Image preview:</p>
+            <img className="preview-image" src={preview} />
+          </div>
+        )}
         <button type="submit">Submit</button>
       </form>
     </div>

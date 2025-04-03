@@ -1,4 +1,4 @@
-@use "../../../styles/constants.scss" as *;
+@use "@/styles/constants" as *;
 
 /* Mobile */
 @media only screen and (min-width: 320px) {
@@ -110,4 +110,10 @@ label {
 
 .errorMessage {
     color: $text-error;
+}
+
+.preview-image {
+    margin: 0px 0px 10px 0px;
+    width: 30%;
+    border-radius: $border-radius;
 }
