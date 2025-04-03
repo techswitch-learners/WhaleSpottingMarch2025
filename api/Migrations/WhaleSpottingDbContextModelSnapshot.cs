@@ -168,10 +168,6 @@ namespace WhaleSpottingBackend.Migrations
                         .IsRequired()
                         .HasColumnType("geometry");
 
-                    b.Property<Point>("SpatialCoordinates")
-                        .IsRequired()
-                        .HasColumnType("geometry");
-
                     b.HasKey("Id");
 
                     b.ToTable("Location");

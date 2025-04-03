@@ -5,6 +5,7 @@ using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.ApiModels;
 using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Models.DatabaseModels;
+using WhaleSpottingBackend.Models.ApiModels;
 namespace WhaleSpottingBackend.Repositories;
 
 public interface ISightingRepository

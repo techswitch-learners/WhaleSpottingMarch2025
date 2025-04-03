@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Repositories;
-
+using WhaleSpottingBackend.Helper;
 namespace WhaleSpottingBackend.Controllers;
 
 [ApiController]
