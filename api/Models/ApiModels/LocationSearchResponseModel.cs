@@ -10,8 +10,5 @@ public class TopSpeciesResponseModel
 {
     public string Species { get; set; }
     public int NumSightings { get; set; }
-    public DateTime LastSeen { get; set; }
-    public string Species { get; set; }
-    public int NumSightings { get; set; }
-    public DateTime LastSeen { get; set; }
+    public DateTime LastSeen { get; set; }   
 }

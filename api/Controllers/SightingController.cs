@@ -38,8 +38,8 @@ public class SightingController : ControllerBase
     }
 
     // GET: api/Sightings
-    [HttpGet("")]
-    public ActionResult<IEnumerable<Sighting>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
+    [HttpGet("")] //MADE CHANGE HERE FROM <IEnumerable<Sighting>> TO <IEnumerable<SightingResponseModel>>
+    public ActionResult<IEnumerable<SightingResponseModel>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
     {
         var sightings = _sightingRepository.GetSightingsBySearchQuery(parameters);
         if (sightings == null)
