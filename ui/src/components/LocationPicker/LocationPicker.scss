@@ -1,9 +1,14 @@
+@use '@/styles/constants';
+
 .location-picker-container{
-    width:50%
+    width: 50vh;
+    height: 50vh
 }
 
 .location-picker {
-    width:80vh;
-    height:80vh
+    width:200px;
+    height:200px
 }
+   
+
 
