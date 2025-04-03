@@ -47,10 +47,6 @@ public class LocationController : ControllerBase
             RecentSightings = recentSightings
         };
 
-        return Ok(new
-        {
-            result.TopSpecies,
-            result.RecentSightings
-        });
+        return Ok(result);
     }
 }
