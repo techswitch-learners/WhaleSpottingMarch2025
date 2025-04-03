@@ -44,7 +44,11 @@ export const WhaleSightingForm = () => {
 
     const newFormDataWithImage = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
-      newFormDataWithImage.append(key, value);
+      if (key === "sightingDate") {
+        newFormDataWithImage.append(key, value.toISOString());
+      } else {
+        newFormDataWithImage.append(key, value);
+      }
     });
     // newFormDataWithImage.append("description", "Details of Sighting");
     if (selectedFile) {

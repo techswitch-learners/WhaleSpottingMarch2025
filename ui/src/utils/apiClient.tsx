@@ -1,5 +1,3 @@
-// import { WhaleSighting } from "../components/formComponents/whaleSightingForm/WhaleSightingForm";
-
 export const fetchPOSTRequest = async (
   formData: FormData,
   controllerEndpoint: string,
@@ -9,7 +7,6 @@ export const fetchPOSTRequest = async (
     {
       method: "POST",
       body: formData,
-      // headers: new Headers({ "Content-Type": "application/json" }),
     },
   );
   return fetchResponse.status;
