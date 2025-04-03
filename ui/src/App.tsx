@@ -8,7 +8,7 @@ import { ReportSighting } from "./components/pages/ReportSighting/ReportSighting
 import { ViewSightings } from "./components/pages/ViewSightings/ViewSightings";
 import { ViewLocations } from "./components/pages/ViewLocations/ViewLocations";
 import { LogIn } from "./components/pages/LogIn/LogIn";
-import { TempLocation }  from "./components/pages/TempLocation/TempLocation";
+import { TempLocation } from "./components/pages/TempLocation/TempLocation";
 
 function App() {
   return (

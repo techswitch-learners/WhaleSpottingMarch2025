@@ -16,10 +16,7 @@ export type GeoLocation = {
   latitude: number;
 };
 
-function LocationPicker({
-  location,
-  onLocationSelection,
-}: LocationPickerProps) {
+function LocationPicker({ onLocationSelection }: LocationPickerProps) {
   const mapRef = useRef(null!);
   const popupRef = useRef<HTMLDivElement>(null!);
 
@@ -33,8 +30,8 @@ function LocationPicker({
       autoPan: {
         animation: {
           duration: 250,
-        }
-      }
+        },
+      },
     });
 
     const map = new Map({
@@ -50,20 +47,22 @@ function LocationPicker({
     map.on("click", (event) => {
       const clickedCoordinate = event.coordinate;
       const longitudelatitude = toLonLat(clickedCoordinate);
-      const clickedLocation: GeoLocation = {
+      const location = {
         longitude: longitudelatitude[0],
         latitude: longitudelatitude[1],
       };
-      onLocationSelection(clickedLocation);
+      onLocationSelection(location);
       overlay.setPosition(clickedCoordinate);
-      
 
       if (popupRef.current) {
-        popupRef.current.innerHTML = `<p>Latitude:</p><code>` + clickedLocation.latitude + 
-        `</code><p>Longitude:</p><code>` + clickedLocation.longitude + `</code>`;
+        popupRef.current.innerHTML =
+          `<p>Latitude:</p><code>` +
+          location.latitude +
+          `</code><p>Longitude:</p><code>` +
+          location.longitude +
+          `</code>`;
       }
-      overlay.setPosition(clickedCoordinate)
-      
+      overlay.setPosition(clickedCoordinate);
     });
     return () => map.setTarget();
   }, [onLocationSelection]);
@@ -71,7 +70,7 @@ function LocationPicker({
   return (
     <div className="location-picker-container">
       <div ref={mapRef} className="location-picker"></div>
-      <div ref ={popupRef} className= "ol-popup"></div>
+      <div ref={popupRef} className="ol-popup"></div>
     </div>
   );
 }
