@@ -7,7 +7,6 @@ using WhaleSpottingBackend.Repositories;
 
 namespace WhaleSpottingBackend.Controllers;
 
-namespace WhaleSpottingBackend.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class LocationController : ControllerBase
