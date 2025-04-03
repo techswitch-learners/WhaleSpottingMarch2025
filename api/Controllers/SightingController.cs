@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
-using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 using WhaleSpottingBackend.Repositories;
 using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 namespace WhaleSpottingBackend.Controllers;

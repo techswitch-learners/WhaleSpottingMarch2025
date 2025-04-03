@@ -17,6 +17,8 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
     {
         optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:WhaleSpottingDb"],
         x => x.UseNetTopologySuite());
+        optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:WhaleSpottingDb"],
+        x => x.UseNetTopologySuite());
     }
 
     public DbSet<Sighting> Sighting { get; set; }
