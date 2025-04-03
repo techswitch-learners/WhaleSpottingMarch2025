@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Repositories;
+using WhaleSpottingBackend.Models.ApiModels;
+using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Controllers;
 [ApiController]
@@ -19,19 +21,19 @@ public class LocationController :ControllerBase
         _logger = logger;
     }
 
-   // GET: api/location?latitude=34.2&longitude=45.6
+   //GET: api/location?latitude=34.2&longitude=45.6
     [HttpGet("{latitude}/{longitude}")]
-    public ActionResult IEnumerable<LocationSearchResponseModel> GetSightingsByLocation([FromQuery] double latitude, double longitude,int radius=10)
+    public ActionResult <IEnumerable<Sighting>> GetSightingsByLocation(double latitude, double longitude,int radius=10)
     {
 
       var GeoCoordinate = new Point(latitude, longitude) { SRID = 4326 };
-      Console.WriteLine("radius"+radius);  
+     // Console.WriteLine("radius"+radius);  
       var sighting = _sightingRepository.GetSightingsByLocation(GeoCoordinate,radius);
       if (sighting == null)
       {
         return NotFound();
       }
-      return IEnumerable<LocationSearchResponseModel>(sighting);
+      return sighting.ToList();
     }
 
     // GET: api/location?

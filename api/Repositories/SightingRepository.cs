@@ -11,6 +11,7 @@ public interface ISightingRepository
     Sighting GetSightingByID(int sightingId);
     Sighting CreateSighting(Sighting sighting);
     IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters);
+    IEnumerable<Sighting> GetSightingsByLocation(Point geoCoordinate , int radius );
 
 }
 
@@ -46,24 +47,34 @@ public class SightingRepository : ISightingRepository
 
     public IEnumerable<Sighting> GetSightingsByLocation(Point geoCoordinate , int radius )
     {
-        return _context.Sighting.Include(Models.DatabaseModels.Location.Where(location => location.SpatialCoordinates.IsWithinDistance(geoCoordinate,radius))).ToList();
-                               
+                                  
+      // return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(geoCoordinate,radius));
+       var sightingQuery = _context.Sighting.AsQueryable();
+       var sightings = sightingQuery.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(geoCoordinate,radius));
+       
+       var topSpecies = sightings.AsQueryable();
+       //.GroupBy(s => s.Species);
+       topSpecies.Select(s =>new{ s.SightingDate , s.Species.SpeciesName , s.Species})
+                 .GroupBy(s =>s.Species.Id);
+                  
+      /* foreach(var topsighting in topSpecies)
+       {
+       Console.WriteLine(topsighting.Species.SpeciesName);
+       Console.WriteLine(topsighting.SightingDate);
+       }*/
+       return topSpecies;
 
-                               //  var distance = GeoCoordinate.IsWithinDistance(new Point(latitude,longitude), radius);
-     // Console.WriteLine(distance);   
-        //and sighting.Location.Latitude in (longitude1 and longitude2))
-         //   .Include(sighting => sighting.Location)
-            //.Include(sighting => sighting.Species)
+      
     }
 
-   /*     public IEnumerable<Location> GetLocation(double latitude1,double latitude2, double longitude1,double longitude2 )
-    {
-        return _context.Location.Where (location => (location.Latitude > latitude1 and latitude2) )
-                                .ToList();
+    //   public IEnumerable<Location> GetLocation(double latitude1,double latitude2, double longitude1,double longitude2 )
+   // {
+       // return _context.Location.Where (location => (location.Latitude > latitude1 and latitude2) )
+                             //   .ToList();
         //and sighting.Location.Latitude in (longitude1 and longitude2))
          //   .Include(sighting => sighting.Location)
             //.Include(sighting => sighting.Species)
-    }*/
+   // }
 
     public Sighting CreateSighting(Sighting sighting)
     {
