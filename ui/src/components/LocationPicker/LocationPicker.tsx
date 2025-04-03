@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
@@ -6,16 +6,27 @@ import { toLonLat } from "ol/proj";
 import "./LocationPicker.scss";
 import "ol/ol.css";
 
+export interface LocationPickerProps {
+  location: GeoLocation | undefined;
+  onLocationSelection: (location: GeoLocation) => void;
+}
 
-function LocationPicker() {
-  const mapRef = useRef(null!)
-  const[coordinates, setCoordinates] = useState<number[]|null>(null);
- 
+export type GeoLocation = {
+  longitude: number;
+  latitude: number;
+};
+
+function LocationPicker({
+  location,
+  onLocationSelection,
+}: LocationPickerProps) {
+  const mapRef = useRef(null!);
+
   useEffect(() => {
     const osmLayer = new TileLayer({
       preload: Infinity,
       source: new OSM(),
-    })
+    });
 
     const map = new Map({
       target: mapRef.current,
@@ -26,29 +37,30 @@ function LocationPicker() {
       }),
     });
 
-    map.on('click', (event) => {
-        const clickedCoordinate = event.coordinate;
-        const longitudelatitude = toLonLat(clickedCoordinate);
-        setCoordinates(longitudelatitude);
+    map.on("click", (event) => {
+      const clickedCoordinate = event.coordinate;
+      const longitudelatitude = toLonLat(clickedCoordinate);
+      const clickedLocation: GeoLocation = {
+        longitude: longitudelatitude[0],
+        latitude: longitudelatitude[1],
+      };
+      onLocationSelection(clickedLocation);
     });
-    return () => map.setTarget( )
-  }, [])
+    return () => map.setTarget();
+  }, [onLocationSelection]);
 
   return (
     <div className="location-picker-container">
-    <div
-      ref={mapRef}
-      className="location-picker">
+      <div ref={mapRef} className="location-picker"></div>
+      {location && (
+        <div>
+          <p>Coordinates</p>
+          <p>Longitude: {location.longitude}</p>
+          <p>Latitude: {location.latitude}</p>
+        </div>
+      )}
     </div>
-    {coordinates &&(
-     <div> 
-    <p>Coordinates</p>
-    <p>Longitude: {coordinates[0]}</p>
-    <p>Latitude: {coordinates[1]}</p>
-    </div>
-    )}
-    </div>
-  )
+  );
 }
 
-export default LocationPicker
+export default LocationPicker;
