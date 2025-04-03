@@ -50,8 +50,17 @@ public class AccountController : ControllerBase
             return Unauthorized("The username does not exist in our system.");
         }
         var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
+        var role = await _userManager.GetRolesAsync(user);
+
         if (result.Succeeded)
         {
+            // Adding a cookie
+            HttpContext.Response.Cookies.Append("UserRole", role[0] , new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddMinutes(60),
+                HttpOnly = true, 
+                IsEssential = true 
+            });
             return Ok(new { message = "Login successful." });
         }
         return Unauthorized("Incorrect username and password.");
