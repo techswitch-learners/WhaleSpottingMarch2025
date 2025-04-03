@@ -67,7 +67,9 @@ public class SightingController : ControllerBase
                 await image.CopyToAsync(stream);
             }
 
-            imagePath = Path.Combine("images", fileName);
+            string baseUrl = "http://localhost:5067/";
+            string relativePath = Path.Combine("images", fileName);
+            imagePath = new Uri(new Uri(baseUrl), relativePath.Replace("\\", "/")).ToString();
         }
 
         Location newLocation = new Location() { Latitude = sightingRequest.Latitude, Longitude = sightingRequest.Longitude };
