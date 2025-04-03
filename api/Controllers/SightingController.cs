@@ -5,8 +5,8 @@ using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
-using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 using WhaleSpottingBackend.Repositories;
+using LocationModel = WhaleSpottingBackend.Models.DatabaseModels.Location;
 namespace WhaleSpottingBackend.Controllers;
 
 [ApiController]
@@ -17,7 +17,7 @@ public class SightingController : ControllerBase
     private readonly ISightingRepository _sightingRepository;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILocationRepository _locationRepository;
-    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository,ILocationRepository locationRepository, ILogger<SightingController> logger)
+    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILocationRepository locationRepository, ILogger<SightingController> logger)
     {
         _sightingRepository = sightingRepository;
         _speciesRepository = speciesRepository;
@@ -57,12 +57,11 @@ public class SightingController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        
         Point userLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(sightingRequest.Latitude, sightingRequest.Longitude);
         LocationModel Location = _locationRepository.GetLocationByGeoCoordinates(userLocation);
         if (Location == null)
         {
-         Location = new LocationModel(userLocation);
+            Location = new LocationModel(userLocation);
         }
         Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
         Sighting newSighting = new Sighting

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using NetTopologySuite.Geometries;
-using WhaleSpottingBackend.Repositories;
-using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Helper;
+using WhaleSpottingBackend.Models.ApiModels;
+using WhaleSpottingBackend.Repositories;
 
 namespace WhaleSpottingBackend.Controllers;
 
@@ -12,47 +12,46 @@ namespace WhaleSpottingBackend.Controllers;
 [Route("[controller]")]
 public class LocationController : ControllerBase
 {
-  private readonly ILogger<SightingController> _logger;
-  private readonly ISightingRepository _sightingRepository;
+    private readonly ILogger<SightingController> _logger;
+    private readonly ISightingRepository _sightingRepository;
 
-
-  public LocationController(ISightingRepository sightingRepository, ILogger<SightingController> logger)
-  {
-    _sightingRepository = sightingRepository;
-    _logger = logger;
-  }
-
-  //GET: api/location?latitude=34.2&longitude=45.6
-  [HttpGet("{latitude}/{longitude}")]
-  public ActionResult<LocationSearchResponseModel> GetTopSpeciesAndRecentSightingsByLocation(double latitude, double longitude, int radius = 10)
-  {
-    var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(latitude, longitude);
-    var sightings =_sightingRepository.GetSightingsByLocation(userSearchLocation, radius);
-    var recentSightings = sightings.Select(sighting => new SightingResponseModel(sighting))
-                                                 .ToList()
-                                                 .OrderByDescending(sighting => sighting.SightingDate);
-
-    var topSpecies = sightings.GroupBy(s => s.Species.SpeciesName)
-                              .Select(group => new TopSpeciesResponseModel
-                                                   {
-                                                      Species = group.Key,
-                                                      NumSightings = group.Count(),
-                                                      LastSeen = group.Max(sighting => sighting.SightingDate)
-                                                  })
-                               .OrderByDescending(s => s.NumSightings)
-                               .ThenByDescending(s => s.LastSeen)
-                               .ToList();             
-
-    var result = new LocationSearchResponseModel
+    public LocationController(ISightingRepository sightingRepository, ILogger<SightingController> logger)
     {
-      TopSpecies = topSpecies,
-      RecentSightings = recentSightings
-    }; 
-    
-    return Ok(new
+        _sightingRepository = sightingRepository;
+        _logger = logger;
+    }
+
+    //GET: api/location?latitude=34.2&longitude=45.6&radius=5
+    [HttpGet("{latitude}/{longitude}")]
+    public ActionResult<LocationSearchResponseModel> GetTopSpeciesAndRecentSightingsByLocation(double latitude, double longitude, int radius = 10)
     {
-      result.TopSpecies,
-      result.RecentSightings
-    });
-  }
+        var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(latitude, longitude);
+        var sightings = _sightingRepository.GetSightingsByLocation(userSearchLocation, radius);
+        var recentSightings = sightings.Select(sighting => new SightingResponseModel(sighting))
+                                                     .ToList()
+                                                     .OrderByDescending(sighting => sighting.SightingDate);
+
+        var topSpecies = sightings.GroupBy(s => s.Species.SpeciesName)
+                                  .Select(group => new TopSpeciesResponseModel
+                                  {
+                                      Species = group.Key,
+                                      NumSightings = group.Count(),
+                                      LastSeen = group.Max(sighting => sighting.SightingDate)
+                                  })
+                                   .OrderByDescending(s => s.NumSightings)
+                                   .ThenByDescending(s => s.LastSeen)
+                                   .ToList();
+
+        var result = new LocationSearchResponseModel
+        {
+            TopSpecies = topSpecies,
+            RecentSightings = recentSightings
+        };
+
+        return Ok(new
+        {
+            result.TopSpecies,
+            result.RecentSightings
+        });
+    }
 }

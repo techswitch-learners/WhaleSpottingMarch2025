@@ -4,6 +4,7 @@ namespace WhaleSpottingBackend.Models.ApiModels;
 public class SightingResponseModel
 {
     public int Id { get; set; }
+    public int SpeciesId { get; set; }
     public string SpeciesName { get; set; }
     public string Description { get; set; }
     public DateTime SightingDate { get; set; }
@@ -15,6 +16,7 @@ public class SightingResponseModel
     public SightingResponseModel(Sighting sighting)
     {
         Id = sighting.Id;
+        SpeciesId = sighting.Species.Id;
         SpeciesName = sighting.Species.SpeciesName;
         Description = sighting.Description;
         SightingDate = sighting.SightingDate;

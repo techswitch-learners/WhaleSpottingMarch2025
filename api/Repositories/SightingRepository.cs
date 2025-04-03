@@ -1,10 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.ApiModels;
 using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Models.DatabaseModels;
-using WhaleSpottingBackend.Models.ApiModels;
 namespace WhaleSpottingBackend.Repositories;
 
 public interface ISightingRepository
@@ -48,45 +48,10 @@ public class SightingRepository : ISightingRepository
 
     public IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius)
     {
-       return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius))
-                               .Include(sighting => sighting.Species)
-                               .Include(sighting => sighting.Location);
+        return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius))
+                                .Include(sighting => sighting.Species)
+                                .Include(sighting => sighting.Location);
     }
-   /* public LocationSearchResponseModel GetTopSpeciesAndRecentSightingsByLocation(Point userSearchLocation, int radius)
-    {
-        var sightings = GetSightingsByLocation(userSearchLocation, radius);
-        var recentSightings = sightings.AsQueryable().Select(sighting => new SightingResponseModel
-       {
-            Id = sighting.Species.Id,
-            SpeciesName = sighting.Species.SpeciesName,
-            Description = sighting.Description,
-            SightingDate = sighting.SightingDate,
-            ReportDate = sighting.ReportDate,
-            Quantity = sighting.Quantity,
-            Latitude = sighting.Location.SpatialCoordinates.X,
-            Longitude = sighting.Location.SpatialCoordinates.Y,
-            ImageSource = sighting.ImageSource
-        }
-        )
-        .OrderByDescending(sighting => sighting.SightingDate);
-
-        var topSpecies = sightings.AsQueryable().GroupBy(s => s.Species.SpeciesName)
-                                  .Select(group => new TopSpeciesResponseModel
-                                        {
-                                            Species = group.Key,
-                                            NumSightings = group.Count(),
-                                            LastSeen = group.Max(sighting => sighting.SightingDate)
-                                        })
-                                  .OrderByDescending(s => s.NumSightings)
-                                  .ThenByDescending(s => s.LastSeen)
-                                  .ToList();
-
-        return new LocationSearchResponseModel
-        {
-            TopSpecies = topSpecies,
-            RecentSightings = recentSightings
-        };
-    }*/
     public Sighting CreateSighting(Sighting sighting)
     {
         var insertResult = _context.Sighting.Add(sighting);

@@ -15,12 +15,10 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:WhaleSpottingDb"], 
-        
-        x => x.UseNetTopologySuite()); 
+        optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:WhaleSpottingDb"],
+        x => x.UseNetTopologySuite());
     }
 
-    
     public DbSet<Sighting> Sighting { get; set; }
     public DbSet<Location> Location { get; set; }
     public DbSet<Species> Species { get; set; }

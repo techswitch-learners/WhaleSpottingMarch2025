@@ -6,8 +6,7 @@ namespace WhaleSpottingBackend.Models.DatabaseModels;
 public class Location
 {
     public int Id { get; set; }
-    public Point SpatialCoordinates {get;set;}
-   // public Location() { }
+    public Point SpatialCoordinates { get; set; }
     public Location(Point spatialCoordinates)
     {
         SpatialCoordinates = spatialCoordinates;

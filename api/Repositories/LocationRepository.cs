@@ -9,7 +9,6 @@ public interface ILocationRepository
 {
     LocationModel GetLocationByGeoCoordinates(Point userSightingLocation);
 }
-
 public class LocationRepository : ILocationRepository
 {
     private readonly WhaleSpottingDbContext _context;
@@ -17,11 +16,9 @@ public class LocationRepository : ILocationRepository
     {
         _context = context;
     }
-
     public LocationModel GetLocationByGeoCoordinates(Point userSightingLocation)
     {
-        return _context.Location.Where(location => location.SpatialCoordinates == userSightingLocation).FirstOrDefault();
+        return _context.Location.Where(location => location.SpatialCoordinates == userSightingLocation)
+                                .FirstOrDefault();
     }
-    
 }
-
