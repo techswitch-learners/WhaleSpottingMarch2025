@@ -43,7 +43,7 @@ public class SightingRepository : ISightingRepository
                 sighting.SightingDate >= parameters.SightingStartDate && sighting.SightingDate <= parameters.SightingEndDate)
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize);
-            
+
     }
 
     public Sighting CreateSighting(Sighting sighting)
