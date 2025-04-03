@@ -1,7 +1,7 @@
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Cors;
 using System.Security;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
