@@ -58,7 +58,14 @@ export const NavigationBar = () => {
   const getMainMenuLinks = (): { name: string; link: string }[] => {
     let updatedLinks: { name: string; link: string }[] = [];
     if (!loginContext.isLoggedIn) {
-      updatedLinks = [links[0], links[1], links[3], links[5], links[6]];
+      updatedLinks = [
+        links[0],
+        links[1],
+        links[2],
+        links[3],
+        links[5],
+        links[6],
+      ];
     }
     if (loginContext.isLoggedIn && loginContext.isAdmin) {
       updatedLinks = [

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Registration.scss";
-import { register } from "../../../utils/apiClient";
+import { login, register } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
-import { Registration } from "../../../models/apiModels";
+import { Registration, Login } from "../../../models/apiModels";
+import { LoginContext } from "../../LoginManager/LoginManager";
 
 export const Register = () => {
   const [formData, setFormData] = useState<Registration>({
@@ -14,6 +15,7 @@ export const Register = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const loginContext = useContext(LoginContext);
 
   const validatePassword = (password: string) => {
     let errMessage = "";
@@ -53,7 +55,15 @@ export const Register = () => {
         if (response.status >= 300) {
           setErrorMessage("");
         } else {
-          navigate("/LogIn");
+          const loginData: Login = {
+            username: formData.username,
+            password: formData.password,
+          };
+          const loginResponse = await login(loginData);
+          if (loginResponse.status == 200) {
+            loginContext.logIn();
+            navigate("/");
+          }
         }
       }
     } catch {
