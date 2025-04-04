@@ -19,3 +19,11 @@ export const getSightings = async () => {
   const data = await fetchResponse.json();
   return data;
 };
+
+export const getAllSpecies = async () => {
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + "Species/",
+  );
+  const data = await fetchResponse.json();
+  return data;
+};

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
-import { fetchPOSTRequest } from "../../../utils/apiClient";
+import { fetchPOSTRequest, getAllSpecies } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
 
 type ValuePiece = Date | null;
@@ -16,6 +16,11 @@ export interface WhaleSighting {
   quantity: number;
   latitude: number;
   longitude: number;
+}
+
+interface Species {
+  id: number;
+  speciesName: string;
 }
 
 export const WhaleSightingForm = () => {
@@ -32,6 +37,21 @@ export const WhaleSightingForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch(import.meta.env.VITE_APP_API_HOST + "/Species")
+      .then((response) => response.json())
+      .then((data) => {
+        setSpeciesOptions(data);
+        console.log(`Species data: ${data}`);
+      })
+      .catch((error) => {
+        setError(true);
+        console.log(error);
+      });
+  }, []);
 
   const navigate = useNavigate();
 
@@ -98,6 +118,9 @@ export const WhaleSightingForm = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
+  if (error) {
+    return <div>Error loading species from backend</div>;
+  }
 
   return (
     <div className="createSightingForm">
@@ -150,17 +173,12 @@ export const WhaleSightingForm = () => {
             required
           >
             <option value="">Please select a species</option>
-            <option value="1">Blue Whale</option>
-            <option value="2">Humpback Whale</option>
-            <option value="3">Orca</option>
-            <option value="4">Sperm Whale</option>
-            <option value="5">Fin Whale</option>
-            <option value="6">Minke Whale</option>
-            <option value="7">Beluga Whale</option>
-            <option value="8">Gray Whale</option>
-            <option value="9">Right Whale</option>
-            <option value="10">Bowhead Whale</option>
-            <option value="11">Unknown</option>
+            {speciesOptions &&
+              speciesOptions.map(({ id, speciesName }) => (
+                <option key={`speciesName-${id}`} value={id}>
+                  {speciesName}
+                </option>
+              ))}
           </select>
         </div>
         <div className="field">
