@@ -34,23 +34,21 @@ export const WhaleSightingForm = () => {
   });
 
   const [dateValue, setDate] = useState<Value>(new Date());
-  const [errorMessage, setErrorMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [formSubmissionError, setFormSubmissionError] = useState("");
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
-  const [error, setError] = useState(false);
+  const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_APP_API_HOST + "/Species")
-      .then((response) => response.json())
-      .then((data) => {
-        setSpeciesOptions(data);
-        console.log(`Species data: ${data}`);
-      })
-      .catch((error) => {
-        setError(true);
-        console.log(error);
+    async function fetchSpecies() {
+      const species = await getAllSpecies().catch((error) => {
+        setSpeciesLoadingError(error);
       });
+
+      setSpeciesOptions(species);
+    }
+    fetchSpecies();
   }, []);
 
   const navigate = useNavigate();
@@ -77,12 +75,12 @@ export const WhaleSightingForm = () => {
         "/Sighting/createSighting",
       );
       if (response >= 300) {
-        setErrorMessage("An error has occurred.");
+        setFormSubmissionError("An error has occurred.");
       } else {
         navigate("/ViewSightings");
       }
     } catch {
-      setErrorMessage("An error has occurred.");
+      setFormSubmissionError("An error has occurred.");
     }
   };
 
@@ -118,7 +116,7 @@ export const WhaleSightingForm = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
-  if (error) {
+  if (speciesLoadingError) {
     return <div>Error loading species from backend</div>;
   }
 
@@ -127,8 +125,8 @@ export const WhaleSightingForm = () => {
       <h2>Report your whale sighting</h2>
       <p>Tell us about the whale that you saw using the form below.</p>
       <p>* (asterisk) denotes a required field.</p>
-      {errorMessage.length > 0 && (
-        <p className="errorMessage">{errorMessage}</p>
+      {formSubmissionError.length > 0 && (
+        <p className="errorMessage">{formSubmissionError}</p>
       )}
       <form onSubmit={handleSubmit}>
         <div className="field">
@@ -172,13 +170,19 @@ export const WhaleSightingForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="">Please select a species</option>
-            {speciesOptions &&
-              speciesOptions.map(({ id, speciesName }) => (
-                <option key={`speciesName-${id}`} value={id}>
-                  {speciesName}
-                </option>
-              ))}
+            {speciesLoadingError ? (
+              <div>Error loading species from backend</div>
+            ) : (
+              <>
+                <option value="">Please select a species</option>
+                {speciesOptions &&
+                  speciesOptions.map(({ id, speciesName }) => (
+                    <option key={`speciesName-${id}`} value={id}>
+                      {speciesName}
+                    </option>
+                  ))}
+              </>
+            )}
           </select>
         </div>
         <div className="field">
