@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
 import { fetchPOSTRequest } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import LocationPicker, { GeoLocation } from "../LocationPicker/LocationPicker";
+import "../LocationPicker/LocationPicker.scss";
 
 type ValuePiece = Date | null;
 
@@ -32,8 +34,20 @@ export const WhaleSightingForm = () => {
 
   const [dateValue, setDate] = useState<Value>(new Date());
   const [errorMessage, setErrorMessage] = useState("");
+  const [location, setLocation] = useState<GeoLocation>({
+    latitude: 0,
+    longitude: 0,
+  });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
+  }, [location.latitude, location.longitude]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -152,41 +166,16 @@ export const WhaleSightingForm = () => {
           ></input>
         </div>
         <div className="field">
-          <label htmlFor="latitude">
-            Latitude:
-            <span className="requiredField">*</span>
-          </label>
-          <input
-            id="latitude"
-            name="latitude"
-            type="number"
-            className="inputStyle"
-            placeholder="e.g. 40.741895"
-            value={formData.latitude}
-            minLength={10}
-            maxLength={10}
-            onChange={handleChange}
-            required
-          ></input>
-        </div>
-        <div className="field">
-          <label htmlFor="longitude">
-            Longitude:
-            <span className="requiredField">*</span>
-          </label>
-
-          <input
-            id="longitude"
-            name="longitude"
-            type="number"
-            className="inputStyle"
-            placeholder="e.g. -73.989308"
-            value={formData.longitude}
-            minLength={10}
-            maxLength={10}
-            onChange={handleChange}
-            required
-          ></input>
+          <div className="location-selection">
+            <label className="map-label">
+              Select Sighting Location:
+              <span className="requiredField">*</span>
+            </label>
+            <LocationPicker
+              location={location}
+              onLocationSelection={setLocation}
+            />
+          </div>
         </div>
         <div className="field">
           <label htmlFor="image">Image:</label>

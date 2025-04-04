@@ -5,8 +5,8 @@
     .createSightingForm {
         max-width: 100%;
     }
-
 }
+
 /*tablet*/
 @media only screen and (min-width: 768px) {
     .createSightingForm {
@@ -110,4 +110,18 @@ label {
 
 .errorMessage {
     color: $text-error;
+}
+
+.location-selection{
+    align-items: center;
+    justify-content: center;
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.map-label{
+    width: 300px;
+    align-items: center;
+    text-align: left;  
 }
