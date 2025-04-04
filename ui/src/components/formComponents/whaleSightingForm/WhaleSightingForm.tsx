@@ -53,9 +53,14 @@ export const WhaleSightingForm = () => {
   if (!loginContext.isLoggedIn) {
     return (
       <div>
-        <h3> Please log in to view this page </h3>
+        <h3> Please log in or register to view this page </h3>
         <h3>
-          <a href="/LogIn"> Login </a>
+          <div>
+            <a href="/LogIn"> Login </a>
+          </div>
+          <div>
+            <a href="/Register"> Register </a>
+          </div>
         </h3>
       </div>
     );
