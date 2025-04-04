@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
@@ -36,10 +36,20 @@ export const WhaleSightingForm = () => {
 
   const [dateValue, setDate] = useState<Value>(new Date());
   const [errorMessage, setErrorMessage] = useState("");
-  const [location, setLocation] = useState<GeoLocation>(null!);
-  //const [latitude, setLatitude] = useState<number | undefined> ();
+  const [location, setLocation] = useState<GeoLocation>({
+    latitude: 0,
+    longitude: 0,
+  });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
+  }, [location.latitude, location.longitude]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -74,12 +84,6 @@ export const WhaleSightingForm = () => {
   const onCalendarChange = (dateValue: Value) => {
     setDate(dateValue);
     formData.sightingDate = dateValue;
-  };
-
-  //  const [location, setLocation] = useState<GeoLocation>();
-  const onLocationPickerChange = () => {
-    formData.latitude = location.latitude;
-    formData.longitude = location.longitude;
   };
 
   return (
@@ -173,9 +177,11 @@ export const WhaleSightingForm = () => {
                 <LocationPicker
                   location={location}
                   onLocationSelection={setLocation}
-                  onChange={onLocationPickerChange}
-                  value={location.latitude}
                 />
+              </div>
+              <div>
+                {" "}
+                LONG? {formData.longitude} LAT? {formData.latitude}
               </div>
             </label>
           </div>
