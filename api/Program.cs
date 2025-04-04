@@ -31,6 +31,8 @@ builder.Services.AddIdentityApiEndpoints<User>()
 builder.Services.AddControllers();
 builder.Services.AddTransient<ISightingRepository, SightingRepository>();
 builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
+builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
