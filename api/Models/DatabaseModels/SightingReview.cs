@@ -26,9 +26,8 @@ public class SightingReview
 
 
     public SightingReview() { }
-    public SightingReview(int id, int sightingID, string adminID, bool approved, DateTime statusDate, string comments)
+    public SightingReview(int sightingID, string adminID, bool approved, DateTime statusDate, string comments)
     {
-        Id = id;
         SightingID = sightingID;
         AdminID = adminID;
         Approved = approved;
