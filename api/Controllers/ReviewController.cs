@@ -33,29 +33,25 @@ public class ReviewController : ControllerBase
             string? adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (adminId is null)
             {
-                return BadRequest("Unauthorized");
+                return Unauthorized("Unauthorized");
             }
-            else
-            {
-                SightingReview newReview = new()
-                {
-                    SightingID = reviewRequest.SightingID,
-                    AdminID = adminId,
-                    Approved = reviewRequest.Approved,
-                    StatusDate = DateTime.UtcNow,
-                    Comments = reviewRequest.Comments
-                };
-                _reviewRepository.AddSightingReview(newReview);
+            SightingReview newReview = new(
+                reviewRequest.SightingID,
+                adminId,
+                reviewRequest.Approved,
+                DateTime.UtcNow,
+                reviewRequest.Comments
+            );
+            _reviewRepository.AddSightingReview(newReview);
 
-                if (reviewRequest.UpdatedSighting is not null)
-                {
-                    Sighting sighting = _sightingRepository.GetSightingByID(reviewRequest.SightingID);
-                    sighting.Description = reviewRequest.UpdatedSighting.Description ?? sighting.Description;
-                    sighting.Species = reviewRequest.UpdatedSighting.Species ?? sighting.Species;
-                    _sightingRepository.UpdateSighting(sighting);
-                }
-                return Ok("Review completed successfully.");
+            if (reviewRequest.UpdatedSighting is not null)
+            {
+                Sighting sighting = _sightingRepository.GetSightingByID(reviewRequest.SightingID);
+                sighting.Description = reviewRequest.UpdatedSighting.Description ?? sighting.Description;
+                sighting.Species = reviewRequest.UpdatedSighting.Species ?? sighting.Species;
+                _sightingRepository.UpdateSighting(sighting);
             }
+            return Ok("Review completed successfully.");
         }
         catch (Exception ex)
         {
