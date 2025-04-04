@@ -33,14 +33,9 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        // string status = !sighting.Reviews?.Any() == true
-        //         ? "Pending"
-        //         : sighting.Reviews?.OrderByDescending(review => review.StatusDate).First().Approved == true ? "Approved" : "Rejected";
-
         var response = new SightingResponseModel(sighting, SightingReviewHelper.GetReviewStatus(sighting));
         return response;
     }
-
 
 
     // GET: api/Sightings
@@ -55,10 +50,6 @@ public class SightingController : ControllerBase
         List<SightingResponseModel> sightingsList = [];
         foreach (var sighting in sightings)
         {
-            // string status = !sighting.Reviews?.Any() == true
-            //     ? "Pending"
-            //     : sighting.Reviews?.OrderByDescending(review => review.StatusDate).First().Approved == true ? "Approved" : "Rejected";
-
             var sightingResponse = new SightingResponseModel(sighting, SightingReviewHelper.GetReviewStatus(sighting));
             sightingsList.Add(sightingResponse);
         }
