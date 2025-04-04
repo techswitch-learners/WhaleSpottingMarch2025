@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
 import { fetchPOSTRequest, getAllSpecies } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import { Species } from "../../../models/apiModels";
 
 type ValuePiece = Date | null;
 
@@ -16,11 +17,6 @@ export interface WhaleSighting {
   quantity: number;
   latitude: number;
   longitude: number;
-}
-
-interface Species {
-  id: number;
-  speciesName: string;
 }
 
 export const WhaleSightingForm = () => {
