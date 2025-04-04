@@ -36,7 +36,20 @@ public class AccountController : ControllerBase
                 return BadRequest("Some error occurred while creating user. Created user not found.");
             }
             await _userManager.AddToRoleAsync(createdUser, "User");
-            return Ok(new { message = "Registration successful." });
+
+            // Login the user
+            var response = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
+            if (response.Succeeded)
+            {
+                // Adding a cookie
+                HttpContext.Response.Cookies.Append("UserRole", "User", new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddHours(1),
+                    HttpOnly = false,
+                    IsEssential = true
+                });
+                return Ok(new { message = "Registration successful and user logged in." });
+            }
         }
         return BadRequest(result.Errors);
     }
@@ -55,11 +68,11 @@ public class AccountController : ControllerBase
         if (result.Succeeded)
         {
             // Adding a cookie
-            HttpContext.Response.Cookies.Append("UserRole", role[0] , new CookieOptions
+            HttpContext.Response.Cookies.Append("UserRole", role[0], new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddMinutes(60),
-                HttpOnly = false, 
-                IsEssential = true 
+                Expires = DateTimeOffset.Now.AddHours(1),
+                HttpOnly = false,
+                IsEssential = true
             });
             return Ok(new { message = "Login successful." });
         }
@@ -70,7 +83,7 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
-        HttpContext.Response.Cookies.Delete("UserRole"); 
+        HttpContext.Response.Cookies.Delete("UserRole");
         return Ok(new { message = "Logged out successfully." });
     }
 
