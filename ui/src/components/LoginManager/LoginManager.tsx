@@ -1,4 +1,4 @@
-import { createContext, JSX, ReactNode, useState } from "react";
+import { createContext, JSX, ReactNode, useEffect, useState } from "react";
 
 export const LoginContext = createContext({
   isLoggedIn: false,
@@ -7,22 +7,38 @@ export const LoginContext = createContext({
   logOut: () => {},
 });
 
+const getInitialisLoggedIn = () => {
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  return isLoggedIn ? JSON.parse(isLoggedIn) : false;
+};
+
+const getInitialisAdmin = () => {
+  const isAdmin = sessionStorage.getItem("isAdmin");
+  return isAdmin ? JSON.parse(isAdmin) : false;
+};
+
 interface LoginManagerProps {
   children: ReactNode;
 }
 
 export function LoginManager(props: LoginManagerProps): JSX.Element {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [admin, setAdmin] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(getInitialisLoggedIn());
+  const [admin, setAdmin] = useState(getInitialisAdmin());
+
+  useEffect(() => {
+    sessionStorage.setItem("isLoggedIn", JSON.stringify(loggedIn));
+  }, [loggedIn]);
+
+  useEffect(() => {
+    sessionStorage.setItem("isAdmin", JSON.stringify(admin));
+  }, [admin]);
 
   function logIn() {
     setLoggedIn(true);
     const role = getCookie("UserRole");
     if (role == "Admin") {
-      console.log(role);
       setAdmin(true);
     }
-    console.log(role);
   }
 
   function getCookie(cname: string) {
