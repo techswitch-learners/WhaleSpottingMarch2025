@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
-import { fetchPOSTRequest } from "../../../utils/apiClient";
+import { fetchPOSTRequest, getAllSpecies } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import { Species } from "../../../models/apiModels";
 
 type ValuePiece = Date | null;
 
@@ -31,7 +32,20 @@ export const WhaleSightingForm = () => {
   });
 
   const [dateValue, setDate] = useState<Value>(new Date());
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formSubmissionError, setFormSubmissionError] = useState("");
+  const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
+  const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
+
+  useEffect(() => {
+    async function fetchSpecies() {
+      const species = await getAllSpecies().catch((error) => {
+        setSpeciesLoadingError(error);
+      });
+
+      setSpeciesOptions(species);
+    }
+    fetchSpecies();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -46,12 +60,16 @@ export const WhaleSightingForm = () => {
         "/Sighting/createSighting",
       );
       if (response >= 300) {
-        setErrorMessage("An error has occurred.");
+        setFormSubmissionError(
+          "An error has occurred with the form. Please contact the administrator.",
+        );
       } else {
         navigate("/ViewSightings");
       }
     } catch {
-      setErrorMessage("An error has occurred.");
+      setFormSubmissionError(
+        "An error has occurred with the form. Please contact the administrator.",
+      );
     }
   };
 
@@ -75,8 +93,8 @@ export const WhaleSightingForm = () => {
       <h2>Report your whale sighting</h2>
       <p>Tell us about the whale that you saw using the form below.</p>
       <p>* (asterisk) denotes a required field.</p>
-      {errorMessage.length > 0 && (
-        <p className="errorMessage">{errorMessage}</p>
+      {formSubmissionError.length > 0 && (
+        <p className="errorMessage">{formSubmissionError}</p>
       )}
       <form onSubmit={handleSubmit}>
         <div className="field">
@@ -120,18 +138,19 @@ export const WhaleSightingForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="">Please select a species</option>
-            <option value="1">Blue Whale</option>
-            <option value="2">Humpback Whale</option>
-            <option value="3">Sperm Whale</option>
-            <option value="4">Orca</option>
-            <option value="5">Fin Whale</option>
-            <option value="6">Minke Whale</option>
-            <option value="7">Beluga Whale</option>
-            <option value="8">Gray Whale</option>
-            <option value="9">Right Whale</option>
-            <option value="10">Bowhead Whale</option>
-            <option value="11">Unknown</option>
+            {speciesLoadingError ? (
+              <div>Error loading species</div>
+            ) : (
+              <>
+                <option value="">Please select a species</option>
+                {speciesOptions &&
+                  speciesOptions.map(({ id, speciesName }) => (
+                    <option key={`speciesName-${id}`} value={id}>
+                      {speciesName}
+                    </option>
+                  ))}
+              </>
+            )}
           </select>
         </div>
         <div className="field">
