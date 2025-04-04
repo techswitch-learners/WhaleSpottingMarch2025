@@ -75,12 +75,16 @@ export const WhaleSightingForm = () => {
         "/Sighting/createSighting",
       );
       if (response >= 300) {
-        setFormSubmissionError("An error has occurred.");
+        setFormSubmissionError(
+          "An error has occurred with the form. Please contact the administrator.",
+        );
       } else {
         navigate("/ViewSightings");
       }
     } catch {
-      setFormSubmissionError("An error has occurred.");
+      setFormSubmissionError(
+        "An error has occurred with the form. Please contact the administrator.",
+      );
     }
   };
 
@@ -171,7 +175,7 @@ export const WhaleSightingForm = () => {
             required
           >
             {speciesLoadingError ? (
-              <div>Error loading species from backend</div>
+              <div>Error loading species</div>
             ) : (
               <>
                 <option value="">Please select a species</option>
