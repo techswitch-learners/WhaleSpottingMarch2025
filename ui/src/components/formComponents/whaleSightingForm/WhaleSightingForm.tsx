@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
 import { fetchPOSTRequest } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../LoginManager/LoginManager";
 
 type ValuePiece = Date | null;
 
@@ -20,6 +21,7 @@ export interface WhaleSighting {
 }
 
 export const WhaleSightingForm = () => {
+  const loginContext = useContext(LoginContext);
   const [formData, setFormData] = useState<WhaleSighting>({
     species: 0,
     description: "",
@@ -34,6 +36,21 @@ export const WhaleSightingForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+  if (!loginContext.isLoggedIn) {
+    return (
+      <div>
+        <h3> Please log in or register to view this page </h3>
+        <h3>
+          <div>
+            <a href="/LogIn"> Login </a>
+          </div>
+          <div>
+            <a href="/Register"> Register </a>
+          </div>
+        </h3>
+      </div>
+    );
+  }
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -72,9 +89,11 @@ export const WhaleSightingForm = () => {
 
   return (
     <div className="createSightingForm">
-      <h2>Report your whale sighting</h2>
-      <p>Tell us about the whale that you saw using the form below.</p>
-      <p>* (asterisk) denotes a required field.</p>
+      <div>
+        <h2>Report your whale sighting</h2>
+        <p>Tell us about the whale that you saw using the form below.</p>
+        <p>* (asterisk) denotes a required field.</p>
+      </div>
       {errorMessage.length > 0 && (
         <p className="errorMessage">{errorMessage}</p>
       )}

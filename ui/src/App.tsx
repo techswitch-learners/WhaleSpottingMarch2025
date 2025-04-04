@@ -8,21 +8,28 @@ import { ReportSighting } from "./components/pages/ReportSighting/ReportSighting
 import { ViewSightings } from "./components/pages/ViewSightings/ViewSightings";
 import { ViewLocations } from "./components/pages/ViewLocations/ViewLocations";
 import { LogIn } from "./components/pages/LogIn/LogIn";
+import { Register } from "./components/pages/Registration/Registration";
+import { LoginManager } from "./components/LoginManager/LoginManager";
+import { LogOut } from "./components/pages/LogOut/LogOut";
 
 function App() {
   return (
     <>
-      <NavigationBar />
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/ReportSighting" element={<ReportSighting />} />
-          <Route path="/ViewSightings" element={<ViewSightings />} />
-          <Route path="/Admin" element={<Admin />} />
-          <Route path="/ViewLocations" element={<ViewLocations />} />
-          <Route path="/LogIn" element={<LogIn />} />
-        </Routes>
-      </div>
+      <LoginManager>
+        <NavigationBar />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/ReportSighting" element={<ReportSighting />} />
+            <Route path="/ViewSightings" element={<ViewSightings />} />
+            <Route path="/Admin" element={<Admin />} />
+            <Route path="/ViewLocations" element={<ViewLocations />} />
+            <Route path="/LogIn" element={<LogIn />} />
+            <Route path="/Register" element={<Register />} />
+            <Route path="/Logout" element={<LogOut />} />
+          </Routes>
+        </div>
+      </LoginManager>
     </>
   );
 }
