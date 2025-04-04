@@ -87,7 +87,7 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
                 ReportDate = new DateTime(2024, 3, i + 2, 13, 21, 33, DateTimeKind.Utc),
                 Quantity = 1,
                 LocationId = (i % 10) + 1,
-                ImageSource = "https://images.google.com/"
+                ImageSource = i % 2 == 0 ? "http://localhost:5067/images/blue-whale.jpg" : "http://localhost:5067/images/orca-whale.jpg"
             });
         }
 

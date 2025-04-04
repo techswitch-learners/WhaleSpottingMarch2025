@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./WhaleSightingForm.scss";
@@ -16,7 +16,6 @@ export interface WhaleSighting {
   quantity: number;
   latitude: number;
   longitude: number;
-  imageSource: string;
 }
 
 export const WhaleSightingForm = () => {
@@ -27,11 +26,12 @@ export const WhaleSightingForm = () => {
     quantity: 0,
     latitude: 0,
     longitude: 0,
-    imageSource: "",
   });
 
   const [dateValue, setDate] = useState<Value>(new Date());
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -40,9 +40,20 @@ export const WhaleSightingForm = () => {
   ): Promise<void> => {
     event.preventDefault();
 
+    const newFormDataWithImage = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      value = key === "sightingDate" ? value.toISOString() : value;
+      newFormDataWithImage.append(key, value);
+    });
+
+    if (selectedFile) {
+      newFormDataWithImage.append("image", selectedFile);
+      newFormDataWithImage.append("ImageSource", selectedFile.name);
+    }
+
     try {
       const response = await fetchPOSTRequest(
-        formData,
+        newFormDataWithImage,
         "/Sighting/createSighting",
       );
       if (response >= 300) {
@@ -68,6 +79,24 @@ export const WhaleSightingForm = () => {
   const onCalendarChange = (dateValue: Value) => {
     setDate(dateValue);
     formData.sightingDate = dateValue;
+  };
+
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);
+    }
   };
 
   return (
@@ -123,8 +152,8 @@ export const WhaleSightingForm = () => {
             <option value="">Please select a species</option>
             <option value="1">Blue Whale</option>
             <option value="2">Humpback Whale</option>
-            <option value="3">Sperm Whale</option>
-            <option value="4">Orca</option>
+            <option value="3">Orca</option>
+            <option value="4">Sperm Whale</option>
             <option value="5">Fin Whale</option>
             <option value="6">Minke Whale</option>
             <option value="7">Beluga Whale</option>
@@ -193,13 +222,18 @@ export const WhaleSightingForm = () => {
           <input
             className="inputStyle"
             id="image"
-            name="imageSource"
-            type="url"
+            name="selectedFile"
+            type="file"
             placeholder="Url to your image"
-            value={formData.imageSource}
-            onChange={handleChange}
+            onChange={handleFileChange}
           ></input>
         </div>
+        {selectedFile && preview && (
+          <div>
+            <p>Image preview:</p>
+            <img className="preview-image" src={preview} />
+          </div>
+        )}
         <button type="submit">Submit</button>
       </form>
     </div>
