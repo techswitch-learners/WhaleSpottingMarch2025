@@ -42,12 +42,7 @@ public class AccountController : ControllerBase
             if (response.Succeeded)
             {
                 // Adding a cookie
-                HttpContext.Response.Cookies.Append("UserRole", "User", new CookieOptions
-                {
-                    Expires = DateTimeOffset.Now.AddHours(1),
-                    HttpOnly = false,
-                    IsEssential = true
-                });
+                CreateCookie("UserRole","User"); 
                 return Ok(new { message = "Registration successful and user logged in." });
             }
         }
@@ -68,12 +63,7 @@ public class AccountController : ControllerBase
         if (result.Succeeded)
         {
             // Adding a cookie
-            HttpContext.Response.Cookies.Append("UserRole", role[0], new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddHours(1),
-                HttpOnly = false,
-                IsEssential = true
-            });
+            CreateCookie("UserRole",role[0]);           
             return Ok(new { message = "Login successful." });
         }
         return Unauthorized("Incorrect username and password.");
@@ -105,5 +95,14 @@ public class AccountController : ControllerBase
     public IActionResult AdminEndpoint()
     {
         return Ok("Accessible to admin only.");
+    }
+
+    private void CreateCookie(string name, string value) {
+        HttpContext.Response.Cookies.Append(name, value, new CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddHours(1),
+                HttpOnly = false,
+                IsEssential = true
+            });
     }
 }
