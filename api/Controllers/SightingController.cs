@@ -41,7 +41,7 @@ public class SightingController : ControllerBase
     }
 
     // GET: /Sighting
-    [HttpGet("")] 
+    [HttpGet("")]
     public ActionResult<IEnumerable<SightingResponseModel>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
     {
         var sightings = _sightingRepository.GetSightingsBySearchQuery(parameters);
