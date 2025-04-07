@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries;
+using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
@@ -17,8 +19,9 @@ public class SightingController : ControllerBase
     private readonly ILogger<SightingController> _logger;
     private readonly ISightingRepository _sightingRepository;
     private readonly ISpeciesRepository _speciesRepository;
+    private readonly ILocationRepository _locationRepository;
     private readonly IWebHostEnvironment _webHostEnvironment;
-    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILogger<SightingController> logger, IWebHostEnvironment webHostEnvironment)
+    public SightingController(ISightingRepository sightingRepository, ISpeciesRepository speciesRepository, ILocationRepository locationRepository, ILogger<SightingController> logger, IWebHostEnvironment webHostEnvironment)
     {
         _sightingRepository = sightingRepository;
         _speciesRepository = speciesRepository;
@@ -63,6 +66,12 @@ public class SightingController : ControllerBase
         {
             return BadRequest(ModelState);
         }
+        Point userLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(sightingRequest.Latitude, sightingRequest.Longitude);
+        LocationModel Location = _locationRepository.GetLocationByGeoCoordinates(userLocation);
+        if (Location == null)
+        {
+            Location = new LocationModel(userLocation);
+        }
 
         string? imagePath = null;
         if (image != null)
@@ -79,8 +88,6 @@ public class SightingController : ControllerBase
             string relativePath = Path.Combine("images", fileName);
             imagePath = new Uri(new Uri(baseUrl), relativePath.Replace("\\", "/")).ToString();
         }
-
-        Location newLocation = new Location() { Latitude = sightingRequest.Latitude, Longitude = sightingRequest.Longitude };
         Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
         Sighting newSighting = new Sighting
         {
@@ -89,7 +96,7 @@ public class SightingController : ControllerBase
             SightingDate = sightingRequest.SightingDate,
             ReportDate = DateTime.UtcNow,
             Quantity = sightingRequest.Quantity,
-            Location = newLocation,
+            Location = Location,
             ImageSource = imagePath
         };
         var sighting = _sightingRepository.CreateSighting(newSighting);
