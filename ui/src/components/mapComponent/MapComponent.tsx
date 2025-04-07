@@ -1,0 +1,51 @@
+import { useEffect, useRef, useState } from "react";
+import { Map, View } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import { toLonLat } from "ol/proj";
+import "./MapComponent.scss";
+
+export function MapComponent() {
+  const mapRef = useRef(null!);
+
+  const [coordinates, setCoordinates] = useState<number[] | null>(null);
+
+  useEffect(() => {
+    const osmLayer = new TileLayer({
+      preload: Infinity,
+      source: new OSM(),
+    });
+
+    const map = new Map({
+      target: mapRef.current,
+      layers: [osmLayer],
+      view: new View({
+        center: [0, 0],
+        zoom: 0,
+      }),
+    });
+    map.on("click", (event) => {
+      const clickedCoordinate = event.coordinate;
+      const longitudelatitude = toLonLat(clickedCoordinate);
+      setCoordinates(longitudelatitude);
+    });
+    return () => map.setTarget();
+  }, []);
+
+  return (
+    <div>
+      <div
+        style={{ height: "80vh", width: "80vh" }}
+        ref={mapRef}
+        className="map-container"
+      ></div>
+      {coordinates && (
+        <div>
+          <p>Coordinates</p>
+          <p>Longitude: {coordinates[0]}</p>
+          <p>Latitude: {coordinates[1]}</p>
+        </div>
+      )}
+    </div>
+  );
+}
