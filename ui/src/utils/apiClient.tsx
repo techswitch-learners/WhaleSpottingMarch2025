@@ -119,3 +119,11 @@ export const register = async (formData: Registration) => {
   );
   return fetchResponse;
 };
+
+export const getPendingApprovalS = async () => {
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + "/sighting/pending-approval/",
+  );
+  const data = await fetchResponse.json();
+  return data;
+};
