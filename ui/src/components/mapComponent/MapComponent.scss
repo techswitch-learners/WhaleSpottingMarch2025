@@ -1,0 +1,21 @@
+@use "sass:color";
+@use "@/styles/constants";
+
+
+.ol-zoom, .ol-rotate
+{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.ol-attribution
+{
+    position: absolute;
+    bottom: 0;
+}
+
+div.ol-attribution > ul
+{
+    list-style: none;
+}

@@ -3,6 +3,7 @@ import "./Landing.scss";
 import { SightingsResponse } from "../../../models/apiModels.ts";
 import { getSightings } from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
+import { MapComponent } from "../../mapComponent/MapComponent.tsx";
 
 const fetchSightings = async () => {
   try {
@@ -36,65 +37,74 @@ export const Landing = () => {
 
   const renderLandingMobileView = () => {
     return (
-      <ul id="Sightings" className="ul-container">
-        {sightingsData?.map((sighting) => (
-          <li className="li-item">
-            <img src={sighting.imageSource} />
-            <div id="sightings-info">
-              <div>
-                <strong> Species: </strong> {sighting.species.speciesName}
+      <>
+        <MapComponent />
+        <h2>Most recent sightings</h2>
+        <ul id="Sightings" className="ul-container">
+          {sightingsData?.map((sighting) => (
+            <li className="li-item">
+              <img src={sighting.imageSource} />
+              <div id="sightings-info">
+                <div>
+                  <strong> Species: </strong> {sighting.species.speciesName}
+                </div>
+                <div>
+                  <strong> Date Reported: </strong>
+                  {sighting.reportDate.slice(0, 10)}
+                </div>
+                <div>
+                  <strong>Description: </strong> {sighting.description}
+                </div>
+                <div>
+                  <strong>Latitude: </strong>
+                  {sighting.location.latitude}
+                </div>
+                <div>
+                  <strong>Longitude: </strong>
+                  {sighting.location.longitude}
+                </div>
               </div>
-              <div>
-                <strong> Date Reported: </strong>
-                {sighting.reportDate.slice(0, 10)}
-              </div>
-              <div>
-                <strong>Description: </strong> {sighting.description}
-              </div>
-              <div>
-                <strong>Latitude: </strong>
-                {sighting.location.latitude}
-              </div>
-              <div>
-                <strong>Longitude: </strong>
-                {sighting.location.longitude}
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
+      </>
     );
   };
   const renderLandingDesktopView = () => {
     return (
-      <table id="SightingsTable" className="table-container">
-        <thead className="table-header">
-          <th className="table-cell">Id</th>
-          <th className="table-cell">Species</th>
-          <th className="table-cell">Date</th>
-          <th className="table-cell">Description</th>
-          {/* <th className="table-cell">Location</th> */}
-          {/* <th className="table-cell">Image</th> */}
-        </thead>
+      <>
+        <MapComponent />
+        <table id="SightingsTable" className="table-container">
+          <thead className="table-header">
+            {/* <th className="table-cell">Id</th> */}
+            <th className="table-cell">Species</th>
+            <th className="table-cell">Date</th>
+            <th className="table-cell">Description</th>
+            {/* <th className="table-cell">Location</th> */}
+            {/* <th className="table-cell">Image</th> */}
+          </thead>
 
-        <tbody>
-          {sightingsData?.map((sighting) => (
-            <tr className="table-row">
-              <td className="table-cell">{sighting.id}</td>
-              <td className="table-cell">{sighting.species.speciesName}</td>
-              <td className="table-cell">{sighting.reportDate.slice(0, 10)}</td>
-              <td className="table-cell">{sighting.description}</td>
-              {/* <td className="table-cell">
+          <tbody>
+            {sightingsData?.map((sighting) => (
+              <tr className="table-row">
+                {/* <td className="table-cell">{sighting.id}</td> */}
+                <td className="table-cell">{sighting.species.speciesName}</td>
+                <td className="table-cell">
+                  {sighting.reportDate.slice(0, 10)}
+                </td>
+                <td className="table-cell">{sighting.description}</td>
+                {/* <td className="table-cell">
                 Latitude: {sighting.location.latitude} <br />
                 Longitude: {sighting.location.longitude}
               </td> */}
-              {/* <td className="table-cell">
+                {/* <td className="table-cell">
                 <img src={sighting.imageSource} />
               </td> */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
     );
   };
 
