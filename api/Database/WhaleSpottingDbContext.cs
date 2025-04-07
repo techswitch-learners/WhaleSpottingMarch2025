@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WhaleSpottingBackend.Models.DatabaseModels;
 using WhaleSpottingBackend.Helper;
+using WhaleSpottingBackend.Models.DatabaseModels;
 
 namespace WhaleSpottingBackend.Database;
 
@@ -28,7 +28,7 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+
         Species blueWhale = new Species(1, "Blue Whale");
         Species humpbackWhale = new Species(2, "Humpback Whale");
         Species orca = new Species(3, "Orca");
@@ -55,16 +55,16 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
             unknown
         );
 
-        LocationModel blueWhaleLocation = new LocationModel(1,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(41.9028, -60.0000));
-        LocationModel humpbackWhaleLocation = new LocationModel(2,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(57.808243, -146.412739));
-        LocationModel orcaLocation = new LocationModel(3,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(34.468535, -130.063914));
-        LocationModel spermWhaleLocation = new LocationModel(4,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(73.149204, -148.475577));
-        LocationModel finWhaleLocation = new LocationModel(5,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(36.547852, -72.010735));
-        LocationModel minkeWhaleLocation = new LocationModel(6,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(52.122217, -50.741203));
-        LocationModel belugaWhaleLocation = new LocationModel(7,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(69.169371, -174.813427));
-        LocationModel grayWhaleLocation = new LocationModel(8,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates( 55.443528, -138.983393));
-        LocationModel rightWhaleLocation = new LocationModel(9,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(44.420668, -56.366203));
-        LocationModel bowheadWhaleLocation = new LocationModel(10,SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(83.249778, -106.815422));
+        LocationModel blueWhaleLocation = new LocationModel(1, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(41.9028, -60.0000));
+        LocationModel humpbackWhaleLocation = new LocationModel(2, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(57.808243, -146.412739));
+        LocationModel orcaLocation = new LocationModel(3, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(34.468535, -130.063914));
+        LocationModel spermWhaleLocation = new LocationModel(4, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(73.149204, -148.475577));
+        LocationModel finWhaleLocation = new LocationModel(5, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(36.547852, -72.010735));
+        LocationModel minkeWhaleLocation = new LocationModel(6, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(52.122217, -50.741203));
+        LocationModel belugaWhaleLocation = new LocationModel(7, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(69.169371, -174.813427));
+        LocationModel grayWhaleLocation = new LocationModel(8, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(55.443528, -138.983393));
+        LocationModel rightWhaleLocation = new LocationModel(9, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(44.420668, -56.366203));
+        LocationModel bowheadWhaleLocation = new LocationModel(10, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(83.249778, -106.815422));
 
         modelBuilder.Entity<LocationModel>().HasData(
             blueWhaleLocation,
