@@ -7,7 +7,7 @@ namespace WhaleSpottingBackend.Models.DatabaseModels;
 public class LocationModel
 {
     public int Id { get; set; }
-    public Point SpatialCoordinates { get; set; } = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(0,0);
+    public Point SpatialCoordinates { get; set; } = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(0, 0);
 
     public LocationModel(Point spatialCoordinates)
     {
