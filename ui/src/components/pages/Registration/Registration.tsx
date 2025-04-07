@@ -53,7 +53,9 @@ export const Register = () => {
       if (validatePassword(formData.password)) {
         const response = await register(formData);
         if (response.status >= 300) {
-          setErrorMessage("");
+          setErrorMessage(
+            "An error occurred during registration." + response.statusText,
+          );
         } else {
           const loginData: Login = {
             username: formData.username,
@@ -66,8 +68,8 @@ export const Register = () => {
           }
         }
       }
-    } catch {
-      setErrorMessage("An error has occurred.");
+    } catch (error) {
+      setErrorMessage("An error has occurred." + error);
     }
   };
 
