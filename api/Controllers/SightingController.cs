@@ -47,9 +47,10 @@ public class SightingController : ControllerBase
             return NotFound();
         }
         return sightings.Select(sighting => new SightingResponseModel(sighting, Sighting.GetReviewStatus(sighting)))
-                        .Where(sighting=>sighting.Status =="Approved")
+                        .Where(sighting => sighting.Status == "Approved")
                         .ToList();
     }
+
 
     // POST: api/createSighting
     [HttpPost("createSighting")]
@@ -90,7 +91,7 @@ public class SightingController : ControllerBase
         };
         var sighting = _sightingRepository.CreateSighting(newSighting);
         var url = Url.Action("GetSightingByID", new { id = sighting.Id });
-                var sightingResponse = new SightingResponseModel(sighting);
+        var sightingResponse = new SightingResponseModel(sighting);
         return Created(url, sightingResponse);
     }
 
