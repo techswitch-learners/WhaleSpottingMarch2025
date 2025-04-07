@@ -28,34 +28,28 @@ public class ReviewController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        try
-        {
-            string? adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (adminId is null)
-            {
-                return Unauthorized("Unauthorized");
-            }
-            SightingReview newReview = new(
-                reviewRequest.SightingID,
-                adminId,
-                reviewRequest.Approved,
-                DateTime.UtcNow,
-                reviewRequest.Comments
-            );
-            _reviewRepository.AddSightingReview(newReview);
 
-            if (reviewRequest.UpdatedSighting is not null)
-            {
-                Sighting sighting = _sightingRepository.GetSightingByID(reviewRequest.SightingID);
-                sighting.Description = reviewRequest.UpdatedSighting.Description ?? sighting.Description;
-                sighting.Species = reviewRequest.UpdatedSighting.Species ?? sighting.Species;
-                _sightingRepository.UpdateSighting(sighting);
-            }
-            return Ok("Review completed successfully.");
-        }
-        catch (Exception ex)
+        string? adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (adminId is null)
         {
-            return BadRequest($"Failed to complete review: {ex.Message}");
+            return Unauthorized("Unauthorized");
         }
+        SightingReview newReview = new(
+            reviewRequest.SightingId,
+            adminId,
+            reviewRequest.Approved,
+            DateTime.UtcNow,
+            reviewRequest.Comments
+        );
+        _reviewRepository.AddSightingReview(newReview);
+
+        if (reviewRequest.UpdatedSighting is not null)
+        {
+            Sighting sighting = _sightingRepository.GetSightingByID(reviewRequest.SightingId);
+            sighting.Description = reviewRequest.UpdatedSighting.Description ?? sighting.Description;
+            sighting.Species = reviewRequest.UpdatedSighting.Species ?? sighting.Species;
+            _sightingRepository.UpdateSighting(sighting);
+        }
+        return Ok("Review completed successfully.");
     }
 }

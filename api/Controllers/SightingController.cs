@@ -33,10 +33,9 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        var response = new SightingResponseModel(sighting, SightingReviewHelper.GetReviewStatus(sighting));
+        var response = new SightingResponseModel(sighting, Sighting.GetReviewStatus(sighting));
         return response;
     }
-
 
     // GET: api/Sightings
     [HttpGet("")]
@@ -47,13 +46,9 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        List<SightingResponseModel> sightingsList = [];
-        foreach (var sighting in sightings)
-        {
-            var sightingResponse = new SightingResponseModel(sighting, SightingReviewHelper.GetReviewStatus(sighting));
-            sightingsList.Add(sightingResponse);
-        }
-        return sightingsList.ToList();
+        return sightings.Select(sighting => new SightingResponseModel(sighting, Sighting.GetReviewStatus(sighting)))
+                        .Where(sighting=>sighting.Status =="Approved")
+                        .ToList();
     }
 
     // POST: api/createSighting
@@ -95,10 +90,9 @@ public class SightingController : ControllerBase
         };
         var sighting = _sightingRepository.CreateSighting(newSighting);
         var url = Url.Action("GetSightingByID", new { id = sighting.Id });
-        var sightingResponse = new SightingResponseModel(sighting);
+                var sightingResponse = new SightingResponseModel(sighting);
         return Created(url, sightingResponse);
     }
-
 
     //sighting/pending-approval
     [HttpGet("pending-approval")]
