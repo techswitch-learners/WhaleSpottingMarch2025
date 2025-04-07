@@ -14,9 +14,11 @@ First, create a new role in pgAdmin called `whale_spotting` with password `whale
 - Create databases
 - Inherit rights from the parent roles
 
+
 ## Setting up spatial data in the database 
 Prior to setting up database, install spatial data extension "PostGIS" for PostGres via stack builder application
-Run the following queries in `whale_spotting` database to enable spatial data 
+Open pgAdmin --> Under databases , you can find the `whale_spotting` database. Right click on it and choose Query Tool. In the tab that appears, run the below queries to enable spatial data :
+
 Create Extension postgis;
 Create Extension postgis_topology;
 
@@ -29,9 +31,6 @@ You can check that this has worked by right clicking on 'Databases' in pgAdmin a
 
 ## Default Admin User
 Currently, one default admin user is set up with username = whale_spotting and password  “Whale_spotting1”. 
-
-## Location Query for Sightings and Location Endpoint
-User provides longitude and latitude as well as search radius in meters
 
 # Running the code
 You can run the code using `dotnet run`.
