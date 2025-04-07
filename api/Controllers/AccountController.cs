@@ -42,7 +42,7 @@ public class AccountController : ControllerBase
             if (response.Succeeded)
             {
                 // Adding a cookie
-                CreateCookie("UserRole","User"); 
+                CreateCookie("UserRole", "User");
                 return Ok(new { message = "Registration successful and user logged in." });
             }
         }
@@ -63,7 +63,7 @@ public class AccountController : ControllerBase
         if (result.Succeeded)
         {
             // Adding a cookie
-            CreateCookie("UserRole",role[0]);           
+            CreateCookie("UserRole", role[0]);
             return Ok(new { message = "Login successful." });
         }
         return Unauthorized("Incorrect username and password.");
@@ -97,12 +97,13 @@ public class AccountController : ControllerBase
         return Ok("Accessible to admin only.");
     }
 
-    private void CreateCookie(string name, string value) {
+    private void CreateCookie(string name, string value)
+    {
         HttpContext.Response.Cookies.Append(name, value, new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddHours(1),
-                HttpOnly = false,
-                IsEssential = true
-            });
+        {
+            Expires = DateTimeOffset.Now.AddHours(1),
+            HttpOnly = false,
+            IsEssential = true
+        });
     }
 }
