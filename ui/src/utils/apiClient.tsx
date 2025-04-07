@@ -1,4 +1,3 @@
-import { WhaleSighting } from "../components/formComponents/whaleSightingForm/WhaleSightingForm";
 import { Login, Registration } from "../models/apiModels";
 
 export const fetchPOSTRequest = async (

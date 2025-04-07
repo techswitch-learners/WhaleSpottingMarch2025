@@ -49,6 +49,18 @@ export const WhaleSightingForm = () => {
     fetchSpecies();
   }, []);
 
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
   const navigate = useNavigate();
   if (!loginContext.isLoggedIn) {
     return (
@@ -115,18 +127,6 @@ export const WhaleSightingForm = () => {
     setDate(dateValue);
     formData.sightingDate = dateValue;
   };
-
-  useEffect(() => {
-    if (!selectedFile) {
-      setPreview(null);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreview(objectUrl);
-
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
