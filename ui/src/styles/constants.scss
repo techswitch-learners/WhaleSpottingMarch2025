@@ -32,6 +32,7 @@ $background-color-deny: #e62143;
 
 @mixin button($color) {
     background-color: $color;
+    cursor: pointer;
 }
 
 @mixin button-approve {
