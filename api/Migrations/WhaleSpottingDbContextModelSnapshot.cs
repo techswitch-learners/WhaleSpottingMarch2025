@@ -245,6 +245,10 @@ namespace WhaleSpottingBackend.Migrations
                     b.Property<int>("LocationId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PostedById")
+                        .HasColumnType("text")
+                        .HasColumnName("PostedById");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
                         .HasColumnName("Quantity");
@@ -263,6 +267,8 @@ namespace WhaleSpottingBackend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("PostedById");
 
                     b.HasIndex("SpeciesId");
 
@@ -730,6 +736,10 @@ namespace WhaleSpottingBackend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WhaleSpottingBackend.Models.DatabaseModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("PostedById");
+
                     b.HasOne("WhaleSpottingBackend.Models.DatabaseModels.Species", "Species")
                         .WithMany()
                         .HasForeignKey("SpeciesId")
@@ -739,6 +749,8 @@ namespace WhaleSpottingBackend.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Species");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WhaleSpottingBackend.Models.DatabaseModels.SightingReview", b =>

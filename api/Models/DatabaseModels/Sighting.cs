@@ -21,6 +21,10 @@ public class Sighting
     [Column("ImageSource")]
     public string? ImageSource { get; set; }
     public IEnumerable<SightingReview>? Reviews { get; set; }
+    [Column("PostedById")]
+    public string? PostedById { get; set; } 
+    [ForeignKey("PostedById")]
+    public User User { get; set; }
     public Sighting() { }
     public Sighting(int id, int speciesId, string description, DateTime sightingDate, DateTime reportDate, int quantity, int locationId, string imageSource)
     {
