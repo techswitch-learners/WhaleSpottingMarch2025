@@ -1,21 +1,21 @@
 @use '@/styles/constants';
 
 /* Mobile */
-@media only screen and (min-width: 320px) {
+@media only screen and (min-width: constants.$mobile-min-width) {
   .location-picker {
       max-width: 300px;
   }
 }
 
 /*tablet*/
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: constants.$tablet-min-width) {
   .location-picker {
       max-width: 600px;  
   }    
 }
 
 /* Desktops */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: constants.$desktop-min-width) {
   .location-picker{
       max-width: 700px;
   }
@@ -30,14 +30,14 @@
 
 .ol-popup {
     position: absolute;
-    background-color: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    border-radius: 10px;
-    border: 1px solid #cccccc;
+    background-color: constants.$background-main;
+    box-shadow: 0 1px 4px constants.$shadow-main;
+    border-radius: calc(constants.$border-radius / 2);
+    border: 1px solid constants.$border-color-main;
     bottom: 12px;
     left: -50px;
     min-width: 200px;
-    margin: 8px;
+    margin: constants.$margin-small;
   }
 
   .ol-popup:after, .ol-popup:before {
@@ -50,13 +50,13 @@
     pointer-events: none;
   }
   .ol-popup:after {
-    border-top-color: white;
+    border-top-color: constants.$background-main;
     border-width: 10px;
     left: 48px;
     margin-left: -10px;
   }
   .ol-popup:before {
-    border-top-color: #cccccc;
+    border-top-color: constants.$border-color-main;
     border-width: 11px;
     left: 48px;
     margin-left: -11px;
@@ -65,14 +65,14 @@
   p {
     font-size: constants.$font-size-normal;
     line-height: 1em;
-    margin: 6px;
+    margin: constants.$margin-small;
     font-family: constants.$font-family-normal;
   }
 
   code {
     font-size: constants.$font-size-normal;
     line-height: 1em;
-    margin: 6px;
+    margin: constants.$margin-small;
     font-family: constants.$font-family-normal;
     display: block;
   }

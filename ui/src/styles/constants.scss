@@ -9,6 +9,9 @@ $text-secondary-main: #01579B;
 $text-success: green;
 $text-error: red;
 
+$shadow-main: grey;
+$border-color-main: grey;
+
 $border-radius:16px;
 $padding-default:16px;
 $padding-small:8px;
@@ -18,6 +21,7 @@ $margin-small:8px;
 $margin-large:24px;
 $desktop-min-width: 1024px;
 $tablet-min-width: 760px;
+$mobile-min-width: 320px;
 
 $font-size-normal: 1rem;
 $font-size-heading: 2.5rem;
