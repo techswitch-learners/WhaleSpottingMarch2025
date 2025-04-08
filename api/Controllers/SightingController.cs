@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries;
-using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
