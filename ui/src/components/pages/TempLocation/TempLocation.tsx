@@ -1,6 +1,15 @@
-import LocationPicker from "../../LocationPicker/LocationPicker";
+import { useState } from "react";
+import LocationPicker, {
+  GeoLocation,
+} from "../../LocationPicker/LocationPicker";
 import "../../LocationPicker/LocationPicker.scss";
 
 export const TempLocation = () => {
-    return <div>Location Picker {LocationPicker()}</div>;
-  };
+  const [location, setLocation] = useState<GeoLocation>();
+  return (
+    <div>
+      Location Picker{" "}
+      <LocationPicker location={location} onLocationSelection={setLocation} />
+    </div>
+  );
+};
