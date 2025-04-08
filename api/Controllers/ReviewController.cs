@@ -47,7 +47,7 @@ public class ReviewController : ControllerBase
         {
             Sighting sighting = _sightingRepository.GetSightingByID(reviewRequest.SightingId);
             sighting.Description = reviewRequest.UpdatedSighting.Description ?? sighting.Description;
-            sighting.Species = reviewRequest.UpdatedSighting.Species ?? sighting.Species;
+            sighting.SpeciesId = reviewRequest.UpdatedSighting.Species.Id;
             _sightingRepository.UpdateSighting(sighting);
         }
         return Ok("Review completed successfully.");

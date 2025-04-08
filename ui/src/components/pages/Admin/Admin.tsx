@@ -1,63 +1,65 @@
 import { useContext } from "react";
 import { LoginContext } from "../../LoginManager/LoginManager";
 import { useEffect, useState } from "react";
-import { SightingsResponse, Species } from "../../../models/apiModels";
+import {
+  CreateReviewRequest,
+  SightingsResponse,
+  Species,
+} from "../../../models/apiModels";
 import "./Admin.scss";
-import { getAllSpecies, getPendingApprovalS } from "../../../utils/apiClient";
-
-const testPendindApprovals = [
-  {
-    id: 9,
-    species: {
-      id: 9,
-      speciesName: "Right Whale",
-    },
-    description: "Details of Sighting 9",
-    sightingDate: "2024-03-09T13:21:33Z",
-    reportDate: "2024-03-10T13:21:33Z",
-    quantity: 1,
-    location: {
-      id: 9,
-      latitude: 44.420668,
-      longitude: -56.366203,
-    },
-    imageSource: "http://localhost:5067/images/blue-whale.jpg",
-  },
-];
+import {
+  getAllSpecies,
+  getPendingApprovals,
+  postReview,
+} from "../../../utils/apiClient";
+import { PendingApproval } from "../../pendingApproval/PendingApproval";
 
 export const Admin = () => {
   const loginContext = useContext(LoginContext);
   const [pendingApprovals, setPendingApprovals] = useState<SightingsResponse[]>(
     [],
   );
-  const [pendingApprovalsError, setPendingApprovalsError] = useState(false);
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
-  const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
-  const [selectedSpecies, setSelectedSpecies] = useState<Species | null>(null);
+  const [pendingApprovalsError, setPendingApprovalsError] = useState("");
+  const [speciesLoadingError, setSpeciesLoadingError] = useState("");
+  const [postReviewError, setPostReviewError] = useState("");
+  const isLoggedInAdmin = loginContext.isLoggedIn && loginContext.isAdmin;
 
   useEffect(() => {
     async function fetchPendingApprovals() {
-      // const pendingApprovals = await getPendingApprovalS().catch((error) => {
-      //   setPendingApprovalsError(error);
-      // });
-      // setPendingApprovals(pendingApprovals);
-      setPendingApprovals(testPendindApprovals);
+      try {
+        const pendingApprovals = await getPendingApprovals();
+        setPendingApprovals(pendingApprovals);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setPendingApprovalsError(error.message);
+        }
+      }
     }
-    fetchPendingApprovals();
-  }, []);
+
+    if (isLoggedInAdmin) {
+      fetchPendingApprovals();
+    }
+  }, [isLoggedInAdmin]);
 
   useEffect(() => {
     async function fetchSpecies() {
-      const species = await getAllSpecies().catch((error) => {
-        setSpeciesLoadingError(error);
-      });
-
-      setSpeciesOptions(species);
+      try {
+        const species = await getAllSpecies();
+        setSpeciesOptions(species);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setSpeciesLoadingError(error.message);
+        }
+      }
     }
-    fetchSpecies();
-  }, []);
 
-  if (!loginContext.isLoggedIn && !loginContext.isAdmin) {
+    if (isLoggedInAdmin) {
+      fetchSpecies();
+    }
+  }, [isLoggedInAdmin]);
+
+  if (!isLoggedInAdmin) {
     return (
       <div>
         <h3> Only admin can view this page. Please log in as admin </h3>
@@ -68,20 +70,8 @@ export const Admin = () => {
     );
   }
 
-  // This part is hardcoded because it hasn't been implemented.
-  const renderAdminInfo = () => (
-    <div className="admin__info">
-      <h2>Hello Whale_spotting!</h2>
-      <div>Role: Admin</div>
-      <div className="admin__details">
-        <div className="admin__password">Edit: Password</div>
-        <div className="admin__email">Edit: Email</div>
-      </div>
-    </div>
-  );
-
   const renderPendingApprovalsTitle = () => {
-    const pendingApprovalsCount = pendingApprovals.length;
+    const pendingApprovalsCount = pendingApprovals?.length;
 
     return (
       <div className="admin__approvals-title">
@@ -98,75 +88,56 @@ export const Admin = () => {
     );
   };
 
-  const renderSpeciesOptions = (sighting: SightingsResponse) => (
-    <select
-      className="inputStyle"
-      name="species"
-      value={sighting.species.speciesName}
-      // onChange={handleChangeSpecies}
-      required
-    >
-      {speciesLoadingError ? (
-        <div>Error loading species</div>
-      ) : (
-        <>
-          <option value="">Change species</option>
-          {speciesOptions &&
-            speciesOptions.map(({ id, speciesName }) => (
-              <option key={`admin-page-speciesName-${id}`} value={id}>
-                {speciesName}
-              </option>
-            ))}
-        </>
-      )}
-    </select>
-  );
-
-  const renderPendingAppovalsTableHeader = () => (
-    <thead className="table-header">
-      <th className="table-cell">Id</th>
-      <th className="table-cell">Species</th>
-      <th className="table-cell">Description</th>
-      <th className="table-cell">Approve</th>
-      <th className="table-cell">Reject</th>
-    </thead>
-  );
-
-  const renderPendingApprovalsTableBody = () => (
-    <tbody>
-      {pendingApprovals?.map((sighting) => (
-        <tr className="table-row">
-          <td className="table-cell">{sighting.id}</td>
-          <td className="table-cell">
-            <div>{sighting.species.speciesName}</div>
-            <div>{renderSpeciesOptions(sighting)}</div>
-          </td>
-          <td className="table-cell">{sighting.description}</td>
-          <td className="table-cell">
-            <button className="admin__approve">Approve</button>
-          </td>
-          <td className="table-cell">
-            <button className="admin__reject">Deny</button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  );
-
-  const renderPendingApprovalsTable = () => {
-    return (
-      <table id="" className="table-container">
-        {renderPendingAppovalsTableHeader()}
-        {renderPendingApprovalsTableBody()}
-      </table>
-    );
+  const handlePostReview = (request: CreateReviewRequest) => {
+    postReview(request).then((status) => {
+      if (status === 200) {
+        const filtered = pendingApprovals.filter(
+          (sighting) => sighting.id !== request.sightingId,
+        );
+        setPendingApprovals(filtered);
+      } else {
+        setPostReviewError("An error has occurred while posting reviews.");
+      }
+    });
   };
+
+  const renderPendingApprovals = () => (
+    <div>
+      {pendingApprovals?.map((sighting) => (
+        <PendingApproval
+          key={`${sighting.id}-pending-approval`}
+          sighting={sighting}
+          speciesOptions={speciesOptions}
+          onPostReview={handlePostReview}
+        />
+      ))}
+    </div>
+  );
+  const renderError = () => (
+    <>
+      {!!pendingApprovalsError && (
+        <div>
+          <label className="admin__error">{pendingApprovalsError}</label>
+        </div>
+      )}
+      {!!speciesLoadingError && (
+        <div>
+          <label className="admin__error">{speciesLoadingError}</label>
+        </div>
+      )}
+      {!!postReviewError && (
+        <div>
+          <label className="admin__error">{postReviewError}</label>
+        </div>
+      )}
+    </>
+  );
 
   return (
     <div>
-      {renderAdminInfo()}
+      {renderError()}
       {renderPendingApprovalsTitle()}
-      {pendingApprovals.length > 0 && renderPendingApprovalsTable()}
+      {pendingApprovals?.length > 0 && renderPendingApprovals()}
     </div>
   );
 };

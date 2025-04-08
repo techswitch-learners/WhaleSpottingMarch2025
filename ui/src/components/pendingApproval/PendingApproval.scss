@@ -1,0 +1,29 @@
+@use '@/styles/constants';
+
+.pending-approval{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;  
+    align-items: center;  
+    flex-wrap: wrap;
+
+    &__item {
+        flex: 1 1 100px; 
+        box-sizing: border-box;
+        padding: constants.$padding-small;
+    }      
+
+    & textarea {
+        display: block;
+    }
+}
+
+.pending-approval__species {
+    padding: constants.$padding-small;
+    border-radius: 8px;
+}
+
+.edit-button {
+    background: transparent;
+    font-size: 28px;
+}

@@ -1,5 +1,5 @@
-import { Login, Registration } from "../models/apiModels";
 import { FilterSightings } from "../models/apiModels";
+import { Login, Registration, CreateReviewRequest } from "../models/apiModels";
 
 export const fetchPOSTRequest = async (
   formData: FormData,
@@ -28,6 +28,11 @@ export const getAllSpecies = async () => {
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + "/Species/",
   );
+
+  if (!fetchResponse.ok) {
+    throw new Error(`An error has occurred while loading species. 
+      Status: ${fetchResponse.status}`);
+  }
   const data = await fetchResponse.json();
   return data;
 };
@@ -120,10 +125,32 @@ export const register = async (formData: Registration) => {
   return fetchResponse;
 };
 
-export const getPendingApprovalS = async () => {
+export const getPendingApprovals = async () => {
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + "/sighting/pending-approval/",
+    {
+      method: "GET",
+      credentials: "include",
+    },
   );
+
+  if (!fetchResponse.ok) {
+    throw new Error(`An error has occurred while loading pending approvals. 
+      Status: ${fetchResponse.status}`);
+  }
   const data = await fetchResponse.json();
   return data;
+};
+
+export const postReview = async (reviewRequest: CreateReviewRequest) => {
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + "/review/update-status",
+    {
+      method: "POST",
+      body: JSON.stringify(reviewRequest),
+      headers: new Headers({ "Content-Type": "application/json" }),
+      credentials: "include",
+    },
+  );
+  return fetchResponse.status;
 };

@@ -113,8 +113,8 @@ public class SightingRepository : ISightingRepository
     {
         return _context.Sighting
             .Include(sighting => sighting.Reviews)
+            .Include(sighting => sighting.Species)
             .Where(sighting => !sighting.Reviews.Any())
             .OrderBy(sighting => sighting.SightingDate);
-
     }
 }
