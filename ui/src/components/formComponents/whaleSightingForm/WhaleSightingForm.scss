@@ -5,8 +5,8 @@
     .createSightingForm {
         max-width: 100%;
     }
-
 }
+
 /*tablet*/
 @media only screen and (min-width: 768px) {
     .createSightingForm {
@@ -116,4 +116,16 @@ label {
     margin: 0px 0px 10px 0px;
     width: 30%;
     border-radius: $border-radius;
+.location-selection{
+    align-items: center;
+    justify-content: center;
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+.map-label{
+    width: 300px;
+    align-items: center;
+    text-align: left;  
 }
