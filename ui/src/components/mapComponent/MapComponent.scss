@@ -1,21 +1,35 @@
 @use "sass:color";
 @use "@/styles/constants";
 
+@use "../../../node_modules/ol/ol";
 
-.ol-zoom, .ol-rotate
-{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
+// html,
+// body {
+//   margin: 0;
+//   height: 100%;
+// }
 
-.ol-attribution
-{
-    position: absolute;
-    bottom: 0;
-}
+// #map {
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   width: 100%;
+// }
 
-div.ol-attribution > ul
-{
-    list-style: none;
-}
+// .ol-zoom, .ol-rotate
+// {
+//     position: absolute;
+//     bottom: 0;
+//     right: 0;
+// }
+
+// .ol-attribution
+// {
+//     position: absolute;
+//     bottom: 0;
+// }
+
+// div.ol-attribution > ul
+// {
+//     list-style: none;
+// }
