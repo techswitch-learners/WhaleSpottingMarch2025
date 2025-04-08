@@ -20,7 +20,7 @@ export interface WhaleSighting {
   description: string;
   sightingDate: Value;
   quantity: number;
-  latitude: number;
+  latitude: number | undefined;
   longitude: number;
 }
 
@@ -41,6 +41,8 @@ export const WhaleSightingForm = () => {
   const [formSubmissionError, setFormSubmissionError] = useState("");
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
   const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
+  const [location, setLocation] = useState<GeoLocation>();
+  //const [latitude, setLatitude] = useState<number | undefined> ();
 
   useEffect(() => {
     async function fetchSpecies() {
@@ -140,6 +142,11 @@ export const WhaleSightingForm = () => {
   if (speciesLoadingError) {
     return <div>Error loading species from backend</div>;
   }
+  //  const [location, setLocation] = useState<GeoLocation>();
+  // const onLatitudeChange = () => {
+  //   setLatitude(location?.latitude);
+  //   formData.latitude = location?.latitude;
+  // };
 
   return (
     <div className="createSightingForm">
@@ -223,6 +230,9 @@ export const WhaleSightingForm = () => {
             required
           ></input>
         </div>
+        <div>
+          Select Sighting Location: <LocationPicker onLocationSelection={setLocation} />
+        </div>
         <div className="field">
           <label htmlFor="latitude">
             Latitude:
@@ -233,8 +243,8 @@ export const WhaleSightingForm = () => {
             name="latitude"
             type="number"
             className="inputStyle"
-            placeholder="e.g. 40.741895"
-            value={formData.latitude}
+            placeholder="click on map to select latitude"
+            value={location?.latitude}
             minLength={10}
             maxLength={10}
             onChange={handleChange}
@@ -252,8 +262,8 @@ export const WhaleSightingForm = () => {
             name="longitude"
             type="number"
             className="inputStyle"
-            placeholder="e.g. -73.989308"
-            value={formData.longitude}
+            placeholder="click on map to select longitude"
+            value={location?.longitude}
             minLength={10}
             maxLength={10}
             onChange={handleChange}
