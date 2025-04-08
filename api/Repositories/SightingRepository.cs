@@ -4,6 +4,7 @@ using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
+using WhaleSpottingBackend.Helper;
 namespace WhaleSpottingBackend.Repositories;
 
 public interface ISightingRepository
@@ -35,10 +36,12 @@ public class SightingRepository : ISightingRepository
 
     public IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters)
     {
+        var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude, parameters.Longitude);
         return _context.Sighting
             .Include(sighting => sighting.Location)
             .Include(sighting => sighting.Species)
             .Include(sighting => sighting.Reviews)
+            .Where(sighting => sighting.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, parameters.RadiusInMeteres))
             .Where(sighting => parameters.SpeciesId == null || sighting.SpeciesId == parameters.SpeciesId)
             .Where(sighting => parameters.HasImage == null ||
                 ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
