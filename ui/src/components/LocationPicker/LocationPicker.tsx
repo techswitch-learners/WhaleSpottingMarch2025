@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Map, View } from "ol";
+import { Map, Overlay, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
 import { toLonLat } from "ol/proj";
@@ -21,11 +21,20 @@ function LocationPicker({
   onLocationSelection,
 }: LocationPickerProps) {
   const mapRef = useRef(null!);
+  const popupRef = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
     const osmLayer = new TileLayer({
       preload: Infinity,
       source: new OSM(),
+    });
+    const overlay = new Overlay({
+      element: popupRef.current,
+      autoPan: {
+        animation: {
+          duration: 250,
+        }
+      }
     });
 
     const map = new Map({
@@ -35,6 +44,7 @@ function LocationPicker({
         center: [0, 0],
         zoom: 0,
       }),
+      overlays: [overlay],
     });
 
     map.on("click", (event) => {
@@ -45,6 +55,15 @@ function LocationPicker({
         latitude: longitudelatitude[1],
       };
       onLocationSelection(clickedLocation);
+      overlay.setPosition(clickedCoordinate);
+      
+
+      if (popupRef.current) {
+        popupRef.current.innerHTML = `<p>Latitude:</p><code>` + clickedLocation.latitude + 
+        `</code><p>Longitude:</p><code>` + clickedLocation.longitude + `</code>`;
+      }
+      overlay.setPosition(clickedCoordinate)
+      
     });
     return () => map.setTarget();
   }, [onLocationSelection]);
@@ -52,13 +71,7 @@ function LocationPicker({
   return (
     <div className="location-picker-container">
       <div ref={mapRef} className="location-picker"></div>
-      {location && (
-        <div>
-          <p>Coordinates</p>
-          <p>Longitude: {location.longitude}</p>
-          <p>Latitude: {location.latitude}</p>
-        </div>
-      )}
+      <div ref ={popupRef} className= "ol-popup"></div>
     </div>
   );
 }
