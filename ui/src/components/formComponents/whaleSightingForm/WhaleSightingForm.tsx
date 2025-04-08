@@ -67,6 +67,14 @@ export const WhaleSightingForm = () => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
+  }, [location.latitude, location.longitude]);
+
   const navigate = useNavigate();
   if (!loginContext.isLoggedIn) {
     return (
@@ -83,14 +91,6 @@ export const WhaleSightingForm = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      latitude: location.latitude,
-      longitude: location.longitude,
-    }));
-  }, [location.latitude, location.longitude]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
