@@ -41,9 +41,11 @@ export const WhaleSightingForm = () => {
   const [formSubmissionError, setFormSubmissionError] = useState("");
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
   const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
-  const [location, setLocation] = useState<GeoLocation>(null!);
-  //const [latitude, setLatitude] = useState<number | undefined> ();
-
+  const [location, setLocation] = useState<GeoLocation>({
+    latitude: 0,
+    longitude: 0,
+  });
+  
   useEffect(() => {
     async function fetchSpecies() {
       const species = await getAllSpecies().catch((error) => {
@@ -83,6 +85,14 @@ export const WhaleSightingForm = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
+  }, [location.latitude, location.longitude]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -240,9 +250,11 @@ export const WhaleSightingForm = () => {
                 <LocationPicker
                   location={location}
                   onLocationSelection={setLocation}
-                  onChange={onLocationPickerChange}
-                  value={location.latitude}
                 />
+              </div>
+              <div>
+                {" "}
+                LONG? {formData.longitude} LAT? {formData.latitude}
               </div>
             </label>
           </div>
