@@ -81,7 +81,7 @@ export const Landing = () => {
             <th className="table-cell">Date</th>
             <th className="table-cell">Description</th>
             {/* <th className="table-cell">Location</th> */}
-            {/* <th className="table-cell">Image</th> */}
+            <th className="table-cell">Image</th> 
           </thead>
 
           <tbody>
@@ -97,9 +97,9 @@ export const Landing = () => {
                 Latitude: {sighting.location.latitude} <br />
                 Longitude: {sighting.location.longitude}
               </td> */}
-                {/* <td className="table-cell">
+                <td className="table-cell">
                 <img src={sighting.imageSource} />
-              </td> */}
+              </td>
               </tr>
             ))}
           </tbody>
