@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Database;
+using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Models.DatabaseModels;
-using WhaleSpottingBackend.Helper;
 namespace WhaleSpottingBackend.Repositories;
 
 public interface ISightingRepository
