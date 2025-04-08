@@ -42,7 +42,7 @@ export const ViewSightings = () => {
             <img src={sighting.imageSource} />
             <div id="sightings-info">
               <div>
-                <strong> Species: </strong> {sighting.species.speciesName}
+                <strong> Species: </strong> {sighting.speciesName}
               </div>
               <div>
                 <strong> Date Reported: </strong>
@@ -53,11 +53,11 @@ export const ViewSightings = () => {
               </div>
               <div>
                 <strong>Latitude: </strong>
-                {sighting.location.latitude}
+                {sighting.latitude}
               </div>
               <div>
                 <strong>Longitude: </strong>
-                {sighting.location.longitude}
+                {sighting.longitude}
               </div>
             </div>
           </li>
@@ -81,12 +81,12 @@ export const ViewSightings = () => {
           {sightingsData?.map((sighting) => (
             <tr className="table-row">
               <td className="table-cell">{sighting.id}</td>
-              <td className="table-cell">{sighting.species.speciesName}</td>
+              <td className="table-cell">{sighting.speciesName}</td>
               <td className="table-cell">{sighting.reportDate.slice(0, 10)}</td>
               <td className="table-cell">{sighting.description}</td>
               <td className="table-cell">
-                Latitude: {sighting.location.latitude} <br />
-                Longitude: {sighting.location.longitude}
+                Latitude: {sighting.latitude} <br />
+                Longitude: {sighting.longitude}
               </td>
               <td className="table-cell">
                 <img src={sighting.imageSource} />
