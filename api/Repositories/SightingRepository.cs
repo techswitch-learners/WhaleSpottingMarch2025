@@ -41,7 +41,7 @@ public class SightingRepository : ISightingRepository
             .Include(sighting => sighting.Location)
             .Include(sighting => sighting.Species)
             .Include(sighting => sighting.Reviews)
-            .Where(sighting => sighting.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, parameters.RadiusInMeteres))
+            .Where(sighting => sighting.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, parameters.RadiusInMeters))
             .Where(sighting => parameters.SpeciesId == null || sighting.SpeciesId == parameters.SpeciesId)
             .Where(sighting => parameters.HasImage == null ||
                 ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
