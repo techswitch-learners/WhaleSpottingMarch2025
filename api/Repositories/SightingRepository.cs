@@ -12,7 +12,7 @@ public interface ISightingRepository
     Sighting CreateSighting(Sighting sighting);
     IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters);
     Sighting UpdateSighting(Sighting sighting);
-    IEnumerable<Sighting> GetAllPendingApproval();  
+    IEnumerable<Sighting> GetAllPendingApproval();
     IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius);
 }
 
