@@ -1,11 +1,13 @@
 export interface SightingsResponse {
   id: number;
-  species: Species;
+  speciesId: number;
+  speciesName: string;
   description: string;
   sightingDate: string;
   reportDate: string;
   quantity: number;
-  location: Location;
+  latitude: number;
+  longitude: number;
   imageSource: string;
 }
 

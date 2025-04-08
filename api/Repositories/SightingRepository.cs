@@ -36,25 +36,30 @@ public class SightingRepository : ISightingRepository
 
     public IEnumerable<Sighting> GetSightingsBySearchQuery(SightingsQueryParameters parameters)
     {
-        var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude, parameters.Longitude);
         return _context.Sighting
             .Include(sighting => sighting.Location)
             .Include(sighting => sighting.Species)
             .Include(sighting => sighting.Reviews)
-            .Where(sighting => sighting.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, parameters.RadiusInMeters))
             .Where(sighting => parameters.SpeciesId == null || sighting.SpeciesId == parameters.SpeciesId)
             .Where(sighting => parameters.HasImage == null ||
                 ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
             .Where(sighting => parameters.SightingStartDate == null ||
                 sighting.SightingDate >= parameters.SightingStartDate && sighting.SightingDate <= parameters.SightingEndDate)
+            .Where(sighting =>
+                parameters.Latitude == null
+                || parameters.Longitude == null
+                || sighting.Location.SpatialCoordinates.IsWithinDistance(
+                    SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude ?? 0, parameters.Longitude ?? 0),
+                    parameters.RadiusInMeters))
+            .OrderByDescending(sighting => sighting.SightingDate)
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize);
-
     }
 
     public IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius)
     {
         return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius))
+                                .OrderByDescending(sighting => sighting.SightingDate)
                                 .Include(sighting => sighting.Species)
                                 .Include(sighting => sighting.Location);
     }
@@ -76,6 +81,8 @@ public class SightingRepository : ISightingRepository
     {
         return _context.Sighting
             .Include(sighting => sighting.Reviews)
-            .Where(sighting => !sighting.Reviews.Any());
+            .Where(sighting => !sighting.Reviews.Any())
+            .OrderBy(sighting => sighting.SightingDate);
+
     }
 }

@@ -12,8 +12,8 @@ public class SightingsQueryParameters
         { _pageSize = value < _maxPageSize ? _pageSize = value : _pageSize = _maxPageSize; }
     }
     private readonly int _maxPageSize = 50;
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public int RadiusInMeters { get; set; } = 10;
     public int? SpeciesId { get; set; }
     public bool? HasImage { get; set; }
