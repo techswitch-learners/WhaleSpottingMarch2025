@@ -44,50 +44,57 @@ export const NavigationBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const links = [
-    { name: "Home", link: "/" },
-    { name: "View Sightings", link: "/ViewSightings" },
-    { name: "Report Sighting", link: "/ReportSighting" },
-    { name: "View Locations", link: "/ViewLocations" },
-    { name: "Admin", link: "/Admin" },
-    { name: "Log In", link: "/LogIn" },
-    { name: "Register", link: "/Register" },
-    { name: "Log Out", link: "/logout" },
-  ];
+  const links = {
+    home: { name: "Home", link: "/" },
+    viewSightings: { name: "View Sightings", link: "/ViewSightings" },
+    reportSighting: { name: "Report Sighting", link: "/ReportSighting" },
+    viewLocation: { name: "View Locations", link: "/ViewLocations" },
+    admin: { name: "Admin", link: "/Admin" },
+    logIn: { name: "Log In", link: "/LogIn" },
+    register: { name: "Register", link: "/Register" },
+    logOut: { name: "Log Out", link: "/logout" },
+  };
 
   const getMainMenuLinks = (): { name: string; link: string }[] => {
     let updatedLinks: { name: string; link: string }[] = [];
     if (!loginContext.isLoggedIn) {
       updatedLinks = [
-        links[0],
-        links[1],
-        links[2],
-        links[3],
-        links[5],
-        links[6],
+        links.home,
+        links.viewSightings,
+        links.reportSighting,
+        links.viewLocation,
+        links.logIn,
+        links.register,
       ];
     }
     if (loginContext.isLoggedIn && loginContext.isAdmin) {
       updatedLinks = [
-        links[0],
-        links[1],
-        links[2],
-        links[3],
-        links[4],
-        links[6],
-        links[7],
+        links.home,
+        links.viewSightings,
+        links.reportSighting,
+        links.viewLocation,
+        links.admin,
+        links.register,
+        links.logOut,
       ];
     }
+
     if (loginContext.isLoggedIn && !loginContext.isAdmin) {
-      updatedLinks = [links[0], links[1], links[2], links[3], links[7]];
+      updatedLinks = [
+        links.home,
+        links.viewSightings,
+        links.reportSighting,
+        links.viewLocation,
+        links.logOut,
+      ];
     }
 
     if (isMobile) {
       if (!isMenuOpen) {
         if (loginContext.isLoggedIn) {
-          updatedLinks = [links[2], links[7]];
+          updatedLinks = [links.reportSighting, links.logOut];
         } else {
-          updatedLinks = [links[2], links[5]];
+          updatedLinks = [links.reportSighting, links.logIn];
         }
       }
     }
