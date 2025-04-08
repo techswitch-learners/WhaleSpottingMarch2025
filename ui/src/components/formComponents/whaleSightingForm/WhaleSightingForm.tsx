@@ -43,7 +43,7 @@ export const WhaleSightingForm = () => {
     latitude: 0,
     longitude: 0,
   });
-  
+
   useEffect(() => {
     async function fetchSpecies() {
       const species = await getAllSpecies().catch((error) => {
@@ -150,11 +150,6 @@ export const WhaleSightingForm = () => {
   if (speciesLoadingError) {
     return <div>Error loading species from backend</div>;
   }
-  //  const [location, setLocation] = useState<GeoLocation>();
-  const onLocationPickerChange = () => {
-    formData.latitude = location.latitude;
-    formData.longitude = location.longitude;
-  };
 
   return (
     <div className="createSightingForm">
