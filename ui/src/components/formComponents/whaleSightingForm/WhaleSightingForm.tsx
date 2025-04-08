@@ -20,7 +20,7 @@ export interface WhaleSighting {
   description: string;
   sightingDate: Value;
   quantity: number;
-  latitude: number | undefined;
+  latitude: number;
   longitude: number;
 }
 
@@ -41,7 +41,7 @@ export const WhaleSightingForm = () => {
   const [formSubmissionError, setFormSubmissionError] = useState("");
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
   const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
-  const [location, setLocation] = useState<GeoLocation>();
+  const [location, setLocation] = useState<GeoLocation>(null!);
   //const [latitude, setLatitude] = useState<number | undefined> ();
 
   useEffect(() => {
@@ -143,10 +143,10 @@ export const WhaleSightingForm = () => {
     return <div>Error loading species from backend</div>;
   }
   //  const [location, setLocation] = useState<GeoLocation>();
-  // const onLatitudeChange = () => {
-  //   setLatitude(location?.latitude);
-  //   formData.latitude = location?.latitude;
-  // };
+  const onLocationPickerChange = () => {
+    formData.latitude = location.latitude;
+    formData.longitude = location.longitude;
+  };
 
   return (
     <div className="createSightingForm">
@@ -230,46 +230,24 @@ export const WhaleSightingForm = () => {
             required
           ></input>
         </div>
-        <div>
-          Select Sighting Location: <LocationPicker onLocationSelection={setLocation} />
-        </div>
-        <div className="field">
-          <label htmlFor="latitude">
-            Latitude:
-            <span className="requiredField">*</span>
-          </label>
-          <input
-            id="latitude"
-            name="latitude"
-            type="number"
-            className="inputStyle"
-            placeholder="click on map to select latitude"
-            value={location?.latitude}
-            minLength={10}
-            maxLength={10}
-            onChange={handleChange}
-            required
-          ></input>
-        </div>
-        <div className="field">
-          <label htmlFor="longitude">
-            Longitude:
-            <span className="requiredField">*</span>
-          </label>
 
-          <input
-            id="longitude"
-            name="longitude"
-            type="number"
-            className="inputStyle"
-            placeholder="click on map to select longitude"
-            value={location?.longitude}
-            minLength={10}
-            maxLength={10}
-            onChange={handleChange}
-            required
-          ></input>
+        <div className="field">
+          <div className="location-selection">
+            <label>
+              Select Sighting Location:
+              <span className="requiredField">*</span>
+              <div className="temp-location-container">
+                <LocationPicker
+                  location={location}
+                  onLocationSelection={setLocation}
+                  onChange={onLocationPickerChange}
+                  value={location.latitude}
+                />
+              </div>
+            </label>
+          </div>
         </div>
+
         <div className="field">
           <label htmlFor="image">Image:</label>
           <input
