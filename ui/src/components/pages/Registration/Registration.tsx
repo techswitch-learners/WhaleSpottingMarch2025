@@ -82,8 +82,20 @@ export const Register = () => {
     <div className="registrationForm">
       <h2>Register your account to report whale sightings</h2>
       {errorMessage.length > 0 && (
-        <p className="errorMessage">{errorMessage}</p>
+        <div className="errorMessages">
+          {errorMessage.split(".").map((msg, index) => {
+            if (msg.trim()) {
+              return (
+                <div key={index} className="errorMessage">
+                  {msg.trim()}.
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
       )}
+
       <form onSubmit={handleSubmit} className="form">
         <div className="form-field">
           <label htmlFor="name"> Name: </label>
