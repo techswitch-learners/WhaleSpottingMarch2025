@@ -1,28 +1,11 @@
 @use '@/styles/constants';
 
-/* Mobile */
-@media only screen and (min-width: constants.$mobile-min-width) {
-  .location-picker {
-      max-width: 300px;
-  }
-}
-
-/*tablet*/
-@media only screen and (min-width: constants.$tablet-min-width) {
-  .location-picker {
-      max-width: 600px;  
-  }    
-}
-
-/* Desktops */
-@media only screen and (min-width: constants.$desktop-min-width) {
-  .location-picker{
-      max-width: 700px;
-  }
+.location-picker-container{
+  height: 100%;
 }
 
 .location-picker {
-    height: 30vh;
+    height: 100%;
     margin: 0 auto;
     align-items: center;
     justify-content: center;   
