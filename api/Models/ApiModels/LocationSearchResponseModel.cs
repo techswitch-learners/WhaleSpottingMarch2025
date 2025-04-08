@@ -3,6 +3,7 @@ namespace WhaleSpottingBackend.Models.ApiModels;
 
 public class LocationSearchResponseModel
 {
+    public IEnumerable<DailyWeatherForecastModel> WeatherForecast { get; set; }
     public IEnumerable<TopSpeciesResponseModel> TopSpecies { get; set; }
     public IEnumerable<SightingResponseModel> RecentSightings { get; set; }
 
@@ -11,6 +12,16 @@ public class LocationSearchResponseModel
         TopSpecies = topSpecies;
         RecentSightings = recentSightings;
     }
+}
+public class DailyWeatherForecastModel
+{
+    public DateTime Date { get; set;}
+    public string Description { get; set;}
+    public float AverageTemperatureInCelcius { get; set; }
+    public float VisibilityInKm { get; set; }
+    public float MaxWindSpeedInKmPerHour { get; set; }
+    public int ChanceOfRain { get; set; }
+    public int ChanceOfSnow { get; set; }
 }
 public class TopSpeciesResponseModel
 {
