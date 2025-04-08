@@ -7,7 +7,6 @@ import "./LocationPicker.scss";
 import "ol/ol.css";
 
 export interface LocationPickerProps {
-  //location: GeoLocation | undefined;
   location: GeoLocation;
   onLocationSelection: (location: GeoLocation) => void;
 }

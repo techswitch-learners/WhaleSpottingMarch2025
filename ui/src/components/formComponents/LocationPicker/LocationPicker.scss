@@ -1,8 +1,28 @@
 @use '@/styles/constants';
 
+/* Mobile */
+@media only screen and (min-width: 320px) {
+  .location-picker {
+      max-width: 300px;
+  }
+}
+
+/*tablet*/
+@media only screen and (min-width: 768px) {
+  .location-picker {
+      max-width: 600px;  
+  }    
+}
+
+/* Desktops */
+@media only screen and (min-width: 1024px) {
+  .location-picker{
+      max-width: 700px;
+  }
+}
+
 .location-picker {
-    max-width: 400px;
-    height: 25vh;
+    height: 30vh;
     margin: 0 auto;
     align-items: center;
     justify-content: center;   
@@ -56,5 +76,3 @@
     font-family: constants.$font-family-normal;
     display: block;
   }
-
-

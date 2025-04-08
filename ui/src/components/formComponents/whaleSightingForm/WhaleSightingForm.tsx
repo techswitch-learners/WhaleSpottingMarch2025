@@ -6,10 +6,8 @@ import { fetchPOSTRequest, getAllSpecies } from "../../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
 import { Species } from "../../../models/apiModels";
 import { LoginContext } from "../../LoginManager/LoginManager";
-import LocationPicker, {
-  GeoLocation,
-} from "../../LocationPicker/LocationPicker";
-import "../../LocationPicker/LocationPicker.scss";
+import LocationPicker, { GeoLocation } from "../LocationPicker/LocationPicker";
+import "../LocationPicker/LocationPicker.scss";
 
 type ValuePiece = Date | null;
 
@@ -240,26 +238,18 @@ export const WhaleSightingForm = () => {
             required
           ></input>
         </div>
-
         <div className="field">
           <div className="location-selection">
-            <label>
+            <label className="map-label">
               Select Sighting Location:
               <span className="requiredField">*</span>
-              <div className="temp-location-container">
-                <LocationPicker
-                  location={location}
-                  onLocationSelection={setLocation}
-                />
-              </div>
-              <div>
-                {" "}
-                LONG? {formData.longitude} LAT? {formData.latitude}
-              </div>
             </label>
+            <LocationPicker
+              location={location}
+              onLocationSelection={setLocation}
+            />
           </div>
         </div>
-
         <div className="field">
           <label htmlFor="image">Image:</label>
           <input
