@@ -46,3 +46,14 @@ export interface FilterSightings {
   Longitude: number;
   Radius: number;
 }
+export interface CreateReviewRequest {
+  sightingId: number;
+  approved: boolean;
+  comments: string;
+  updatedSighting?: UpdateSightingRequest;
+}
+
+export interface UpdateSightingRequest {
+  species: Species;
+  description: string;
+}
