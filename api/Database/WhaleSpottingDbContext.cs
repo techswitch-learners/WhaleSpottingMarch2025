@@ -25,8 +25,10 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
     public DbSet<Species> Species { get; set; }
     public DbSet<SightingReview> SightingReview { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+   /*protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
         base.OnModelCreating(modelBuilder);
 
         Species blueWhale = new Species(1, "Blue Whale");
@@ -98,5 +100,5 @@ public class WhaleSpottingDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Sighting>().HasData(
             sightings
         );
-    }
+    }*/
 }
