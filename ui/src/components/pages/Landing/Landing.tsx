@@ -3,7 +3,8 @@ import "./Landing.scss";
 import { SightingsResponse } from "../../../models/apiModels.ts";
 import { getSightings } from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
-import { MapComponent } from "../../mapComponent/MapComponent.tsx";
+import { MapComponentWorking } from "../../mapComponent/MapComponentWorking.tsx";
+// import { MapComponentNotWorking } from "../../mapComponent/NotWorking.tsx";
 
 const fetchSightings = async () => {
   try {
@@ -38,7 +39,7 @@ export const Landing = () => {
   const renderLandingMobileView = () => {
     return (
       <>
-        <MapComponent />
+        <MapComponentWorking />
         <h2>Most recent sightings</h2>
         <ul id="Sightings" className="ul-container">
           {sightingsData?.map((sighting) => (
@@ -73,7 +74,7 @@ export const Landing = () => {
   const renderLandingDesktopView = () => {
     return (
       <>
-        <MapComponent />
+        <MapComponentWorking />
         <table id="SightingsTable" className="table-container">
           <thead className="table-header">
             {/* <th className="table-cell">Id</th> */}
