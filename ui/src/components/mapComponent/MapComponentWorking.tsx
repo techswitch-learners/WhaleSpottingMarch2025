@@ -35,113 +35,54 @@ export const MapComponentWorking = () => {
     imageSource: "",
   });
   const [whaleFeatures, setWhaleFeatures] = useState<Feature[]>();
-
-  const fetchSightings = async () => {
-    try {
-      return getSightings();
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-    }
-  };
+  const [loadingError, setLoadingError] = useState(false);
 
   useEffect(() => {
-    const getSightings = async () => {
-      const data = await fetchSightings();
-      setSightingsData(data);
+    const fetchSightings = async () => {
+      try {
+        console.log("Fetching data");
+        const data = await getSightings();
+        if (!data) {
+          throw new Error("No sightings data loaded");
+        }
+        setSightingsData(data);
+        setSightingsData(data);
+        console.log("Fetched data");
+      } catch (error) {
+        console.error(error);
+        setLoadingError(true);
+      }
     };
-    getSightings();
+    fetchSightings();
   }, []);
 
-  // const jsonWhaleData: Array<SightingsResponse> = [
-  //   {
-  //     id: 1,
-  //     speciesId: 1,
-  //     speciesName: "Blue Whale",
-  //     description: "Details of Sighting 1",
-  //     sightingDate: "2024-03-01T13:21:33Z",
-  //     reportDate: "2024-03-02T13:21:33Z",
-  //     quantity: 1,
-  //     latitude: 41.9028,
-  //     longitude: -60,
-  //     imageSource: "http://localhost:5067/images/blue-whale.jpg",
-  //   },
-  //   {
-  //     id: 2,
-  //     speciesId: 2,
-  //     speciesName: "Humpback Whale",
-  //     description: "Details of Sighting 2",
-  //     sightingDate: "2024-03-02T13:21:33Z",
-  //     reportDate: "2024-03-03T13:21:33Z",
-  //     quantity: 1,
-  //     latitude: 57.808243,
-  //     longitude: -146.412739,
-  //     imageSource: "http://localhost:5067/images/orca-whale.jpg",
-  //   },
-  // ];
-
-  // this ensures map and array
-  // 1. setup icon features
-
   // useEffect(() => {
-  //   const iconFeatures: Feature[] = [];
-
-  //   // create features from jsonWhaleData
-  //   sightingsData?.forEach((item) => {
-  //     const {
-  //       id,
-  //       speciesName,
-  //       sightingDate,
-  //       quantity,
-  //       latitude,
-  //       longitude,
-  //       imageSource,
-  //     } = item;
-
-  //     const iconFeature = new Feature(
-  //       new Point(fromLonLat([longitude, latitude])),
-  //     );
-
-  //     // sets unique ID for each icon https://openlayers.org/en/latest/apidoc/module-ol_Feature-Feature.html#setId
-  //     iconFeature.setId(id);
-  //     iconFeature.setProperties({
-  //       species: speciesName,
-  //       sightingDate: sightingDate,
-  //       quantity: quantity,
-  //       longitude: longitude,
-  //       latitude: latitude,
-  //       imgSrc: imageSource,
-  //     });
-
-  //     // set Style for each icon
-  //     iconFeature.setStyle(
-  //       new Style({
-  //         image: new Icon({
-  //           anchor: [0.5, 0.96],
-  //           src: whale_icon, // https://openlayers.org/en/latest/apidoc/module-ol_style_Style.html#~StyleLike
-  //         }),
-  //       }),
-  //     );
-
-  //     iconFeatures.push(iconFeature);
-  //   });
-
-  //   if (iconFeatures.length == 0) {
-  //     console.error("No icon features being loaded");
-  //   } else {
-  //     setWhaleFeatures(iconFeatures);
-  //   }
-
-  //   console.log(
-  //     `item ${iconFeatures[0].getId()?.toString()} of iconFeatures =${iconFeatures[0]?.getProperties().toString()}`,
-  //   );
-  // }, [sightingsData]);
-
-  // // new Vector Layer and Source
-  // const featuresVectorLayer = new VectorLayer({
-  //   source: new VectorSource({ features: iconFeatures }),
-  // });
+  //   const getSightings = async () => {
+  //     const data = await fetchSightings();
+  //     setSightingsData(data);
+  //   };
+  //   getSightings();
+  // }, []);
 
   useEffect(() => {
+    // const fetchSightings = async () => {
+    //   try {
+    //     console.log("Fetching data");
+    //     const data = await getSightings();
+    //     setSightingsData(data);
+    //     console.log("Fetched data");
+    //   } catch (error) {
+    //     console.error(`Error message: ${error}`);
+    //     setLoadingError(true);
+    //   }
+    // };
+    // fetchSightings();
+
+    // if (!sightingsData) {
+    //   console.error("No sightings data loaded");
+    //   return;
+    // }
+
     const iconFeatures: Feature[] = [];
 
     const setIconFeatures = () => {
@@ -250,7 +191,7 @@ export const MapComponentWorking = () => {
       });
     });
     return () => map.setTarget();
-  }, [sightingsData]);
+  }, []);
 
   // this ensures the popup info only reloads when popup box is reset with new values
   useEffect(() => {
@@ -265,6 +206,10 @@ export const MapComponentWorking = () => {
         `</code>`;
     }
   }, [popupWhaleSightingInfo]);
+
+  if (loadingError) {
+    return <div>Error loading species from backend</div>;
+  }
 
   return (
     <div>
