@@ -1,19 +1,16 @@
 export interface SightingsResponse {
-  totalCount: number;
-  sightings: [
-    {
-      id: number;
-      speciesId: number;
-      speciesName: string;
-      description: string;
-      sightingDate: string;
-      reportDate: string;
-      quantity: number;
-      latitude: number;
-      longitude: number;
-      imageSource: string;
-    },
-  ];
+  id: number;
+  speciesId: number;
+  speciesName: string;
+  description: string;
+  sightingDate: string;
+  reportDate: string;
+  quantity: number;
+  latitude: number;
+  longitude: number;
+  imageSource: string;
+  status: string;
+  userName: string;
 }
 
 export interface Species {
