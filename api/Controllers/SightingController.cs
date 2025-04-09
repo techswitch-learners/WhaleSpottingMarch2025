@@ -37,7 +37,7 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        var response = new SightingResponseModel(sighting, Sighting.GetReviewStatus(sighting));
+        var response = new SightingResponseModel(sighting);
         return response;
     }
 
@@ -50,7 +50,7 @@ public class SightingController : ControllerBase
         {
             return NotFound();
         }
-        return sightings.Select(sighting => new SightingResponseModel(sighting, Sighting.GetReviewStatus(sighting)))
+        return sightings.Select(sighting => new SightingResponseModel(sighting))
                         .Where(sighting => sighting.Status == "Approved")
                         .ToList();
     }

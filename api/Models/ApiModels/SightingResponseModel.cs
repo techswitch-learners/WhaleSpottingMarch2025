@@ -15,7 +15,7 @@ public class SightingResponseModel
     public double Longitude { get; set; }
     public string ImageSource { get; set; }
     public string Status { get; set; }
-    public SightingResponseModel(Sighting sighting, string status = "Pending")
+    public SightingResponseModel(Sighting sighting)
     {
         Id = sighting.Id;
         SpeciesId = sighting.Species.Id;
@@ -27,7 +27,7 @@ public class SightingResponseModel
         Latitude = sighting.Location.SpatialCoordinates.X;
         Longitude = sighting.Location.SpatialCoordinates.Y;
         ImageSource = sighting.ImageSource;
-        Status = status;
+        Status = sighting.Status();
     }
 
     public SightingResponseModel() { }
