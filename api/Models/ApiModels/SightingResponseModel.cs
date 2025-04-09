@@ -15,6 +15,7 @@ public class SightingResponseModel
     public double Longitude { get; set; }
     public string ImageSource { get; set; }
     public string Status { get; set; }
+    public string UserName {get;set;}
     public SightingResponseModel(Sighting sighting)
     {
         Id = sighting.Id;
@@ -28,6 +29,7 @@ public class SightingResponseModel
         Longitude = sighting.Location.SpatialCoordinates.Y;
         ImageSource = sighting.ImageSource;
         Status = sighting.Status();
+        UserName = sighting.User.UserName;
     }
 
     public SightingResponseModel() { }

@@ -1,4 +1,5 @@
 using System.Security;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -59,6 +60,7 @@ public class SightingController : ControllerBase
 
     // POST: /createSighting
     [HttpPost("createSighting")]
+     [Authorize]
     public async Task<IActionResult> CreateSighting([FromForm] CreateSightingRequest sightingRequest, IFormFile? image)
     {
         if (!ModelState.IsValid)
@@ -88,6 +90,7 @@ public class SightingController : ControllerBase
             imagePath = new Uri(new Uri(baseUrl), relativePath.Replace("\\", "/")).ToString();
         }
         Species species = _speciesRepository.GetSpeciesByID(sightingRequest.Species);
+        string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         Sighting newSighting = new Sighting
         {
             Species = species,
@@ -96,12 +99,14 @@ public class SightingController : ControllerBase
             ReportDate = DateTime.UtcNow,
             Quantity = sightingRequest.Quantity,
             Location = Location,
-            ImageSource = imagePath
+            ImageSource = imagePath,
+            PostedById = userId
         };
-        var sighting = _sightingRepository.CreateSighting(newSighting);
-        var url = Url.Action("GetSightingByID", new { id = sighting.Id });
-        var sightingResponse = new SightingResponseModel(sighting);
-        return Created(url, sightingResponse);
+       var sighting = _sightingRepository.CreateSighting(newSighting);
+       var url = Url.Action("GetSightingByID", new { id = sighting.Id });
+       var insertedSighting = _sightingRepository.GetSightingByID(sighting.Id);
+       var sightingResponse = new SightingResponseModel(insertedSighting);
+       return Created(url,sightingResponse);
     }
 
     //sighting/pending-approval

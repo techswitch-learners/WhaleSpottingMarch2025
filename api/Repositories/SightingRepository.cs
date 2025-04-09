@@ -32,6 +32,7 @@ public class SightingRepository : ISightingRepository
             .Include(sighting => sighting.Location)
             .Include(sighting => sighting.Species)
             .Include(sighting => sighting.Reviews)
+            .Include(sighting => sighting.User)
             .FirstOrDefault();
     }
 
@@ -41,6 +42,7 @@ public class SightingRepository : ISightingRepository
             .Include(sighting => sighting.Location)
             .Include(sighting => sighting.Species)
             .Include(sighting => sighting.Reviews)
+            .Include(sighting => sighting.User)
             .Where(sighting => parameters.SpeciesId == null || sighting.SpeciesId == parameters.SpeciesId)
             .Where(sighting => parameters.HasImage == null ||
                 ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
