@@ -32,6 +32,21 @@ You can check that this has worked by right clicking on 'Databases' in pgAdmin a
 ## Default Admin User
 Currently, one default admin user is set up with username = whale_spotting and password  “Whale_spotting1”. 
 
+## Weather API Set-up
+We are using the following weather API:
+https://www.weatherapi.com/docs/  (We are using Marine Weather API Method)
+So please create an account to generate your own API Key. 
+Once you have your API key you will need to run the following commands in your terminal to securely store your key.
+
+Run this to initialise the user-secrets element which will store your API key:
+```
+$ dotnet user-secrets init
+```
+Then run to set your API key:
+```
+$ dotnet user-secrets set "WhaleSpotting:WeatherServiceApiKey" "<YOUR_API_KEY>"
+```
+
 # Running the code
 You can run the code using `dotnet run`.
 

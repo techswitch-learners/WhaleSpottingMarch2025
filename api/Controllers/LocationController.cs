@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using NetTopologySuite.Geometries;
 using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Models.ApiModels;
 using WhaleSpottingBackend.Repositories;
+using WhaleSpottingBackend.Services;
 
 namespace WhaleSpottingBackend.Controllers;
 
@@ -13,10 +13,12 @@ namespace WhaleSpottingBackend.Controllers;
 public class LocationController : ControllerBase
 {
     private readonly ILogger<SightingController> _logger;
+    private readonly IWeatherService _weatherService;
     private readonly ISightingRepository _sightingRepository;
 
-    public LocationController(ISightingRepository sightingRepository, ILogger<SightingController> logger)
+    public LocationController(IWeatherService weatherService, ISightingRepository sightingRepository, ILogger<SightingController> logger)
     {
+        _weatherService = weatherService;
         _sightingRepository = sightingRepository;
         _logger = logger;
     }
@@ -24,8 +26,9 @@ public class LocationController : ControllerBase
 
     //GET:/Location?latitude=57.47772&longitude=-4.224721&radius=10m(in metres)
     [HttpGet("")]
-    public ActionResult<LocationSearchResponseModel> GetTopSpeciesAndRecentSightingsByLocation([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int radius = 10)
+    public async Task<ActionResult<LocationSearchResponseModel>> GetTopSpeciesAndRecentSightingsByLocation([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int radius = 10)
     {
+        var weatherForecast = await _weatherService.GetWeatherForecastByLocationAsync(latitude, longitude);
         var userSearchLocation = SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(latitude, longitude);
         var sightings = _sightingRepository.GetSightingsByLocation(userSearchLocation, radius);
         var recentSightings = sightings.Select(sighting => new SightingResponseModel(sighting))
@@ -38,6 +41,6 @@ public class LocationController : ControllerBase
                                   .ThenByDescending(s => s.LastSeen)
                                   .ToList();
 
-        return Ok(new LocationSearchResponseModel(topSpecies, recentSightings));
+        return Ok(new LocationSearchResponseModel(weatherForecast, topSpecies, recentSightings));
     }
 }

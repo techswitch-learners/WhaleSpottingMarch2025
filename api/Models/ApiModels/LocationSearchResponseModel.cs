@@ -7,21 +7,22 @@ public class LocationSearchResponseModel
     public IEnumerable<TopSpeciesResponseModel> TopSpecies { get; set; }
     public IEnumerable<SightingResponseModel> RecentSightings { get; set; }
 
-    public LocationSearchResponseModel(IEnumerable<TopSpeciesResponseModel> topSpecies, IEnumerable<SightingResponseModel> recentSightings)
+    public LocationSearchResponseModel(IEnumerable<DailyWeatherForecastModel> weatherForecast, IEnumerable<TopSpeciesResponseModel> topSpecies, IEnumerable<SightingResponseModel> recentSightings)
     {
+        WeatherForecast = weatherForecast;
         TopSpecies = topSpecies;
         RecentSightings = recentSightings;
     }
 }
 public class DailyWeatherForecastModel
 {
-    public DateTime Date { get; set;}
-    public string Description { get; set;}
-    public float AverageTemperatureInCelcius { get; set; }
+    public DateTime Date { get; set; }
+    public string Description { get; set; }
+    public float MinTemperatureInCelcius { get; set; }
+    public float MaxTemperatureInCelcius { get; set; }
     public float VisibilityInKm { get; set; }
     public float MaxWindSpeedInKmPerHour { get; set; }
-    public int ChanceOfRain { get; set; }
-    public int ChanceOfSnow { get; set; }
+    public float TotalPrecipitationInMilimeters { get; set; }
 }
 public class TopSpeciesResponseModel
 {
