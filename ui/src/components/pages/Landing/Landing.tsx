@@ -4,7 +4,6 @@ import { SightingsResponse } from "../../../models/apiModels.ts";
 import { getSightings } from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
 import { MapComponentWorking } from "../../mapComponent/MapComponentWorking.tsx";
-// import { MapComponentNotWorking } from "../../mapComponent/NotWorking.tsx";
 
 const fetchSightings = async () => {
   try {
@@ -47,7 +46,7 @@ export const Landing = () => {
               <img src={sighting.imageSource} />
               <div id="sightings-info">
                 <div>
-                  <strong> Species: </strong> {sighting.species.speciesName}
+                  <strong> Species: </strong> {sighting.speciesName}
                 </div>
                 <div>
                   <strong> Date Reported: </strong>
@@ -58,11 +57,11 @@ export const Landing = () => {
                 </div>
                 <div>
                   <strong>Latitude: </strong>
-                  {sighting.location.latitude}
+                  {sighting.latitude}
                 </div>
                 <div>
                   <strong>Longitude: </strong>
-                  {sighting.location.longitude}
+                  {sighting.longitude}
                 </div>
               </div>
             </li>
@@ -82,14 +81,14 @@ export const Landing = () => {
             <th className="table-cell">Date</th>
             <th className="table-cell">Description</th>
             {/* <th className="table-cell">Location</th> */}
-            <th className="table-cell">Image</th> 
+            <th className="table-cell">Image</th>
           </thead>
 
           <tbody>
             {sightingsData?.map((sighting) => (
               <tr className="table-row">
                 {/* <td className="table-cell">{sighting.id}</td> */}
-                <td className="table-cell">{sighting.species.speciesName}</td>
+                <td className="table-cell">{sighting.speciesName}</td>
                 <td className="table-cell">
                   {sighting.reportDate.slice(0, 10)}
                 </td>
@@ -99,8 +98,8 @@ export const Landing = () => {
                 Longitude: {sighting.location.longitude}
               </td> */}
                 <td className="table-cell">
-                <img src={sighting.imageSource} />
-              </td>
+                  <img src={sighting.imageSource} />
+                </td>
               </tr>
             ))}
           </tbody>
