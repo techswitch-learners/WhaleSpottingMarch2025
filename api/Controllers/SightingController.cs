@@ -51,7 +51,6 @@ public class SightingController : ControllerBase
             return NotFound();
         }
         return sightings.Select(sighting => new SightingResponseModel(sighting))
-                        .Where(sighting => sighting.Status == "Approved")
                         .ToList();
     }
 
