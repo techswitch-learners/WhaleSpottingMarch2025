@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Map, Overlay, View } from "ol";
 import TileLayer from "ol/layer/Tile";
-// import { Vector } from "ol/source.js";
-// import { VectorLayer } from "ol/layer.js";
 import { Vector as VectorSource } from "ol/source.js";
 import { Vector as VectorLayer } from "ol/layer.js";
 import OSM from "ol/source/OSM";
@@ -11,11 +9,11 @@ import Point from "ol/geom/Point.js";
 import { Icon, Style } from "ol/style.js";
 import { fromLonLat } from "ol/proj";
 import { SightingsResponse } from "../../models/apiModels";
-// import { Species, Location } from "../../models/apiModels";
 import "./MapComponent.scss";
 import "ol/ol.css";
 import whale_icon from "../../../../ui/public/whale-icon32.png";
 import { getSightings } from "../../utils/apiClient";
+// import { WhaleFeatures } from "./MapHelper";
 
 export const MapComponentWorking = () => {
   const mapRef = useRef(null!);
@@ -34,55 +32,34 @@ export const MapComponentWorking = () => {
     latitude: 0,
     imageSource: "",
   });
-  const [whaleFeatures, setWhaleFeatures] = useState<Feature[]>();
+  // const [whaleFeatures, setWhaleFeatures] = useState<Feature[]>();
   const [loadingError, setLoadingError] = useState(false);
 
-  useEffect(() => {
-    const fetchSightings = async () => {
-      try {
-        console.log("Fetching data");
-        const data = await getSightings();
-        if (!data) {
-          throw new Error("No sightings data loaded");
-        }
-        setSightingsData(data);
-        setSightingsData(data);
-        console.log("Fetched data");
-      } catch (error) {
-        console.error(error);
-        setLoadingError(true);
+  const fetchSightings = async () => {
+    try {
+      const data = await getSightings();
+      if (!data) {
+        throw new Error("No sightings data loaded");
       }
-    };
+      setSightingsData(data);
+      console.log("Fetched data");
+    } catch (error) {
+      console.error(error);
+      setLoadingError(true);
+    }
+  };
+
+  useEffect(() => {
     fetchSightings();
   }, []);
 
-  // useEffect(() => {
-  //   const getSightings = async () => {
-  //     const data = await fetchSightings();
-  //     setSightingsData(data);
-  //   };
-  //   getSightings();
-  // }, []);
-
   useEffect(() => {
-    // const fetchSightings = async () => {
-    //   try {
-    //     console.log("Fetching data");
-    //     const data = await getSightings();
-    //     setSightingsData(data);
-    //     console.log("Fetched data");
-    //   } catch (error) {
-    //     console.error(`Error message: ${error}`);
-    //     setLoadingError(true);
-    //   }
-    // };
-    // fetchSightings();
+    if (sightingsData) {
+      renderMap();
+    }
+  }, [sightingsData]);
 
-    // if (!sightingsData) {
-    //   console.error("No sightings data loaded");
-    //   return;
-    // }
-
+  const renderMap = () => {
     const iconFeatures: Feature[] = [];
 
     const setIconFeatures = () => {
@@ -128,19 +105,10 @@ export const MapComponentWorking = () => {
     };
 
     setIconFeatures();
-    // if (iconFeatures.length == 0) {
-    //   console.error("No icon features being loaded");
-    // } else {
-    setWhaleFeatures(iconFeatures);
-    // }
-
-    // console.log(
-    //   `item ${iconFeatures[0].getId()?.toString()} of iconFeatures =${iconFeatures[0]?.getProperties().toString()}`,
-    // );
 
     // new Vector Layer and Source
     const featuresVectorLayer = new VectorLayer({
-      source: new VectorSource({ features: whaleFeatures }),
+      source: new VectorSource({ features: iconFeatures }),
     });
 
     // 2. Setup Map, View and other layers: https://openlayers.org/doc/tutorials/concepts.html
@@ -191,7 +159,7 @@ export const MapComponentWorking = () => {
       });
     });
     return () => map.setTarget();
-  }, []);
+  };
 
   // this ensures the popup info only reloads when popup box is reset with new values
   useEffect(() => {
