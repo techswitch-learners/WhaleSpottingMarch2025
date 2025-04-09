@@ -47,6 +47,28 @@ export interface Registration {
   password: string;
 }
 
+export interface DailyWeatherForecast {
+  date: Date;
+  description: string;
+  minTemperatureInCelcius: number;
+  maxTemperatureInCelcius: number;
+  visibilityInKm: number;
+  maxWindSpeedInKmPerHour: number;
+  totalPrecipitationInMilimeters: number;
+}
+
+export interface TopSpecies {
+  species: string;
+  numSightings: number;
+  lastSeen: Date;
+}
+
+export interface LocationSearchResponse {
+  weatherForecast: DailyWeatherForecast[];
+  topSpecies: TopSpecies[];
+  recentSightings: SightingsResponse[];
+}
+
 export interface FilterSightings {
   PageNumber: number;
   PageSize: number;
