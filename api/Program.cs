@@ -3,8 +3,11 @@ using Microsoft.Net.Http.Headers;
 using WhaleSpottingBackend.Database;
 using WhaleSpottingBackend.Models.DatabaseModels;
 using WhaleSpottingBackend.Repositories;
+using WhaleSpottingBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var weatherServiceApiKey = builder.Configuration["WhaleSpotting:WeatherServiceApiKey"];
+var weatherServiceUrl = builder.Configuration["WeatherServiceAPI:BaseUrl"];
 
 builder.Services.AddCors(options =>
 {
@@ -30,6 +33,8 @@ builder.Services.AddIdentityApiEndpoints<User>()
         .AddEntityFrameworkStores<WhaleSpottingDbContext>();
 
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<IWeatherService, WeatherService>();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddTransient<ISightingRepository, SightingRepository>();
 builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
 builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
