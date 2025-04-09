@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "ol": "^10.5.0",
+    "date-fns": "^4.1.0",
+    "ol": "^10.4.0",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",
     "react-dom": "^19.0.0",
