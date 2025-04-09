@@ -32,17 +32,15 @@ public class WeatherService : IWeatherService
         {
             var dailyWeather = day.GetProperty("day");
 
-            weatherForecast.Add(new DailyWeatherForecastModel
-            {
-                Date = DateTime.Parse(day.GetProperty("date").GetString()!),
-                Description = dailyWeather.GetProperty("condition").GetProperty("text").GetString(),
-                MinTemperatureInCelcius = dailyWeather.GetProperty("mintemp_c").GetSingle(),
-                MaxTemperatureInCelcius = dailyWeather.GetProperty("maxtemp_c").GetSingle(),
-                VisibilityInKm = dailyWeather.GetProperty("avgvis_km").GetSingle(),
-                MaxWindSpeedInKmPerHour = dailyWeather.GetProperty("maxwind_kph").GetSingle(),
-                TotalPrecipitationInMilimeters = dailyWeather.GetProperty("totalprecip_mm").GetSingle(),
-            }
-            );
+            var date = DateTime.Parse(day.GetProperty("date").GetString()!);
+            var description = dailyWeather.GetProperty("condition").GetProperty("text").GetString();
+            var minTemperatureInCelcius = dailyWeather.GetProperty("mintemp_c").GetSingle();
+            var maxTemperatureInCelcius = dailyWeather.GetProperty("maxtemp_c").GetSingle();
+            var visibilityInKm = dailyWeather.GetProperty("avgvis_km").GetSingle();
+            var maxWindSpeedInKmPerHour = dailyWeather.GetProperty("maxwind_kph").GetSingle();
+            var totalPrecipitationInMilimeters = dailyWeather.GetProperty("totalprecip_mm").GetSingle();
+
+            weatherForecast.Add(new DailyWeatherForecastModel(date, description, minTemperatureInCelcius, maxTemperatureInCelcius, visibilityInKm, maxWindSpeedInKmPerHour, totalPrecipitationInMilimeters));
         }
         return weatherForecast.AsEnumerable();
     }

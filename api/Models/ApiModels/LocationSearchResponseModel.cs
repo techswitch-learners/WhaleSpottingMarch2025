@@ -23,6 +23,17 @@ public class DailyWeatherForecastModel
     public float VisibilityInKm { get; set; }
     public float MaxWindSpeedInKmPerHour { get; set; }
     public float TotalPrecipitationInMilimeters { get; set; }
+
+    public DailyWeatherForecastModel(DateTime date, string description, float minTemperatureInCelcius, float maxTemperatureInCelcius, float visibilityInKm, float maxWindSpeedInKmPerHour, float totalPrecipitationInMilimeters)
+    {
+        Date = date;
+        Description = description;
+        MinTemperatureInCelcius = minTemperatureInCelcius;
+        MaxTemperatureInCelcius = maxTemperatureInCelcius;
+        VisibilityInKm = visibilityInKm;
+        MaxWindSpeedInKmPerHour = maxWindSpeedInKmPerHour;
+        TotalPrecipitationInMilimeters = totalPrecipitationInMilimeters;
+    }
 }
 public class TopSpeciesResponseModel
 {
