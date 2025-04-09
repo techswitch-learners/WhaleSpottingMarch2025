@@ -26,7 +26,7 @@ public class Sighting
     [ForeignKey("PostedById")]
     public User User { get; set; }
     public Sighting() { }
-    public Sighting(int id, int speciesId, string description, DateTime sightingDate, DateTime reportDate, int quantity, int locationId, string imageSource)
+    public Sighting(int id, int speciesId, string description, DateTime sightingDate, DateTime reportDate, int quantity, int locationId, string imageSource, string postedById)
     {
         Id = id;
         SpeciesId = speciesId;
@@ -36,6 +36,7 @@ public class Sighting
         Quantity = quantity;
         LocationId = locationId;
         ImageSource = imageSource;
+        PostedById = postedById;
     }
 
     public string Status()
