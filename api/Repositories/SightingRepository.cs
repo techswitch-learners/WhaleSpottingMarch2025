@@ -51,6 +51,8 @@ public class SightingRepository : ISightingRepository
                 || sighting.Location.SpatialCoordinates.IsWithinDistance(
                     SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude ?? 0, parameters.Longitude ?? 0),
                     parameters.RadiusInMeters))
+            .Where(sighting => sighting.Reviews != null
+                && sighting.Reviews.OrderByDescending(review => review.StatusDate).FirstOrDefault().Approved == true)
             .OrderByDescending(sighting => sighting.SightingDate)
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize);

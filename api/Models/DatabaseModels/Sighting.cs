@@ -34,10 +34,10 @@ public class Sighting
         ImageSource = imageSource;
     }
 
-    public static string GetReviewStatus(Sighting sighting)
+    public string Status()
     {
-        return sighting.Reviews?.Any() == false
+        return Reviews?.Any() == false
                 ? "Pending"
-                : sighting.Reviews?.OrderByDescending(review => review.StatusDate).First().Approved == true ? "Approved" : "Rejected";
+                : Reviews?.OrderByDescending(review => review.StatusDate).First().Approved == true ? "Approved" : "Rejected";
     }
 }
