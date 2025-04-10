@@ -44,7 +44,9 @@ public class SightingRepository : ISightingRepository
             .Where(sighting => parameters.HasImage == null ||
                 ((bool)parameters.HasImage ? sighting.ImageSource != null : sighting.ImageSource == null))
             .Where(sighting => parameters.SightingStartDate == null ||
-                sighting.SightingDate >= parameters.SightingStartDate && sighting.SightingDate <= parameters.SightingEndDate)
+                sighting.SightingDate >= parameters.SightingStartDate)
+            .Where(sighting => parameters.SightingEndDate == null ||
+                sighting.SightingDate <= parameters.SightingEndDate)
             .Where(sighting =>
                 parameters.Latitude == null
                 || parameters.Longitude == null

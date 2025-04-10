@@ -1,5 +1,5 @@
 import { Login, Registration } from "../models/apiModels";
-import { FilterSigtings } from "../models/apiModels";
+import { FilterSightings } from "../models/apiModels";
 
 export const fetchPOSTRequest = async (
   formData: FormData,
@@ -31,20 +31,28 @@ export const getAllSpecies = async () => {
   return data;
 };
 
-export const getFilteredSightings = async (searchData: FilterSigtings) => {
+export const getFilteredSightings = async (searchData: FilterSightings) => {
   const params = new URLSearchParams();
 
-  const appendIfNotNull = (key: string, value: number | boolean | null) => {
-    if (value != null) {
+  const appendIfNotNullOrZero = (
+    key: string,
+    value: number | boolean | null,
+  ) => {
+    if (value != null && value != 0) {
       params.append(key, value.toString());
     }
   };
 
-  appendIfNotNull("PageNumber", searchData.PageNumber);
-  appendIfNotNull("PageSize", searchData.PageSize);
-  appendIfNotNull("SpeciesId", searchData.SpeciesId);
-  appendIfNotNull("HasImage", searchData.HasImage);
+  appendIfNotNullOrZero("PageNumber", searchData.PageNumber);
+  appendIfNotNullOrZero("PageSize", searchData.PageSize);
+  appendIfNotNullOrZero("SpeciesId", searchData.SpeciesId);
+  appendIfNotNullOrZero("HasImage", searchData.HasImage);
+  appendIfNotNullOrZero("Latitude", searchData.Latitude);
+  appendIfNotNullOrZero("Longitude", searchData.Longitude);
 
+  if (searchData.Latitude != 0 && searchData.Longitude != 0) {
+    appendIfNotNullOrZero("RadiusInMeters", searchData.Radius);
+  }
   const formatDate = (date: string | Date): string => {
     return new Date(date).toISOString().replace("T", " ").slice(0, 19) + "+00";
   };
@@ -64,7 +72,6 @@ export const getFilteredSightings = async (searchData: FilterSigtings) => {
     import.meta.env.VITE_APP_API_HOST + `/Sighting?${params.toString()}`,
   );
   const data = await fetchResponse.json();
-  console.log(data);
   return data;
 };
 
