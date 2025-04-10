@@ -119,7 +119,12 @@ export const Register = () => {
 
         <div className="form-field">
           <label htmlFor="password"> Password: </label>
-          <input name="password" onChange={handleChange} required />
+          <input
+            name="password"
+            type="password"
+            onChange={handleChange}
+            required
+          />
         </div>
         <div className="form-field">
           <button type="submit">Submit</button>
