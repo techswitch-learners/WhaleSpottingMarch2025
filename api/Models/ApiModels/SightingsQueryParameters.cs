@@ -3,7 +3,7 @@ namespace WhaleSpottingBackend.Models.ApiModels;
 public class SightingsQueryParameters
 {
     public int PageNumber { get; set; } = 1;
-    private int _pageSize = 50;
+    private int _pageSize = 10;
     public int PageSize
     {
         get
