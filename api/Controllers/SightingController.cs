@@ -46,12 +46,14 @@ public class SightingController : ControllerBase
     public ActionResult<IEnumerable<SightingResponseModel>> GetSightingsBySearchQuery([FromQuery] SightingsQueryParameters parameters)
     {
         var sightings = _sightingRepository.GetSightingsBySearchQuery(parameters);
+        var totalCount = _sightingRepository.GetCountOfSightingsBySearchQuery(parameters);
         if (sightings == null)
         {
             return NotFound();
         }
-        return sightings.Select(sighting => new SightingResponseModel(sighting))
-                        .ToList();
+        var approvedSightings = sightings.Select(sighting => new SightingResponseModel(sighting));
+        var response = new SightingResponseModelWithCount(totalCount, approvedSightings);
+        return Ok(response);
     }
 
 

@@ -1,24 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import "./SightingsTable.scss";
 import { SightingsResponse } from "../../../models/apiModels.ts";
-import {
-  getFilteredSightings,
-  getSightings,
-} from "../../../utils/apiClient.tsx";
+import { getFilteredSightings } from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
 import { FilterContext } from "../../formComponents/FilterContext/FilterContext.tsx";
 
-const fetchSightings = async () => {
-  try {
-    return getSightings();
-  } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
-  }
-};
-
 export const SightingsTable = () => {
-  const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
+  const [sightingsData, setSightingsData] = useState<SightingsResponse>();
   const [errorMessage, setErrorMessage] = useState("");
+  const [totalPages, setTotalPages] = useState(0);
   const filterContext = useContext(FilterContext);
 
   const [isMobile, setIsMobile] = useState(
@@ -34,33 +24,22 @@ export const SightingsTable = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  //Initial getSightings
+  // To update totalPages
   useEffect(() => {
-    const getSightings = async () => {
-      const data = await fetchSightings();
-      setSightingsData(data);
-    };
-    getSightings();
-  }, []);
+    if (sightingsData && sightingsData.totalCount !== undefined) {
+      const totalPages = sightingsData.totalCount
+        ? Math.ceil(
+            sightingsData.totalCount / filterContext.filterData.PageSize,
+          )
+        : 0;
 
-  // const submitFilterData = async (
-  //   event: React.FormEvent<HTMLFormElement>,
-  // ): Promise<void> => {
-  //   event.preventDefault();
-  //   console.log(filterData);
-  //   try {
-  //     filterData.PageNumber = 1;
-  //     const response = await getFilteredSightings(filterData);
-  //     setSightingsData(response);
-  //   } catch (error) {
-  //     setErrorMessage("An error has occurred." + error);
-  //   }
-  // };
+      setTotalPages(totalPages);
+    }
+  }, [sightingsData]);
 
   // API call to fetch when filter data changes
   useEffect(() => {
     const handleChangeInFilter = async () => {
-      console.log("inside useEffect handleChangeInFilter");
       try {
         const response = await getFilteredSightings(filterContext.filterData);
         setSightingsData(response);
@@ -74,8 +53,9 @@ export const SightingsTable = () => {
   const handlePrevious = () => {
     filterContext.updateFilter({
       ...filterContext.filterData,
-      PageNumber: Math.min(filterContext.filterData.PageNumber - 1, 1),
+      PageNumber: Math.max(filterContext.filterData.PageNumber - 1, 1),
     });
+    window.scrollTo(0, 0);
   };
 
   const handleNext = () => {
@@ -83,13 +63,14 @@ export const SightingsTable = () => {
       ...filterContext.filterData,
       PageNumber: filterContext.filterData.PageNumber + 1,
     });
+    window.scrollTo(0, 0);
   };
 
   const renderMobileView = () => {
     return (
       <div className="sightings-container">
         <ul id="Sightings" className="ul-container">
-          {sightingsData?.map((sighting) => (
+          {sightingsData?.sightings?.map((sighting) => (
             <li className="li-item">
               <img src={sighting.imageSource} />
               <div id="sightings-info">
@@ -134,7 +115,7 @@ export const SightingsTable = () => {
           </thead>
 
           <tbody>
-            {sightingsData?.map((sighting) => (
+            {sightingsData?.sightings.map((sighting) => (
               <tr className="table-row">
                 <td className="table-cell">{sighting.id}</td>
                 <td className="table-cell">{sighting.speciesName}</td>
@@ -163,17 +144,36 @@ export const SightingsTable = () => {
       {errorMessage.length > 0 && (
         <p className="errorMessage">{errorMessage}</p>
       )}
-      {isMobile && renderMobileView()}
-      {!isMobile && renderDesktopView()}
-      <div className="pagination-links">
-        <button
-          onClick={handlePrevious}
-          disabled={filterContext.filterData.PageNumber === 1}
-        >
-          &laquo; Previous
-        </button>
-        <button onClick={handleNext}>Next &raquo;</button>
-      </div>
+
+      {sightingsData && sightingsData?.totalCount > 0 && (
+        <div>
+          {isMobile && renderMobileView()}
+          {!isMobile && renderDesktopView()}
+          <p>
+            Page {filterContext.filterData.PageNumber} of {totalPages}
+          </p>
+          <br></br>
+          <div className="pagination-links">
+            {filterContext.filterData.PageNumber > 1 && (
+              <button className="previous" onClick={handlePrevious}>
+                &laquo; Previous
+              </button>
+            )}
+            {filterContext.filterData.PageNumber < totalPages && (
+              <button className="next" onClick={handleNext}>
+                Next &raquo;
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {sightingsData && sightingsData?.totalCount <= 0 && (
+        <h3>
+          There are no sightings for the search criteria provided. Please update
+          the filter criteria.
+        </h3>
+      )}
     </div>
   );
 };

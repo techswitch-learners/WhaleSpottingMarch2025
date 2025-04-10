@@ -1,10 +1,10 @@
-import React, { createContext, JSX, ReactNode, useState } from "react";
+import { createContext, JSX, ReactNode, useState } from "react";
 import { FilterSightings } from "../../../models/apiModels.ts";
 
 const resetFilterData: FilterSightings = {
   PageNumber: 1,
-  PageSize: 50,
-  SpeciesId: null,
+  PageSize: 10,
+  SpeciesId: 0,
   HasImage: true,
   SightingStartDate: null,
   SightingEndDate: null,
@@ -16,11 +16,13 @@ const resetFilterData: FilterSightings = {
 interface FilterContextType {
   filterData: FilterSightings;
   updateFilter: (data: FilterSightings) => void;
+  resetFilter: () => void;
 }
 
 export const FilterContext = createContext<FilterContextType>({
   filterData: resetFilterData,
   updateFilter: () => {},
+  resetFilter: () => {},
 });
 
 interface FilterContextProps {
@@ -35,8 +37,12 @@ export function FilterManager(props: FilterContextProps): JSX.Element {
     setFilterData(data);
   }
 
+  function resetFilter() {
+    setFilterData(resetFilterData);
+  }
+
   return (
-    <FilterContext.Provider value={{ filterData, updateFilter }}>
+    <FilterContext.Provider value={{ filterData, updateFilter, resetFilter }}>
       {props.children}
     </FilterContext.Provider>
   );
