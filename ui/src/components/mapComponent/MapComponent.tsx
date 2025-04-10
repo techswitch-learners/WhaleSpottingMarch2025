@@ -19,7 +19,7 @@ export const MapComponent = () => {
   const mapRef = useRef(null!);
   const popupRef = useRef<HTMLDivElement>(null!);
 
-  const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
+  const [sightingsData, setSightingsData] = useState<SightingsResponse>();
 
   const [popupWhaleSightingInfo, setPopupWhaleSightingInfo] = useState<{
     id: number;
@@ -55,7 +55,7 @@ export const MapComponent = () => {
       const iconFeatures: Feature[] = [];
 
       const setIconFeatures = () => {
-        sightingsData?.forEach((item) => {
+        sightingsData?.sightings?.forEach((item) => {
           const {
             id,
             speciesName,
@@ -147,7 +147,11 @@ export const MapComponent = () => {
       setMapRendered(true);
       return () => map.setTarget();
     };
-    if (!mapRendered && sightingsData && sightingsData.length > 0) {
+    if (
+      !mapRendered &&
+      sightingsData?.sightings &&
+      sightingsData.sightings.length > 0
+    ) {
       renderMap();
     }
   }, [sightingsData, mapRendered]);
