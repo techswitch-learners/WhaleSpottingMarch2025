@@ -12,7 +12,6 @@ import { Popup } from "../PopUpComponent/PopUpComponent";
 import { SightingsResponse } from "../../models/apiModels";
 import { getSightings } from "../../utils/apiClient";
 import whale_icon from "/src/whale-icon32.png";
-// :wimport "./MapComponent.scss";
 import "ol/ol.css";
 
 export const MapComponent = () => {
