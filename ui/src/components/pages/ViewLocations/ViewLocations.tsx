@@ -28,7 +28,7 @@ export const ViewLocations = () => {
       const data = await fetchLocationData(
         location.latitude,
         location.longitude,
-        50,
+        500,
       );
       setLocationData(data);
       setLoading(false);
