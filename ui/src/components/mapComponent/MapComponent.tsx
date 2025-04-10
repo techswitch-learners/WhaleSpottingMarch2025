@@ -12,7 +12,7 @@ import { Popup } from "../PopUpComponent/PopUpComponent";
 import { SightingsResponse } from "../../models/apiModels";
 import { getSightings } from "../../utils/apiClient";
 import whale_icon from "/src/whale-icon32.png";
-import "./MapComponent.scss";
+// :wimport "./MapComponent.scss";
 import "ol/ol.css";
 
 export const MapComponent = () => {
@@ -147,7 +147,7 @@ export const MapComponent = () => {
     if (!mapRendered && sightingsData && sightingsData.length > 0) {
       renderMap();
     }
-  }, [sightingsData]);
+  }, [sightingsData, mapRendered]);
 
   if (loadingError) {
     return <div>Error loading species</div>;
