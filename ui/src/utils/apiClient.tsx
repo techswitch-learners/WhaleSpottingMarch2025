@@ -33,29 +33,38 @@ export const getAllSpecies = async () => {
 
 export const getFilteredSightings = async (searchData: FilterSigtings) => {
   const params = new URLSearchParams();
-  if (searchData.PageNumber != null) {
-    params.append("PageNumber", searchData.PageNumber + "");
-  }
-  if (searchData.PageSize != null) {
-    params.append("PageSize", searchData.PageSize + "");
-  }
-  if (searchData.SpeciesId != null) {
-    params.append("SpeciesId", searchData.SpeciesId + "");
-  }
-  if (searchData.HasImage != null) {
-    params.append("HasImage", searchData.HasImage + "");
-  }
+
+  const appendIfNotNull = (key: string, value: number | boolean | null) => {
+    if (value != null) {
+      params.append(key, value.toString());
+    }
+  };
+
+  appendIfNotNull("PageNumber", searchData.PageNumber);
+  appendIfNotNull("PageSize", searchData.PageSize);
+  appendIfNotNull("SpeciesId", searchData.SpeciesId);
+  appendIfNotNull("HasImage", searchData.HasImage);
+
+  const formatDate = (date: string | Date): string => {
+    return new Date(date).toISOString().replace("T", " ").slice(0, 19) + "+00";
+  };
+
   if (searchData.SightingStartDate != null) {
-    params.append("SightingStartDate", searchData.SightingStartDate + "");
-  }
-  if (searchData.SightingEndDate != null) {
-    params.append("SightingEndDate", searchData.SightingEndDate + "");
+    const formattedStartDate = formatDate(searchData.SightingStartDate);
+    params.append("SightingStartDate", formattedStartDate);
   }
 
+  if (searchData.SightingEndDate != null) {
+    const formattedEndDate = formatDate(searchData.SightingEndDate);
+    params.append("SightingEndDate", formattedEndDate);
+  }
+
+  console.log(params.toString());
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + `/Sighting?${params.toString()}`,
   );
   const data = await fetchResponse.json();
+  console.log(data);
   return data;
 };
 
