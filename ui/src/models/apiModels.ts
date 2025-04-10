@@ -16,12 +16,6 @@ export interface Species {
   speciesName: string;
 }
 
-export interface Location {
-  id: number;
-  latitude: number;
-  longitude: number;
-}
-
 export interface Login {
   username: string;
   password: string;
@@ -35,8 +29,8 @@ export interface Registration {
 }
 
 export interface FilterSigtings {
-  PageNumber: number | null;
-  PageSize: number | null;
+  PageNumber: number;
+  PageSize: number;
   SpeciesId: number | null;
   HasImage: boolean | null;
   SightingStartDate: Date | null;

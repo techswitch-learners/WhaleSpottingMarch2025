@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ViewSightings.scss";
 import {
   FilterSigtings,
   SightingsResponse,
+  Species,
 } from "../../../models/apiModels.ts";
 import {
   getFilteredSightings,
   getSightings,
+  getAllSpecies,
 } from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
 
@@ -21,15 +23,17 @@ const fetchSightings = async () => {
 export const ViewSightings = () => {
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
   const [errorMessage, setErrorMessage] = useState("");
-  const [filterData, setFilterData] = useState<FilterSigtings>({
-    PageNumber: null,
-    PageSize: null,
+  const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
+  const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
+  const resetFilterData: FilterSigtings = {
+    PageNumber: 1,
+    PageSize: 10,
     SpeciesId: null,
-    HasImage: null,
+    HasImage: true,
     SightingStartDate: null,
     SightingEndDate: null,
-  });
-
+  };
+  const [filterData, setFilterData] = useState<FilterSigtings>(resetFilterData);
   const [isMobile, setIsMobile] = useState(
     window.innerWidth <= TABLET_MIN_WIDTH,
   );
@@ -50,6 +54,44 @@ export const ViewSightings = () => {
     getSightings();
   }, []);
 
+  useEffect(() => {
+    async function fetchSpecies() {
+      const species = await getAllSpecies().catch((error) => {
+        setSpeciesLoadingError(error);
+      });
+
+      setSpeciesOptions(species);
+    }
+    fetchSpecies();
+  }, []);
+
+  const submitFilterData = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    event.preventDefault();
+    console.log(filterData);
+    try {
+      filterData.PageNumber = 1;
+      const response = await getFilteredSightings(filterData);
+      setSightingsData(response);
+    } catch (error) {
+      setErrorMessage("An error has occurred." + error);
+    }
+  };
+
+  useEffect(() => {
+    const handleChangeInFilter = async () => {
+      console.log("inside useEffect handleChangeInFilter");
+      try {
+        const response = await getFilteredSightings(filterData);
+        setSightingsData(response);
+      } catch (error) {
+        setErrorMessage("An error has occurred. " + error);
+      }
+    };
+    handleChangeInFilter();
+  }, [filterData]);
+
   const handleChange = (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -57,73 +99,169 @@ export const ViewSightings = () => {
   ) => {
     const { name, value } = event.target;
     setFilterData({ ...filterData, [name]: value });
+    console.log(filterData);
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
+  const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterData({ ...filterData, HasImage: event.target.checked });
+    console.log(filterData);
+  };
+
+  const handlePrevious = () => {
+    setFilterData({
+      ...filterData,
+      PageNumber: Math.min(filterData.PageNumber - 1, 1),
+    });
+  };
+
+  const handleNext = () => {
+    setFilterData({ ...filterData, PageNumber: filterData.PageNumber + 1 });
+  };
+
+  const ClearFilterData = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
-    try {
-      const response = await getFilteredSightings(filterData);
-      setSightingsData(response);
-    } catch (error) {
-      console.log(error);
-      setErrorMessage("An error has occurred." + error);
-    }
+    setFilterData(resetFilterData);
+    const form = document.getElementById(
+      "filterSightingsForm",
+    ) as HTMLFormElement;
+    form.reset();
   };
 
-  const renderFilterMenu = () => {
+  const renderFilterMobileView = () => {
     return (
-      <div id="FilterContainer">
-        <form name="filterSightings" onSubmit={handleSubmit}>
-          <label htmlFor="Start Date"> Date </label>
+      <div className="filterContainer">
+        <form
+          id="filterSightingsForm"
+          name="filterSightings"
+          onSubmit={submitFilterData}
+        >
+          <div>
+            <label htmlFor="Start Date">
+              <strong> Start Date: </strong>
+            </label>
+            <input
+              type="date"
+              name="SightingStartDate"
+              onChange={handleChange}
+              max={new Date().toISOString().split("T")[0]}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="End Date">
+              <strong> End Date: </strong>
+            </label>
+            <input
+              type="date"
+              name="SightingEndDate"
+              onChange={handleChange}
+              max={new Date().toISOString().split("T")[0]}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="Species">
+              <strong> Species: </strong>
+            </label>
+            <select name="SpeciesId" onChange={handleChange}>
+              {speciesLoadingError ? (
+                <div>Error loading species</div>
+              ) : (
+                <>
+                  <option value="">Please select a species</option>
+                  {speciesOptions &&
+                    speciesOptions.map(({ id, speciesName }) => (
+                      <option key={`speciesName-${id}`} value={id}>
+                        {speciesName}
+                      </option>
+                    ))}
+                </>
+              )}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="HasImage">
+              <strong> Has Image: </strong>
+            </label>
+            <input
+              id="hasImage"
+              type="checkbox"
+              name="HasImage"
+              onChange={handleCheckBoxChange}
+            />
+          </div>
+          <div>
+            <button id="clearButton" type="button" onClick={ClearFilterData}>
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  };
+
+  const renderFilterDesktopView = () => {
+    return (
+      <div className="filterContainer">
+        <form
+          id="filterSightingsForm"
+          name="filterSightings"
+          onSubmit={submitFilterData}
+        >
+          <label htmlFor="Start Date">
+            <strong> Start Date: </strong>
+          </label>
           <input
             type="date"
             name="SightingStartDate"
             onChange={handleChange}
             max={new Date().toISOString().split("T")[0]}
           ></input>
-          <label htmlFor="End Date"> End Date </label>
+
+          <label htmlFor="End Date">
+            <strong> End Date: </strong>
+          </label>
           <input
             type="date"
             name="SightingEndDate"
             onChange={handleChange}
             max={new Date().toISOString().split("T")[0]}
           ></input>
-          {/* <label htmlFor="Coordinates"> Coordinates </label>
-          <input id="coordinates" />
-          <label htmlFor="Radius"> Radius </label>
-          <input id="radius" />  */}
-          <label htmlFor="Species"> Species </label>
+
+          <label htmlFor="Species">
+            <strong> Species: </strong>
+          </label>
           <select name="SpeciesId" onChange={handleChange}>
-            <option value="">Please select a species</option>
-            <option value="1">Blue Whale</option>
-            <option value="2">Humpback Whale</option>
-            <option value="3">Sperm Whale</option>
-            <option value="4">Orca</option>
-            <option value="5">Fin Whale</option>
-            <option value="6">Minke Whale</option>
-            <option value="7">Beluga Whale</option>
-            <option value="8">Gray Whale</option>
-            <option value="9">Right Whale</option>
-            <option value="10">Bowhead Whale</option>
-            <option value="11">Unknown</option>
+            {speciesLoadingError ? (
+              <div>Error loading species</div>
+            ) : (
+              <>
+                <option value="">Please select a species</option>
+                {speciesOptions &&
+                  speciesOptions.map(({ id, speciesName }) => (
+                    <option key={`speciesName-${id}`} value={id}>
+                      {speciesName}
+                    </option>
+                  ))}
+              </>
+            )}
           </select>
-          <label htmlFor="HasImage"> Has Image </label>
+
+          <label htmlFor="HasImage">
+            <strong> Has Image: </strong>
+          </label>
           <input
             id="hasImage"
             type="checkbox"
             name="HasImage"
-            onChange={handleChange}
+            onChange={handleCheckBoxChange}
           />
-          <button id="btnFilterSubmit" type="submit">
-            Filter
+          <button id="clearButton" type="button" onClick={ClearFilterData}>
+            Clear
           </button>
         </form>
       </div>
     );
   };
+
   const renderMobileView = () => {
     return (
       <ul id="Sightings" className="ul-container">
@@ -200,15 +338,11 @@ export const ViewSightings = () => {
       )}
       {isMobile && renderMobileView()}
       {!isMobile && renderDesktopView()}
-      <div id="pagination-links">
-        <a href="#" className="previous">
-          {" "}
-          &laquo; Previous{" "}
-        </a>
-        <a href="#" className="next">
-          {" "}
-          Next &raquo;{" "}
-        </a>
+      <div className="pagination-links">
+        <button onClick={handlePrevious} disabled={filterData.PageNumber === 1}>
+          &laquo; Previous
+        </button>
+        <button onClick={handleNext}>Next &raquo;</button>
       </div>
     </div>
   );
