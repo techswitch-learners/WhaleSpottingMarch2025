@@ -18,6 +18,18 @@ export interface SightingsResponse {
   ];
 }
 
+export interface PendingApprovalModel {
+  id: number;
+  species: Species;
+  description: string;
+  sightingDate: string;
+  reportDate: string;
+  quantity: number;
+  latitude: number;
+  longitude: number;
+  imageSource: string;
+}
+
 export interface Species {
   id: number;
   speciesName: string;

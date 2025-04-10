@@ -1,14 +1,14 @@
 import { ChangeEvent, useState } from "react";
 import {
   CreateReviewRequest,
-  SightingsResponse,
+  PendingApprovalModel,
   Species,
   UpdateSightingRequest,
 } from "../../models/apiModels";
 import "./PendingApproval.scss";
 
 interface PendingApprovalProps {
-  sighting: SightingsResponse;
+  sighting: PendingApprovalModel;
   speciesOptions: Species[];
   onPostReview: (request: CreateReviewRequest) => void;
 }
