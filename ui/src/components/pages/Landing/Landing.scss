@@ -1,7 +1,6 @@
 @use "sass:color";
 @use "@/styles/constants";
 
-// Desktop styling
 .landing-page-text{
     text-align: center;
     font-size: constants.$font-size-normal;
@@ -16,5 +15,7 @@
 .list-of-links{
     list-style-type: none;
 }
-
-// Mobile styling
+h1{
+    font-family: constants.$font-family-normal;
+    font-size: constants.$font-size-heading;
+}
