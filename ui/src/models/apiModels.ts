@@ -1,14 +1,19 @@
 export interface SightingsResponse {
-  id: number;
-  speciesId: number;
-  speciesName: string;
-  description: string;
-  sightingDate: string;
-  reportDate: string;
-  quantity: number;
-  latitude: number;
-  longitude: number;
-  imageSource: string;
+  totalCount: number;
+  sightings: [
+    {
+      id: number;
+      speciesId: number;
+      speciesName: string;
+      description: string;
+      sightingDate: string;
+      reportDate: string;
+      quantity: number;
+      latitude: number;
+      longitude: number;
+      imageSource: string;
+    },
+  ];
 }
 
 export interface Species {
@@ -31,11 +36,11 @@ export interface Registration {
 export interface FilterSightings {
   PageNumber: number;
   PageSize: number;
-  SpeciesId: number | null;
-  HasImage: boolean | null;
+  SpeciesId: number;
+  HasImage: boolean;
   SightingStartDate: Date | null;
   SightingEndDate: Date | null;
-  Latitude: number | null;
-  Longitude: number | null;
-  Radius: number | null;
+  Latitude: number;
+  Longitude: number;
+  Radius: number;
 }

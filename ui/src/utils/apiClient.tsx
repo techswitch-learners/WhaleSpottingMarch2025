@@ -34,25 +34,32 @@ export const getAllSpecies = async () => {
 export const getFilteredSightings = async (searchData: FilterSightings) => {
   const params = new URLSearchParams();
 
-  const appendIfNotNullOrZero = (
-    key: string,
-    value: number | boolean | null,
-  ) => {
-    if (value != null && value != 0) {
-      params.append(key, value.toString());
-    }
-  };
+  if (searchData.PageNumber != null && searchData.PageNumber != 0)
+    params.append("PageNumber", searchData.PageNumber.toString());
 
-  appendIfNotNullOrZero("PageNumber", searchData.PageNumber);
-  appendIfNotNullOrZero("PageSize", searchData.PageSize);
-  appendIfNotNullOrZero("SpeciesId", searchData.SpeciesId);
-  appendIfNotNullOrZero("HasImage", searchData.HasImage);
-  appendIfNotNullOrZero("Latitude", searchData.Latitude);
-  appendIfNotNullOrZero("Longitude", searchData.Longitude);
+  if (searchData.PageSize != null && searchData.PageSize != 0)
+    params.append("PageSize", searchData.PageSize.toString());
 
-  if (searchData.Latitude != 0 && searchData.Longitude != 0) {
-    appendIfNotNullOrZero("RadiusInMeters", searchData.Radius);
+  if (searchData.HasImage != null)
+    params.append("HasImage", searchData.HasImage.toString());
+
+  if (searchData.SpeciesId != null && searchData.SpeciesId != 0)
+    params.append("SpeciesId", searchData.SpeciesId.toString());
+
+  if (searchData.Latitude != null && searchData.Latitude != 0)
+    params.append("Latitude", searchData.Latitude.toString());
+
+  if (searchData.Longitude != null && searchData.Longitude != 0)
+    params.append("Longitude", searchData.Longitude.toString());
+
+  if (
+    params.has("Latitude") &&
+    searchData.Radius != null &&
+    searchData.Radius != 0
+  ) {
+    params.append("RadiusInKm", searchData.Radius.toString());
   }
+
   const formatDate = (date: string | Date): string => {
     return new Date(date).toISOString().replace("T", " ").slice(0, 19) + "+00";
   };
@@ -66,8 +73,6 @@ export const getFilteredSightings = async (searchData: FilterSightings) => {
     const formattedEndDate = formatDate(searchData.SightingEndDate);
     params.append("SightingEndDate", formattedEndDate);
   }
-
-  console.log(params.toString());
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + `/Sighting?${params.toString()}`,
   );

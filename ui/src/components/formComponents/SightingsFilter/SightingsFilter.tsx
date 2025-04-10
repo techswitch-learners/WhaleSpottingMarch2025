@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./SightingFilter.scss";
-import { FilterSightings, Species } from "../../../models/apiModels.ts";
+import { Species } from "../../../models/apiModels.ts";
 import { getAllSpecies } from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
 import LocationPicker, {
@@ -12,19 +12,8 @@ export const SightingsFilter = () => {
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
   const [speciesLoadingError, setSpeciesLoadingError] = useState(false);
   const filterContext = useContext(FilterContext);
-  const resetFilterData: FilterSightings = {
-    PageNumber: 1,
-    PageSize: 50,
-    SpeciesId: null,
-    HasImage: true,
-    SightingStartDate: null,
-    SightingEndDate: null,
-    Latitude: 0,
-    Longitude: 0,
-    Radius: 0,
-  };
-  // const [filterData, setFilterData] =
-  //   useState<FilterSightings>(resetFilterData);
+  const [isLocationPickerVisible, setIsLocationPickerVisible] = useState(false);
+
   const [isMobile, setIsMobile] = useState(
     window.innerWidth <= TABLET_MIN_WIDTH,
   );
@@ -63,19 +52,6 @@ export const SightingsFilter = () => {
     fetchSpecies();
   }, []);
 
-  // const submitFilterData = async (
-  //   event: React.FormEvent<HTMLFormElement>,
-  // ): Promise<void> => {
-  //   event.preventDefault();
-  //   console.log(filterData);
-  //   try {
-  //     filterData.PageNumber = 1;
-  //     const response = await getFilteredSightings(filterData);
-  //     setSightingsData(response);
-  //   } catch (error) {
-  //     setErrorMessage("An error has occurred." + error);
-  //   }
-  // };
   const handleChange = (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -83,7 +59,6 @@ export const SightingsFilter = () => {
   ) => {
     const { name, value } = event.target;
     filterContext.updateFilter({ ...filterContext.filterData, [name]: value });
-    console.log(filterContext.filterData);
   };
 
   const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,26 +66,29 @@ export const SightingsFilter = () => {
       ...filterContext.filterData,
       HasImage: event.target.checked,
     });
-    console.log(filterContext.filterData);
   };
 
   const ClearFilterData = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    filterContext.updateFilter(resetFilterData);
+    filterContext.resetFilter();
     const form = document.getElementById(
       "filterSightingsForm",
     ) as HTMLFormElement;
     form.reset();
   };
 
+  const toggleLocationPicker = () => {
+    setIsLocationPickerVisible((prevState) => !prevState);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+  };
+
   const renderFilterMobileView = () => {
     return (
-      <div className="filterContainer">
-        <form
-          id="filterSightingsForm"
-          name="filterSightings"
-          //onSubmit={submitFilterData}
-        >
+      <form id="filterSightingsForm" name="filterSightings">
+        <div className="filterContainer">
           <div>
             <label htmlFor="Start Date">
               <strong> Start Date: </strong>
@@ -119,6 +97,7 @@ export const SightingsFilter = () => {
               type="date"
               name="SightingStartDate"
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               max={new Date().toISOString().split("T")[0]}
             ></input>
           </div>
@@ -130,6 +109,7 @@ export const SightingsFilter = () => {
               type="date"
               name="SightingEndDate"
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               max={new Date().toISOString().split("T")[0]}
             ></input>
           </div>
@@ -165,23 +145,42 @@ export const SightingsFilter = () => {
             />
           </div>
           <div>
+            <label htmlFor="Radius">
+              <strong> Radius (km): </strong>
+            </label>
+            <input id="radius" name="Radius" onChange={handleChange} />
+          </div>
+        </div>
+        <div className="locationContainer">
+          <button type="button" onClick={toggleLocationPicker}>
+            {isLocationPickerVisible
+              ? "Close Location Picker"
+              : "Select Sighting Location"}
+          </button>
+
+          <div>
             <button id="clearButton" type="button" onClick={ClearFilterData}>
               Clear
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+
+        {isLocationPickerVisible && (
+          <div className="location-selection">
+            <LocationPicker
+              location={location}
+              onLocationSelection={setLocation}
+            />
+          </div>
+        )}
+      </form>
     );
   };
 
   const renderFilterDesktopView = () => {
     return (
-      <div className="filterContainer">
-        <form
-          id="filterSightingsForm"
-          name="filterSightings"
-          //onSubmit={submitFilterData}
-        >
+      <form id="filterSightingsForm" name="filterSightings">
+        <div className="filterContainer">
           <label htmlFor="Start Date">
             <strong> Start Date: </strong>
           </label>
@@ -189,6 +188,7 @@ export const SightingsFilter = () => {
             type="date"
             name="SightingStartDate"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             max={new Date().toISOString().split("T")[0]}
           ></input>
 
@@ -199,6 +199,7 @@ export const SightingsFilter = () => {
             type="date"
             name="SightingEndDate"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             max={new Date().toISOString().split("T")[0]}
           ></input>
 
@@ -230,32 +231,42 @@ export const SightingsFilter = () => {
             name="HasImage"
             onChange={handleCheckBoxChange}
           />
+        </div>
+        <div className="locationContainer">
+          <label htmlFor="Radius">
+            <strong> Radius (km): </strong>
+          </label>
+          <input id="radius" name="Radius" onChange={handleChange} />
+
+          <button type="button" onClick={toggleLocationPicker}>
+            {isLocationPickerVisible
+              ? "Close Location Picker"
+              : "Select Sighting Location"}
+          </button>
+
+          <button id="clearButton" type="button" onClick={ClearFilterData}>
+            Clear
+          </button>
+        </div>
+
+        {isLocationPickerVisible && (
           <div className="location-selection">
-            <label className="map-label">
-              Select Sighting Location:
-              <span className="requiredField">*</span>
-            </label>
             <LocationPicker
               location={location}
               onLocationSelection={setLocation}
             />
           </div>
-          <label htmlFor="Radius">
-            <strong> Radius: </strong>
-          </label>
-          <input id="radius" name="Radius" onChange={handleChange} />
-
-          <button id="clearButton" type="button" onClick={ClearFilterData}>
-            Clear
-          </button>
-        </form>
-      </div>
+        )}
+      </form>
     );
   };
   return (
-    <div id="SightingsFilterContainer">
-      {isMobile && renderFilterMobileView()}
-      {!isMobile && renderFilterDesktopView()}
-    </div>
+    <>
+      <h3>Filter Sightings</h3>
+      <div className="SightingsFilterContainer">
+        {isMobile && renderFilterMobileView()}
+        {!isMobile && renderFilterDesktopView()}
+      </div>
+    </>
   );
 };
