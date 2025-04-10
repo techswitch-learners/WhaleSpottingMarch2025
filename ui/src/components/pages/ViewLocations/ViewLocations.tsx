@@ -59,7 +59,26 @@ export const ViewLocations = () => {
 
   if (!locationData)
     return (
-      <p>Weather and sightings data is only available marine locations. </p>
+      <div>
+        <div>
+          <p className="page-title">
+            Click on map to view weather forecast and sighting details:
+          </p>
+          <div className="location-data">
+            <div className="location-selection">
+              <label className="map-label"></label>
+              <LocationPicker
+                location={location}
+                onLocationSelection={setLocation}
+              />
+            </div>
+          </div>
+        </div>
+        <p>
+          Marine weather forecast and whale sightings data is not available this
+          far in land.
+        </p>
+      </div>
     );
 
   return (
