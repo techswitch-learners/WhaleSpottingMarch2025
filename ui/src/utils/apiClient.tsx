@@ -46,17 +46,13 @@ export const getFilteredSightings = async (searchData: FilterSightings) => {
   if (searchData.SpeciesId != null && searchData.SpeciesId != 0)
     params.append("SpeciesId", searchData.SpeciesId.toString());
 
-  if (searchData.Latitude != null && searchData.Latitude != 0)
-    params.append("Latitude", searchData.Latitude.toString());
-
-  if (searchData.Longitude != null && searchData.Longitude != 0)
-    params.append("Longitude", searchData.Longitude.toString());
-
   if (
-    params.has("Latitude") &&
-    searchData.Radius != null &&
+    searchData.Latitude != 0 &&
+    searchData.Longitude != 0 &&
     searchData.Radius != 0
   ) {
+    params.append("Latitude", searchData.Latitude.toString());
+    params.append("Longitude", searchData.Longitude.toString());
     params.append("RadiusInKm", searchData.Radius.toString());
   }
 
@@ -73,6 +69,7 @@ export const getFilteredSightings = async (searchData: FilterSightings) => {
     const formattedEndDate = formatDate(searchData.SightingEndDate);
     params.append("SightingEndDate", formattedEndDate);
   }
+  
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + `/Sighting?${params.toString()}`,
   );
