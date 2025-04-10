@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WhaleSpottingBackend.Models.DatabaseModels;
-using WhaleSpottingBackend.Helper;
 using WhaleSpottingBackend.Database;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+using WhaleSpottingBackend.Helper;
+using WhaleSpottingBackend.Models.DatabaseModels;
+
 public static class InitialDBDataSetup
 {
-    public static string? userId{get;set;} = null;
-    public static string adminId{get;set;}
+    public static string? UserId { get; set; }
+    public static string AdminId { get; set; }
     public static async Task EnsureRolesCreated(RoleManager<IdentityRole> roleManager)
     {
         string[] roles = { "Admin", "User" };
@@ -29,9 +28,7 @@ public static class InitialDBDataSetup
             UserName = "whale_spotting",
             Email = "whale_spotting@gmail.com"
         };
-
         var AdminUsers = await userManager.GetUsersInRoleAsync("Admin");
-     
         if (!AdminUsers.Any())
         {
             var result = await userManager.CreateAsync(user, "Whale_spotting1");
@@ -39,53 +36,49 @@ public static class InitialDBDataSetup
             if (adminUser != null)
             {
                 result = await userManager.AddToRoleAsync(adminUser, "Admin");
-                adminId ??= adminUser.Id;  
+                AdminId ??= adminUser.Id;
             }
-           
-        } 
+        }
         else
         {
-            adminId ??= AdminUsers[0].Id;         
+            AdminId ??= AdminUsers[0].Id;
         }
-       
     }
     public static async Task CreateDefaultNonAdminUser(UserManager<User> userManager)
     {
         var Users = await userManager.GetUsersInRoleAsync("User");
         if (!Users.Any())
         {
-            for(var noOfDefaultUsers = 1 ;noOfDefaultUsers < 3 ; noOfDefaultUsers ++)
+            for (var noOfDefaultUsers = 1; noOfDefaultUsers < 3; noOfDefaultUsers++)
             {
                 var user = new User
-                    {
+                {
                     Name = "whale_spotting_user_" + noOfDefaultUsers,
                     UserName = "whale_spotting_user_" + noOfDefaultUsers,
-                    Email = "whale_spotting_user_"+noOfDefaultUsers+"@gmail.com"
-                    };
-       
-                    var result = await userManager.CreateAsync(user, "Whale_spotting1");
-                    var User = await userManager.FindByNameAsync(user.UserName);
-                    if (User != null)
-                    {
-                        result = await userManager.AddToRoleAsync(User, "User");
-                        userId ??= User.Id;  
-                    }
+                    Email = "whale_spotting_user_" + noOfDefaultUsers + "@gmail.com"
+                };
+
+                var result = await userManager.CreateAsync(user, "Whale_spotting1");
+                var User = await userManager.FindByNameAsync(user.UserName);
+                if (User != null)
+                {
+                    result = await userManager.AddToRoleAsync(User, "User");
+                    UserId ??= User.Id;
+                }
             }
-        } 
+        }
         else
         {
-            userId ??= Users[0].Id;         
+            UserId ??= Users[0].Id;
         }
- 
     }
 
-    public static async Task SeedData(WhaleSpottingDbContext _context,UserManager<User> userManager)
+    public static void SeedData(WhaleSpottingDbContext _context)
     {
-        if (!_context.Species.Any() )
+        if (!_context.Species.Any())
         {
-            Console.WriteLine("inserting species");
             var speciesList = new Species[]
-            {
+              {
                 new Species(1, "Blue Whale"),
                 new Species(2, "Humpback Whale"),
                 new Species(3, "Orca"),
@@ -97,18 +90,17 @@ public static class InitialDBDataSetup
                 new Species(9, "Right Whale"),
                 new Species(10, "Bowhead Whale"),
                 new Species(11, "Unknown")
-            };
-            foreach(Species species in speciesList)
+              };
+            foreach (Species species in speciesList)
             {
                 _context.Species.Add(species);
             }
             _context.SaveChanges();
-        }    
+        }
 
-        if (!_context.Location.Any() )
+        if (!_context.Location.Any())
         {
-            Console.WriteLine("inserting locations");
-            var LocationList = new LocationModel[]
+            var locationList = new LocationModel[]
             {
                 new LocationModel(1, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(41.9028, -60.0000)),
                 new LocationModel(2, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(57.808243, -146.412739)),
@@ -122,65 +114,65 @@ public static class InitialDBDataSetup
                 new LocationModel(10, SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(83.249778, -106.815422))
             };
 
-            foreach(LocationModel location in LocationList)
+            foreach (LocationModel location in locationList)
             {
                 _context.Location.Add(location);
             }
             _context.SaveChanges();
         }
-        
-        if (!_context.Sighting.Any() )
+
+        if (!_context.Sighting.Any())
         {
-            Console.WriteLine("inserting sightings");
+            var speciesCount = _context.Species.Count();
+            var locationCount = _context.Location.Count();
+
             List<Sighting> sightingList = [];
             for (int i = 0; i < 20; i++)
             {
                 sightingList.Add(new Sighting()
                 {
                     Id = i + 1,
-                    SpeciesId = (i % 10) + 1,
+                    SpeciesId = (i % (speciesCount - 1)) + 1,
                     Description = $"Details of Sighting {i + 1}",
                     SightingDate = new DateTime(2024, 3, i + 1, 13, 21, 33, DateTimeKind.Utc),
                     ReportDate = new DateTime(2024, 3, i + 2, 13, 21, 33, DateTimeKind.Utc),
                     Quantity = 1,
-                    LocationId =(i % 10) + 1 ,
+                    LocationId = (i % locationCount) + 1,
                     ImageSource = i % 2 == 0 ? "http://localhost:5067/images/blue-whale.jpg" : "http://localhost:5067/images/orca-whale.jpg",
-                    PostedById = userId
+                    PostedById = UserId
                 });
             }
 
-            foreach(Sighting sightings in sightingList)
+            foreach (Sighting sightings in sightingList)
             {
                 _context.Sighting.Add(sightings);
             }
 
-            
             _context.SaveChanges();
-        }  
+        }
 
-        if(!_context.SightingReview.Any())
+        if (!_context.SightingReview.Any())
         {
-             Console.WriteLine("inserting sighting review");
-             
+            var sightingCount = _context.Sighting.Count();
             List<SightingReview> sightingreviewList = [];
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < sightingCount; i++)
             {
                 sightingreviewList.Add(new SightingReview()
                 {
                     Id = i + 1,
                     SightingId = i + 1,
-                    AdminId = adminId,
+                    AdminId = AdminId,
                     Approved = i % 2 == 0 ? true : false,
                     StatusDate = new DateTime(2024, 3, i + 2, 13, 21, 33, DateTimeKind.Utc),
                     Comments = "Default comment"
                 });
             }
-            foreach(SightingReview sightingReview in sightingreviewList)
+            foreach (SightingReview sightingReview in sightingreviewList)
             {
                 _context.SightingReview.Add(sightingReview);
             }
             _context.SaveChanges();
-            
+
         }
     }
 }

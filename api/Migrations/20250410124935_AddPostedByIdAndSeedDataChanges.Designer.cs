@@ -13,7 +13,7 @@ using WhaleSpottingBackend.Database;
 namespace WhaleSpottingBackend.Migrations
 {
     [DbContext(typeof(WhaleSpottingDbContext))]
-    [Migration("20250410101426_AddPostedByIdAndSeedDataChanges")]
+    [Migration("20250410124935_AddPostedByIdAndSeedDataChanges")]
     partial class AddPostedByIdAndSeedDataChanges
     {
         /// <inheritdoc />

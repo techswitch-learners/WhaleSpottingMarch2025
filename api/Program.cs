@@ -55,7 +55,7 @@ using (var scope = app.Services.CreateScope())
     await InitialDBDataSetup.CreateDefaultNonAdminUser(userManager);
 
     var context = scope.ServiceProvider.GetRequiredService<WhaleSpottingDbContext>();
-    await InitialDBDataSetup.SeedData(context,userManager);
+    InitialDBDataSetup.SeedData(context);
 }
 
 // Configure the HTTP request pipeline.
