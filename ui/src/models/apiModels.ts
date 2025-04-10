@@ -28,11 +28,14 @@ export interface Registration {
   password: string;
 }
 
-export interface FilterSigtings {
+export interface FilterSightings {
   PageNumber: number;
   PageSize: number;
   SpeciesId: number | null;
   HasImage: boolean | null;
   SightingStartDate: Date | null;
   SightingEndDate: Date | null;
+  Latitude: number | null;
+  Longitude: number | null;
+  Radius: number | null;
 }
