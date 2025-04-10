@@ -33,3 +33,12 @@ export interface Registration {
   email: string;
   password: string;
 }
+
+export interface FilterSigtings {
+  PageNumber: number | null;
+  PageSize: number | null;
+  SpeciesId: number | null;
+  HasImage: boolean | null;
+  SightingStartDate: Date | null;
+  SightingEndDate: Date | null;
+}
