@@ -13,24 +13,34 @@ import { SightingsResponse } from "../../models/apiModels";
 import { getSightings } from "../../utils/apiClient";
 import whale_icon from "/src/whale-icon32.png";
 import "ol/ol.css";
+import "./MapComponent.scss";
 
 export const MapComponent = () => {
   const mapRef = useRef(null!);
   const popupRef = useRef<HTMLDivElement>(null!);
 
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
-  const [popupWhaleSightingInfo, setPopupWhaleSightingInfo] = useState({
-    id: 0,
-    speciesName: "",
-    sightingDate: "",
-    quantity: 0,
-    longitude: 0,
-    latitude: 0,
-    imageSource: "",
-  });
+  // const [popupWhaleSightingInfo, setPopupWhaleSightingInfo] = useState({
+  //   id: 0,
+  //   speciesName: "",
+  //   sightingDate: "",
+  //   quantity: 0,
+  //   longitude: 0,
+  //   latitude: 0,
+  //   imageSource: "",
+  // });
+  const [popupWhaleSightingInfo, setPopupWhaleSightingInfo] = useState<{
+    id: number;
+    speciesName: string;
+    sightingDate: string;
+    quantity: number;
+    longitude: number;
+    latitude: number;
+    imageSource: string;
+  } | null>(null);
   const [mapRendered, setMapRendered] = useState(false);
 
-  const [loadingError, setLoadingError] = useState(false);
+  const [loadingError, setLoadingError] = useState("");
 
   const fetchSightings = async () => {
     try {
@@ -40,8 +50,7 @@ export const MapComponent = () => {
       }
       setSightingsData(data);
     } catch (error) {
-      console.error(error);
-      setLoadingError(true);
+      setLoadingError("An error has occurred." + error);
     }
   };
 
@@ -139,6 +148,9 @@ export const MapComponent = () => {
             });
           }
         });
+        if (!map.hasFeatureAtPixel(event.pixel)) {
+          setPopupWhaleSightingInfo(null);
+        }
       });
       setMapRendered(true);
       return () => map.setTarget();
@@ -148,18 +160,10 @@ export const MapComponent = () => {
     }
   }, [sightingsData, mapRendered]);
 
-  if (loadingError) {
-    return <div>Error loading species</div>;
-  }
-
   return (
     <div>
-      <div
-        style={{ height: "70vh", width: "100%" }}
-        ref={mapRef}
-        className="map-container"
-      ></div>
-
+      {loadingError.length > 0 && <p>Error loading sighting information</p>}
+      <div ref={mapRef} className="map-container"></div>
       <div ref={popupRef} className="ol-popup">
         <Popup whaleSightingInfo={popupWhaleSightingInfo} />
       </div>
