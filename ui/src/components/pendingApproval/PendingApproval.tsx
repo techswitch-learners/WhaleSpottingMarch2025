@@ -18,11 +18,7 @@ export const PendingApproval = (props: PendingApprovalProps) => {
 
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(sighting.description);
-  const [selectedSpecies, setSelectedSpecies] = useState<Species>(
-    // { id: sighting.speciesId, speciesName: sighting.speciesName }, // TODO Use this for sightingresponsmodel
-    // after #16 is merged to main
-    sighting.species,
-  );
+  const [selectedSpecies, setSelectedSpecies] = useState<Species>(sighting.species);
   const [comments, setComments] = useState<string>("");
 
   const handleApprove = (sightingId: number, approved: boolean) => {
@@ -45,8 +41,6 @@ export const PendingApproval = (props: PendingApprovalProps) => {
   const handleEdit = () => {
     if (isEditable) {
       setDescription(sighting.description);
-      // const species: Species = { id: sighting.speciesId, speciesName: sighting.speciesName }
-      // setSelectedSpecies(species); // TODO use this after #16 is merged to main
       setSelectedSpecies(sighting.species);
     }
     setIsEditable(!isEditable);
