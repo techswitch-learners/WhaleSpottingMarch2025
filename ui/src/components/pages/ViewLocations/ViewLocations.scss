@@ -1,0 +1,153 @@
+@use '@/styles/constants';
+
+.location-selection{
+    height: 50vh;
+}
+
+.location-data{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+.weather-data{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    gap: 8px;
+    margin: 0px;
+    padding: 0px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.topspecies-data{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    gap: 8px;
+    margin: 0px;
+    padding: 0px;
+    flex-wrap: wrap;
+    width: 100%;
+
+}
+
+.sightings-data{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    gap: 8px;
+    margin: 0px;
+    padding: 0px;
+    width: 100%
+  
+}
+
+.sightings-list{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    overflow-wrap: break-word; 
+    list-style: none;
+    background-color: constants.$background-navigation;
+    color: constants.$text-secondary-navigation;
+    width: 80%;
+    height: 450px;
+}
+
+.ul{
+    list-style: none;
+}
+
+.weather-list{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: right;
+    list-style: none;
+    background-color: constants.$background-navigation;
+    color: constants.$text-secondary-navigation;
+    overflow-x: auto;
+    scrollbar-width: none;
+    height: 350px;
+    width: 80%
+}
+
+.species-list{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: right;
+    overflow-wrap: break-word; 
+    list-style: none;
+    background-color: constants.$background-navigation;
+    color: constants.$text-secondary-navigation;
+    gap: 8px;
+    width: 80%;
+    height: 150px;
+}
+
+img{
+    justify-self:center;
+    align-self: center;
+    width: 60%;
+}
+
+.data-title{ 
+    font-size: calc(constants.$font-size-heading / 2);
+}
+
+.weather-font{
+    font-size: calc(constants.$font-size-heading / 2)
+}
+
+.page-title{
+    margin-top: 16px;
+    font-size: calc(constants.$font-size-heading / 2);
+}
+
+
+@media only screen and (min-width: constants.$tablet-min-width){
+    .weather-data{
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+    
+    .topspecies-data{
+        flex-wrap: nowrap;
+        width: 100%
+    }
+    
+    .sightings-data{
+        width: 100%
+    }
+    
+    .sightings-list{
+        width: 40%;
+    }
+
+    .species-list{
+        width: 30%
+    }
+
+    .weather-list{
+        width: 30%
+    }
+    
+    img{
+        width: 60%;  
+    }
+    
+    .data-title{ 
+        font-size: calc(constants.$font-size-heading / 2);
+    }
+}
