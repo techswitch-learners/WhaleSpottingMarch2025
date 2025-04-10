@@ -30,7 +30,8 @@ interface FilterContextProps {
 }
 
 export function FilterManager(props: FilterContextProps): JSX.Element {
-  const [filterData, setFilterData] = useState<FilterSightings>(resetFilterData);
+  const [filterData, setFilterData] =
+    useState<FilterSightings>(resetFilterData);
 
   function updateFilter(data: FilterSightings) {
     setFilterData(data);

@@ -69,7 +69,7 @@ export const getFilteredSightings = async (searchData: FilterSightings) => {
     const formattedEndDate = formatDate(searchData.SightingEndDate);
     params.append("SightingEndDate", formattedEndDate);
   }
-  
+
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + `/Sighting?${params.toString()}`,
   );
