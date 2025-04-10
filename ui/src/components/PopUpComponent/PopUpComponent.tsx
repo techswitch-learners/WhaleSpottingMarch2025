@@ -24,7 +24,7 @@ export const Popup = ({ whaleSightingInfo }: PopupProps) => {
         <p>Latitude: {whaleSightingInfo.latitude}</p>
         <p>Longitude: {whaleSightingInfo.longitude}</p>
         <div>
-          Image: <img src={whaleSightingInfo.imageSource} />
+          <img src={whaleSightingInfo.imageSource} />
         </div>
       </div>
     </>
