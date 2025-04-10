@@ -85,6 +85,9 @@ export const SightingsTable = () => {
                   <strong>Description: </strong> {sighting.description}
                 </div>
                 <div>
+                  <strong>Posted By: </strong> {sighting.userName}
+                </div>
+                <div>
                   <strong>Latitude: </strong>
                   {sighting.latitude}
                 </div>
@@ -109,6 +112,7 @@ export const SightingsTable = () => {
               <th className="table-cell">Species</th>
               <th className="table-cell">Date</th>
               <th className="table-cell">Description</th>
+              <th className="table-cell">Posted By</th>
               <th className="table-cell">Location</th>
               <th className="table-cell">Image</th>
             </tr>
@@ -123,6 +127,7 @@ export const SightingsTable = () => {
                   {sighting.reportDate.slice(0, 10)}
                 </td>
                 <td className="table-cell">{sighting.description}</td>
+                <td className="table-cell">{sighting.userName}</td>
                 <td className="table-cell">
                   Latitude: {sighting.latitude} <br />
                   Longitude: {sighting.longitude}
