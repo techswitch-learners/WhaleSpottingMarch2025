@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import "./ViewSightings.scss";
-import { SightingsResponse } from "../../../models/apiModels.ts";
-import { getSightings } from "../../../utils/apiClient.tsx";
+import {
+  FilterSigtings,
+  SightingsResponse,
+} from "../../../models/apiModels.ts";
+import {
+  getFilteredSightings,
+  getSightings,
+} from "../../../utils/apiClient.tsx";
 import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
 
 const fetchSightings = async () => {
@@ -14,6 +20,16 @@ const fetchSightings = async () => {
 
 export const ViewSightings = () => {
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [filterData, setFilterData] = useState<FilterSigtings>({
+    PageNumber: null,
+    PageSize: null,
+    SpeciesId: null,
+    HasImage: null,
+    SightingStartDate: null,
+    SightingEndDate: null,
+  });
+
   const [isMobile, setIsMobile] = useState(
     window.innerWidth <= TABLET_MIN_WIDTH,
   );
@@ -34,6 +50,80 @@ export const ViewSightings = () => {
     getSightings();
   }, []);
 
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const { name, value } = event.target;
+    setFilterData({ ...filterData, [name]: value });
+  };
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    event.preventDefault();
+
+    try {
+      const response = await getFilteredSightings(filterData);
+      setSightingsData(response);
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("An error has occurred." + error);
+    }
+  };
+
+  const renderFilterMenu = () => {
+    return (
+      <div id="FilterContainer">
+        <form name="filterSightings" onSubmit={handleSubmit}>
+          <label htmlFor="Start Date"> Date </label>
+          <input
+            type="date"
+            name="SightingStartDate"
+            onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]}
+          ></input>
+          <label htmlFor="End Date"> End Date </label>
+          <input
+            type="date"
+            name="SightingEndDate"
+            onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]}
+          ></input>
+          {/* <label htmlFor="Coordinates"> Coordinates </label>
+          <input id="coordinates" />
+          <label htmlFor="Radius"> Radius </label>
+          <input id="radius" />  */}
+          <label htmlFor="Species"> Species </label>
+          <select name="SpeciesId" onChange={handleChange}>
+            <option value="">Please select a species</option>
+            <option value="1">Blue Whale</option>
+            <option value="2">Humpback Whale</option>
+            <option value="3">Sperm Whale</option>
+            <option value="4">Orca</option>
+            <option value="5">Fin Whale</option>
+            <option value="6">Minke Whale</option>
+            <option value="7">Beluga Whale</option>
+            <option value="8">Gray Whale</option>
+            <option value="9">Right Whale</option>
+            <option value="10">Bowhead Whale</option>
+            <option value="11">Unknown</option>
+          </select>
+          <label htmlFor="HasImage"> Has Image </label>
+          <input
+            id="hasImage"
+            type="checkbox"
+            name="HasImage"
+            onChange={handleChange}
+          />
+          <button id="btnFilterSubmit" type="submit">
+            Filter
+          </button>
+        </form>
+      </div>
+    );
+  };
   const renderMobileView = () => {
     return (
       <ul id="Sightings" className="ul-container">
@@ -67,15 +157,19 @@ export const ViewSightings = () => {
   };
   const renderDesktopView = () => {
     return (
-      <table id="SightingsTable" className="table-container">
-        <thead className="table-header">
-          <th className="table-cell">Id</th>
-          <th className="table-cell">Species</th>
-          <th className="table-cell">Date</th>
-          <th className="table-cell">Description</th>
-          <th className="table-cell">Location</th>
-          <th className="table-cell">Image</th>
-        </thead>
+      <div className="sightings-container">
+        {renderFilterMenu()};
+        <table id="SightingsTable" className="table-container">
+          <thead className="table-header">
+            <tr>
+              <th className="table-cell">Id</th>
+              <th className="table-cell">Species</th>
+              <th className="table-cell">Date</th>
+              <th className="table-cell">Description</th>
+              <th className="table-cell">Location</th>
+              <th className="table-cell">Image</th>
+            </tr>
+          </thead>
 
         <tbody>
           {sightingsData?.map((sighting) => (
@@ -101,8 +195,21 @@ export const ViewSightings = () => {
   return (
     <div id="SightingsListContainer">
       <h1> Sightings </h1>
+      {errorMessage.length > 0 && (
+        <p className="errorMessage">{errorMessage}</p>
+      )}
       {isMobile && renderMobileView()}
       {!isMobile && renderDesktopView()}
+      <div id="pagination-links">
+        <a href="#" className="previous">
+          {" "}
+          &laquo; Previous{" "}
+        </a>
+        <a href="#" className="next">
+          {" "}
+          Next &raquo;{" "}
+        </a>
+      </div>
     </div>
   );
 };

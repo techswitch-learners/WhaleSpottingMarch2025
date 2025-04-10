@@ -1,4 +1,5 @@
 import { Login, Registration } from "../models/apiModels";
+import { FilterSigtings } from "../models/apiModels";
 
 export const fetchPOSTRequest = async (
   formData: FormData,
@@ -25,6 +26,34 @@ export const getSightings = async () => {
 export const getAllSpecies = async () => {
   const fetchResponse = await fetch(
     import.meta.env.VITE_APP_API_HOST + "/Species/",
+  );
+  const data = await fetchResponse.json();
+  return data;
+};
+
+export const getFilteredSightings = async (searchData: FilterSigtings) => {
+  const params = new URLSearchParams();
+  if (searchData.PageNumber != null) {
+    params.append("PageNumber", searchData.PageNumber + "");
+  }
+  if (searchData.PageSize != null) {
+    params.append("PageSize", searchData.PageSize + "");
+  }
+  if (searchData.SpeciesId != null) {
+    params.append("SpeciesId", searchData.SpeciesId + "");
+  }
+  if (searchData.HasImage != null) {
+    params.append("HasImage", searchData.HasImage + "");
+  }
+  if (searchData.SightingStartDate != null) {
+    params.append("SightingStartDate", searchData.SightingStartDate + "");
+  }
+  if (searchData.SightingEndDate != null) {
+    params.append("SightingEndDate", searchData.SightingEndDate + "");
+  }
+
+  const fetchResponse = await fetch(
+    import.meta.env.VITE_APP_API_HOST + `/Sighting?${params.toString()}`,
   );
   const data = await fetchResponse.json();
   return data;
