@@ -18,7 +18,9 @@ export const PendingApproval = (props: PendingApprovalProps) => {
 
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(sighting.description);
-  const [selectedSpecies, setSelectedSpecies] = useState<Species>(sighting.species);
+  const [selectedSpecies, setSelectedSpecies] = useState<Species>(
+    sighting.species,
+  );
   const [comments, setComments] = useState<string>("");
 
   const handleApprove = (sightingId: number, approved: boolean) => {
