@@ -51,16 +51,19 @@ export const ViewLocations = () => {
         {locationData.weatherForecast?.map(
           (day: DailyWeatherForecast, index: number) => (
             <li key={index}>
-              <p>Day {index + 1}</p>
-              <p> Date: {format(day.date, "dd/MM/yyyy")}</p>
-              <p> Description: {day.description}</p>
-              <p> Min Temperature: {day.minTemperatureInCelcius}&deg;C</p>
-              <p> Max Temperature: {day.maxTemperatureInCelcius}&deg;C</p>
-              <p> Visibility: {day.visibilityInKm} km </p>
-              <p> Max Wind Speed: {day.maxWindSpeedInKmPerHour} km/h </p>
               <p>
-                Total Precipitation: {day.totalPrecipitationInMilimeters} mm
+                <strong>{format(day.date, "EEEE,dd MMM")}</strong>
               </p>
+              <p>{day.description}</p>
+              <p>
+                <strong>{day.maxTemperatureInCelcius}</strong> / {day.minTemperatureInCelcius} &deg;C
+              </p>
+              <p>Visibility</p>
+              <p>{day.visibilityInKm} km</p>
+              <p>Max Wind Speed</p>
+              <p>{day.maxWindSpeedInKmPerHour} km/h</p>
+              <p>Precipitation</p>
+              <p>{day.totalPrecipitationInMilimeters} mm</p>
             </li>
           ),
         )}
