@@ -74,12 +74,12 @@ public class SightingRepository : ISightingRepository
                sighting.SightingDate >= parameters.SightingStartDate)
            .Where(sighting => parameters.SightingEndDate == null ||
                sighting.SightingDate <= parameters.SightingEndDate)
-           .Where(sighting =>
-               parameters.Latitude == null
-               || parameters.Longitude == null
-               || sighting.Location.SpatialCoordinates.IsWithinDistance(
-                   SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude ?? 0, parameters.Longitude ?? 0),
-                   parameters.RadiusInMeters))
+            .Where(sighting =>
+                parameters.Latitude == null
+                || parameters.Longitude == null
+                || sighting.Location.SpatialCoordinates.IsWithinDistance(
+                    SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude ?? 0, parameters.Longitude ?? 0),
+                    SpatialCoordinatesHelper.ConvertRadiusToDegrees(parameters.RadiusInKm)))
            .Where(sighting => sighting.Reviews != null
                && sighting.Reviews.OrderByDescending(review => review.StatusDate).FirstOrDefault().Approved == true)
            .Count();
