@@ -10,6 +10,7 @@ export const fetchPOSTRequest = async (
     {
       method: "POST",
       body: formData,
+      credentials: "include",
     },
   );
   return fetchResponse.status;
