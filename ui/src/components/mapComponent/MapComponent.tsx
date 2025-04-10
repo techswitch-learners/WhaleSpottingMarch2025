@@ -20,15 +20,7 @@ export const MapComponent = () => {
   const popupRef = useRef<HTMLDivElement>(null!);
 
   const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
-  // const [popupWhaleSightingInfo, setPopupWhaleSightingInfo] = useState({
-  //   id: 0,
-  //   speciesName: "",
-  //   sightingDate: "",
-  //   quantity: 0,
-  //   longitude: 0,
-  //   latitude: 0,
-  //   imageSource: "",
-  // });
+
   const [popupWhaleSightingInfo, setPopupWhaleSightingInfo] = useState<{
     id: number;
     speciesName: string;
