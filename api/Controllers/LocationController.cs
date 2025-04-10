@@ -24,7 +24,7 @@ public class LocationController : ControllerBase
     }
 
 
-    //GET:/Location?latitude=57.47772&longitude=-4.224721&radius=10m(in metres)
+    //GET:/Location?latitude=57.47772&longitude=-4.224721&radius=10km(in kilometers)
     [HttpGet("")]
     public async Task<ActionResult<LocationSearchResponseModel>> GetTopSpeciesAndRecentSightingsByLocation([FromQuery] double latitude, [FromQuery] double longitude, [FromQuery] int radius = 10)
     {

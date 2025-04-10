@@ -50,7 +50,7 @@ public class SightingRepository : ISightingRepository
                 || parameters.Longitude == null
                 || sighting.Location.SpatialCoordinates.IsWithinDistance(
                     SpatialCoordinatesHelper.ConvertLatLonToSpatialCoordinates(parameters.Latitude ?? 0, parameters.Longitude ?? 0),
-                    parameters.RadiusInMeters))
+                    SpatialCoordinatesHelper.ConvertRadiusToDegrees(parameters.RadiusInKm)))
             .Where(sighting => sighting.Reviews != null
                 && sighting.Reviews.OrderByDescending(review => review.StatusDate).FirstOrDefault().Approved == true)
             .OrderByDescending(sighting => sighting.SightingDate)
@@ -60,7 +60,8 @@ public class SightingRepository : ISightingRepository
 
     public IEnumerable<Sighting> GetSightingsByLocation(Point userSearchLocation, int radius)
     {
-        return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radius))
+        var radiusInDegrees = SpatialCoordinatesHelper.ConvertRadiusToDegrees(radius);
+        return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radiusInDegrees))
                                 .OrderByDescending(sighting => sighting.SightingDate)
                                 .Include(sighting => sighting.Species)
                                 .Include(sighting => sighting.Location);
