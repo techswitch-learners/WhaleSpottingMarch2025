@@ -8,8 +8,8 @@ public class SpatialCoordinatesHelper
         return new Point(latitude, longitude) { SRID = 4326 };
     }
 
-     public static double ConvertRadiusToDegrees(int radius)
+    public static double ConvertRadiusToDegrees(int radius)
     {
-        return radius/111;
+        return radius / 111;
     }
 }
