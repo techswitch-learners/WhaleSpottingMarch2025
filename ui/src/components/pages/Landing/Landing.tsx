@@ -1,118 +1,39 @@
-import { useEffect, useState } from "react";
 import "./Landing.scss";
-import { SightingsResponse } from "../../../models/apiModels.ts";
-import { getSightings } from "../../../utils/apiClient.tsx";
-import { TABLET_MIN_WIDTH } from "../../../utils/constants.tsx";
-import { MapComponentWorking } from "../../mapComponent/MapComponentWorking.tsx";
-
-const fetchSightings = async () => {
-  try {
-    return getSightings();
-  } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
-  }
-};
+import { MapComponent } from "../../mapComponent/MapComponent.tsx";
+import { Link } from "react-router";
 
 export const Landing = () => {
-  const [sightingsData, setSightingsData] = useState<SightingsResponse[]>();
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth <= TABLET_MIN_WIDTH,
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= TABLET_MIN_WIDTH);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    const getSightings = async () => {
-      const data = await fetchSightings();
-      setSightingsData(data);
-    };
-    getSightings();
-  }, []);
-
-  const renderLandingMobileView = () => {
-    return (
-      <>
-        <MapComponentWorking />
-        <h2>Most recent sightings</h2>
-        <ul id="Sightings" className="ul-container">
-          {sightingsData?.map((sighting) => (
-            <li className="li-item">
-              <img src={sighting.imageSource} />
-              <div id="sightings-info">
-                <div>
-                  <strong> Species: </strong> {sighting.speciesName}
-                </div>
-                <div>
-                  <strong> Date Reported: </strong>
-                  {sighting.reportDate.slice(0, 10)}
-                </div>
-                <div>
-                  <strong>Description: </strong> {sighting.description}
-                </div>
-                <div>
-                  <strong>Latitude: </strong>
-                  {sighting.latitude}
-                </div>
-                <div>
-                  <strong>Longitude: </strong>
-                  {sighting.longitude}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </>
-    );
-  };
-  const renderLandingDesktopView = () => {
-    return (
-      <>
-        <MapComponentWorking />
-        <table id="SightingsTable" className="table-container">
-          <thead className="table-header">
-            {/* <th className="table-cell">Id</th> */}
-            <th className="table-cell">Species</th>
-            <th className="table-cell">Date</th>
-            <th className="table-cell">Description</th>
-            {/* <th className="table-cell">Location</th> */}
-            <th className="table-cell">Image</th>
-          </thead>
-
-          <tbody>
-            {sightingsData?.map((sighting) => (
-              <tr className="table-row">
-                {/* <td className="table-cell">{sighting.id}</td> */}
-                <td className="table-cell">{sighting.speciesName}</td>
-                <td className="table-cell">
-                  {sighting.reportDate.slice(0, 10)}
-                </td>
-                <td className="table-cell">{sighting.description}</td>
-                {/* <td className="table-cell">
-                Latitude: {sighting.location.latitude} <br />
-                Longitude: {sighting.location.longitude}
-              </td> */}
-                <td className="table-cell">
-                  <img src={sighting.imageSource} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </>
-    );
-  };
-
   return (
     <div id="SightingsListContainer">
-      <h1>Welcome to Whale Spotting</h1>
-      {isMobile && renderLandingMobileView()}
-      {!isMobile && renderLandingDesktopView()}
+      <h2>Welcome to Whale Spotting</h2>
+      {/* <img src="https://live.staticflickr.com/7418/8919679424_775e8c3d1d_b.jpg" /> */}
+      <div className="landing-page-text">
+        <p className="intro-text">
+          Recently we have finally seen an increase in whale numbers across the
+          globe due to conservation efforts, and we would love to keep the
+          public public and scientific community engaged with these efforts. We
+          have created a website to help encourage and track whale spotting.
+          Inspired by the Washington Whale Museum who have been tracking whale
+          sightings in the Salish Sea, we have create a new website that covers
+          the whole world!
+        </p>
+      </div>
+      <div>
+        <ul className="list-of-links">
+          <li>
+            <Link to="/ViewSightings">View Existing Whale Sightings</Link>
+          </li>
+          <li>
+            <Link to="/ReportSighting">Report a Whale Sighting</Link>
+          </li>
+          <li>
+            <Link to="/Register">
+              Please register on our website to report a whale sighting
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <MapComponent />
     </div>
   );
 };
