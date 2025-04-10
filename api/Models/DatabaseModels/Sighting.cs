@@ -27,7 +27,7 @@ public class Sighting
     public User User { get; set; }
     public Sighting() { }
     public Sighting(int id, int speciesId, string description, DateTime sightingDate, DateTime reportDate, int quantity, int locationId, string imageSource, string postedById)
-    {
+    {        
         Id = id;
         SpeciesId = speciesId;
         Description = description;
@@ -38,7 +38,6 @@ public class Sighting
         ImageSource = imageSource;
         PostedById = postedById;
     }
-
     public string Status()
     {
         return Reviews?.Any() == false
