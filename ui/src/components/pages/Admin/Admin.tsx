@@ -3,7 +3,7 @@ import { LoginContext } from "../../LoginManager/LoginManager";
 import { useEffect, useState } from "react";
 import {
   CreateReviewRequest,
-  SightingsResponse,
+  PendingApprovalModel,
   Species,
 } from "../../../models/apiModels";
 import "./Admin.scss";
@@ -16,9 +16,9 @@ import { PendingApproval } from "../../pendingApproval/PendingApproval";
 
 export const Admin = () => {
   const loginContext = useContext(LoginContext);
-  const [pendingApprovals, setPendingApprovals] = useState<SightingsResponse[]>(
-    [],
-  );
+  const [pendingApprovals, setPendingApprovals] = useState<
+    PendingApprovalModel[]
+  >([]);
   const [speciesOptions, setSpeciesOptions] = useState<Species[]>([]);
   const [pendingApprovalsError, setPendingApprovalsError] = useState("");
   const [speciesLoadingError, setSpeciesLoadingError] = useState("");
