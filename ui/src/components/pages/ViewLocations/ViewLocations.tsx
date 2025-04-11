@@ -5,10 +5,10 @@ import LocationPicker, {
 } from "../../formComponents/LocationPicker/LocationPicker";
 import { format } from "date-fns";
 import {
-  SightingsResponse,
   DailyWeatherForecast,
   TopSpecies,
   LocationSearchResponse,
+  ApiSighting,
 } from "../../../models/apiModels.ts";
 import "./ViewLocations.scss";
 
@@ -141,7 +141,7 @@ export const ViewLocations = () => {
         )}
         <ul className="sightings-data">
           {locationData.recentSightings?.map(
-            (sighting: SightingsResponse, index: number) => (
+            (sighting: ApiSighting, index: number) => (
               <li key={index} className="sightings-list">
                 <p>
                   <strong>Sighting ID: {sighting.id}</strong>
