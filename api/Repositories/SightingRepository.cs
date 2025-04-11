@@ -93,7 +93,8 @@ public class SightingRepository : ISightingRepository
         return _context.Sighting.Where(s => s.Location.SpatialCoordinates.IsWithinDistance(userSearchLocation, radiusInDegrees))
                                 .OrderByDescending(sighting => sighting.SightingDate)
                                 .Include(sighting => sighting.Species)
-                                .Include(sighting => sighting.Location);
+                                .Include(sighting => sighting.Location)
+                                .Include(sighting => sighting.User);
     }
     public Sighting CreateSighting(Sighting sighting)
     {
