@@ -29,7 +29,7 @@ public class SightingResponseModel
         Longitude = sighting.Location.SpatialCoordinates.Y;
         ImageSource = sighting.ImageSource;
         Status = sighting.Status();
-        //UserName = sighting.User.UserName;
+        UserName = sighting.User.UserName;
     }
 
     public SightingResponseModel() { }
