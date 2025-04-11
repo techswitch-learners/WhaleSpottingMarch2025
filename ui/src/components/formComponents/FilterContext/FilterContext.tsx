@@ -5,7 +5,7 @@ const resetFilterData: FilterSightings = {
   PageNumber: 1,
   PageSize: 10,
   SpeciesId: 0,
-  HasImage: true,
+  HasImage: null,
   SightingStartDate: null,
   SightingEndDate: null,
   Latitude: 0,

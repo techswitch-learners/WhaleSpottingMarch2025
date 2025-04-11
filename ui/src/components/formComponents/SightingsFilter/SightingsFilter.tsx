@@ -64,7 +64,7 @@ export const SightingsFilter = () => {
   const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     filterContext.updateFilter({
       ...filterContext.filterData,
-      HasImage: event.target.checked,
+      HasImage: event.target.checked || null,
     });
   };
 

@@ -73,7 +73,7 @@ export interface FilterSightings {
   PageNumber: number;
   PageSize: number;
   SpeciesId: number;
-  HasImage: boolean;
+  HasImage: boolean | null;
   SightingStartDate: Date | null;
   SightingEndDate: Date | null;
   Latitude: number;
