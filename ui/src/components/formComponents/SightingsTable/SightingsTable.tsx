@@ -79,7 +79,7 @@ export const SightingsTable = () => {
                 </div>
                 <div>
                   <strong> Date Reported: </strong>
-                  {sighting.reportDate.slice(0, 10)}
+                  {sighting.sightingDate.slice(0, 10)}
                 </div>
                 <div>
                   <strong>Description: </strong> {sighting.description}
@@ -124,7 +124,7 @@ export const SightingsTable = () => {
                 <td className="table-cell">{sighting.id}</td>
                 <td className="table-cell">{sighting.speciesName}</td>
                 <td className="table-cell">
-                  {sighting.reportDate.slice(0, 10)}
+                  {sighting.sightingDate.slice(0, 10)}
                 </td>
                 <td className="table-cell">{sighting.description}</td>
                 <td className="table-cell">{sighting.userName}</td>

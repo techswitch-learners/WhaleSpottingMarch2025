@@ -102,6 +102,11 @@ export const PendingApproval = (props: PendingApprovalProps) => {
         )}
       </div>
       <div className="pending-approval__item">
+        {sighting.imageSource && (
+          <img src={sighting.imageSource} alt="Sighting" />
+        )}
+      </div>
+      <div className="pending-approval__item">
         <button onClick={handleEdit} className="edit-button">
           {isEditable ? "↩️" : "✏️"}
         </button>
